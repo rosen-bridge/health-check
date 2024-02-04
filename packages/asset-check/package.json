@@ -1,8 +1,7 @@
 {
-  "name": "asset-check",
-  "version": "0.1.0",
-  "description": "",
-  "repository": "",
+  "name": "@rosen-bridge/asset-check",
+  "version": "0.0.0",
+  "description": "Rosen bridge health check service",
   "license": "GPL-3.0",
   "author": "Rosen Team",
   "type": "module",

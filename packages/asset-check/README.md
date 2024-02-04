@@ -1,4 +1,4 @@
-# asset-check
+# @rosen-bridge/asset-check
 
 ## Table of contents
 
@@ -12,11 +12,11 @@
 npm:
 
 ```sh
-npm i asset-check
+npm i @rosen-bridge/asset-check
 ```
 
 yarn:
 
 ```sh
-yarn add asset-check
+yarn add @rosen-bridge/asset-check
 ```

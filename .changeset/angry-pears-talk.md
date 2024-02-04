@@ -1,5 +1,5 @@
 ---
-'asset-check': patch
+'@rosen-bridge/asset-check': minor
 ---
 
-Initialize monorepo for health check parameters
+Initialize monorepo for health check service
