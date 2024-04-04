@@ -1,4 +1,4 @@
-import { AbstractHealthCheckParam, HealthStatusLevel } from '../src';
+import { AbstractHealthCheckParam, HealthStatusLevel } from '../lib';
 
 export class TestHealthCheckParam extends AbstractHealthCheckParam {
   protected id: string;

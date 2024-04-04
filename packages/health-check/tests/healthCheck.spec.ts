@@ -1,4 +1,4 @@
-import { HealthStatusLevel } from '../src';
+import { HealthStatusLevel } from '../lib';
 import { TestHealthCheckParam } from './testHealthCheckParam';
 import { TestHealthCheck } from './testHealthCheck';
 import { describe, expect, it } from 'vitest';

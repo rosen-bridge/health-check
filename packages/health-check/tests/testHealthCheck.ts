@@ -1,4 +1,4 @@
-import { HealthCheck } from '../src';
+import { HealthCheck } from '../lib';
 
 export class TestHealthCheck extends HealthCheck {
   getParams = () => {
