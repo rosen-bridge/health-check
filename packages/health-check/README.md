@@ -7,6 +7,8 @@
 
 ## Introduction
 
+Rosen bridge health-check package
+
 ## Installation
 
 npm:
