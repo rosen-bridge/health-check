@@ -1,7 +1,7 @@
 import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { createDataSource } from '../Utils';
+import { createDataSource } from '../utils';
 import { ErgoExplorerScannerHealthCheck } from '../../lib';
 
 vitest.mock('@rosen-clients/ergo-explorer');

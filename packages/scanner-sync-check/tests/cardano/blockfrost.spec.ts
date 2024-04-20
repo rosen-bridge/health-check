@@ -1,7 +1,7 @@
 import { describe, expect, it, vitest } from 'vitest';
 
-import { TestCardanoBlockFrostScannerHealthCheck } from './TestCardano';
-import { createDataSource } from '../Utils';
+import { TestCardanoBlockFrostScannerHealthCheck } from './testCardano';
+import { createDataSource } from '../utils';
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 
 describe('CardanoBlockFrostScannerHealthCheck.getLastAvailableBlock', () => {

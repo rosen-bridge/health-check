@@ -1,7 +1,7 @@
 import { describe, expect, it, vitest } from 'vitest';
 
-import { TestCardanoGraphQLScannerHealthCheck } from './TestCardano';
-import { createDataSource } from '../Utils';
+import { TestCardanoGraphQLScannerHealthCheck } from './testCardano';
+import { createDataSource } from '../utils';
 
 describe('CardanoGraphQLScannerHealthCheck.getLastAvailableBlock', () => {
   /**

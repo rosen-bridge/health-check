@@ -1,7 +1,7 @@
 import { describe, expect, it, vitest } from 'vitest';
 import cardanoKoiosClientFactory from '@rosen-clients/cardano-koios';
 
-import { createDataSource } from '../Utils';
+import { createDataSource } from '../utils';
 import { CardanoKoiosScannerHealthCheck } from '../../lib';
 
 vitest.mock('@rosen-clients/cardano-koios');

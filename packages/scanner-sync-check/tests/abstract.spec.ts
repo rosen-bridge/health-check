@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 import { describe, expect, it, beforeAll } from 'vitest';
 
 import { TestScannerHealthCheckParam } from './testAbstract';
-import { createDataSource } from './Utils';
+import { createDataSource } from './utils';
 
 describe('AbstractScannerHealthCheckParam', () => {
   /**

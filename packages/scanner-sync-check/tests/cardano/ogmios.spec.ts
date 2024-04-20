@@ -1,7 +1,7 @@
 import { describe, expect, it, vitest } from 'vitest';
 import { createLedgerStateQueryClient } from '@cardano-ogmios/client';
 
-import { createDataSource } from '../Utils';
+import { createDataSource } from '../utils';
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 
 vitest.mock('@cardano-ogmios/client');
