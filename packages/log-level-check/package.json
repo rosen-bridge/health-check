@@ -31,9 +31,11 @@
   "engines": {
     "node": ">=20.11.0"
   },
+  "peerDependencies": {
+    "@rosen-bridge/health-check": "^0.1.0"
+  },
   "dependencies": {
     "@rosen-bridge/abstract-logger": "^1.0.0",
-    "@rosen-bridge/health-check": "^0.1.0",
     "@types/lodash-es": "^4.17.12",
     "lodash-es": "^4.17.21"
   }
