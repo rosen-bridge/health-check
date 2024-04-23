@@ -7,7 +7,6 @@ export class BitcoinEsploraAssetHealthCheckParam extends AbstractAssetHealthChec
   protected client: AxiosInstance;
 
   constructor(
-    assetId: string,
     assetName: string,
     address: string,
     warnThreshold: bigint,
@@ -16,17 +15,13 @@ export class BitcoinEsploraAssetHealthCheckParam extends AbstractAssetHealthChec
     assetDecimal = 0,
   ) {
     super(
-      assetId,
+      BITCOIN_NATIVE_ASSET,
       assetName,
       address,
       warnThreshold,
       criticalThreshold,
       assetDecimal,
     );
-    if (assetId !== BITCOIN_NATIVE_ASSET)
-      throw Error(
-        `Bitcoin asset health check does not support any asset other than 'btc'`,
-      );
     this.client = axios.create({
       baseURL: esploraUrl,
     });
