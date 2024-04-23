@@ -5,11 +5,7 @@ import { BITCOIN_NATIVE_ASSET } from '../../lib/constants';
 import { TestBitcoinEsploraAssetHealthCheck } from './testBitcoin';
 
 describe('BitcoinEsploraAssetHealthCheck', () => {
-  const mockGet = (
-    client: AxiosInstance,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    result: any,
-  ) => {
+  const mockGet = (client: AxiosInstance, result: unknown) => {
     vitest.spyOn(client, 'get').mockResolvedValue({ data: result });
   };
 
