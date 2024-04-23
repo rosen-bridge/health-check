@@ -7,9 +7,9 @@ describe('BitcoinEsploraScannerHealthCheck.getLastAvailableBlock', () => {
   /**
    * @target BitcoinEsploraScannerHealthCheck.update should return the last available block in network
    * @dependencies
-   * - ApolloClient
+   * - axios
    * @scenario
-   * - mock return value of esplora last block info
+   * - mock return value of esplora current block height
    * - create new instance of BitcoinEsploraScannerHealthCheck
    * - update the parameter
    * @expected
