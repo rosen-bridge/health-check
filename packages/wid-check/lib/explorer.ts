@@ -50,6 +50,7 @@ class ExplorerWidHealthCheckParam extends AbstractWidHealthCheckParam {
       const widList = collaterals.map((box) =>
         Buffer.from(
           wasm.Constant.decode_from_base16(
+            // TODO: fix any (local:ergo/rosen-bridge//network-client/#17)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (box as any).additionalRegisters['R4'].serializedValue,
           ).to_byte_array(),
