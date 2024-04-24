@@ -1,7 +1,7 @@
 {
-  "name": "@rosen-bridge/log-level-check",
+  "name": "@rosen-bridge/wid-check",
   "version": "0.1.0",
-  "description": "Rosen bridge log-level health-check parameter",
+  "description": "Rosen bridge wid health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",
   "type": "module",
@@ -36,7 +36,9 @@
     "@rosen-bridge/health-check": "^0.1.0"
   },
   "dependencies": {
-    "@rosen-bridge/abstract-logger": "^1.0.0",
+    "@rosen-clients/ergo-explorer": "^1.0.3",
+    "@rosen-clients/ergo-node": "^1.0.4",
+    "ergo-lib-wasm-nodejs": "^0.24.1",
     "lodash-es": "^4.17.21"
   }
 }
