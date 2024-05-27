@@ -86,7 +86,9 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     if (lastBlock.length !== 0) {
       return lastBlock[0].height;
     }
-    throw new Error('No block found or error in database connection');
+    throw new Error(
+      `No processed block found for scanner ${this.scannerName}, or some error occurred in database connection`,
+    );
   };
 }
 
