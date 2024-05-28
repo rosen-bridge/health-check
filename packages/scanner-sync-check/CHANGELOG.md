@@ -10,4 +10,4 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @rosen-bridge/health-check@1.0.0
+  - @rosen-bridge/health-check@5.0.0

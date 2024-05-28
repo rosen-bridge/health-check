@@ -1,6 +1,6 @@
 # @rosen-bridge/health-check
 
-## 1.0.0
+## 5.0.0
 
 ### Major Changes
 
