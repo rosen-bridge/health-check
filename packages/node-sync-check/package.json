@@ -31,10 +31,8 @@
   "engines": {
     "node": ">=20.11.0"
   },
-  "peerDependencies": {
-    "@rosen-bridge/health-check": "^0.1.0"
-  },
   "dependencies": {
+    "@rosen-bridge/health-check": "^0.1.0",
     "@rosen-clients/ergo-node": "^1.0.4"
   }
 }
