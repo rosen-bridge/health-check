@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/node-sync-check",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Rosen bridge node-sync health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",
@@ -32,7 +32,7 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@rosen-bridge/health-check": "^0.1.0",
+    "@rosen-bridge/health-check": "^1.0.0",
     "@rosen-clients/ergo-node": "^1.0.4"
   }
 }
