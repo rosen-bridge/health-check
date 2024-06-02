@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/asset-check",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Rosen bridge health check service",
   "license": "GPL-3.0",
   "author": "Rosen Team",

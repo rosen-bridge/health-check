@@ -3,7 +3,11 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 
-import { CARDANO_NATIVE_ASSET, ERGO_NATIVE_ASSET } from './constants';
+import {
+  BITCOIN_NATIVE_ASSET,
+  CARDANO_NATIVE_ASSET,
+  ERGO_NATIVE_ASSET,
+} from './constants';
 
 abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   protected assetName: string;
@@ -39,7 +43,11 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter id
    */
   getId = (): string => {
-    if ([ERGO_NATIVE_ASSET, CARDANO_NATIVE_ASSET].includes(this.assetId))
+    if (
+      [ERGO_NATIVE_ASSET, CARDANO_NATIVE_ASSET, BITCOIN_NATIVE_ASSET].includes(
+        this.assetId,
+      )
+    )
       return `Native Asset ${this.assetName}`;
     return `Asset ${this.assetName} [${this.assetId.slice(0, 6)}...]`;
   };
