@@ -1,5 +1,11 @@
 # @rosen-bridge/asset-check
 
+## 0.2.1
+
+### Patch Changes
+
+- Add Bitcoin as a native asset
+
 ## 0.2.0
 
 ### Minor Changes
