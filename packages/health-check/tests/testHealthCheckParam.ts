@@ -24,8 +24,8 @@ export class TestHealthCheckParam extends AbstractHealthCheckParam {
     return this.id;
   };
 
-  getTitle = (): string => {
-    return this.id;
+  getTitle = (): Promise<string> => {
+    return Promise.resolve(this.id);
   };
 
   update = (): unknown => {

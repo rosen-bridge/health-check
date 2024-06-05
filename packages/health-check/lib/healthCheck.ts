@@ -64,7 +64,7 @@ export class HealthCheck {
   getHealthStatusForParam = async (param: AbstractHealthCheckParam) => {
     return {
       id: param.getId(),
-      title: param.getTitle(),
+      title: await param.getTitle(),
       status: await param.getHealthStatus(),
       description: await param.getDescription(),
       lastCheck: param.getLastUpdatedTime(),

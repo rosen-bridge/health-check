@@ -12,7 +12,7 @@ export abstract class AbstractHealthCheckParam {
   /**
    * get param title
    */
-  abstract getTitle: () => string;
+  abstract getTitle: () => Promise<string>;
 
   /**
    * get param description
