@@ -1,14 +1,23 @@
-enum HealthStatusLevel {
-  HEALTHY = 'Healthy',
-  UNSTABLE = 'Unstable',
-  BROKEN = 'Broken',
-}
+import { HealthStatusLevel } from './interfaces';
 
-abstract class AbstractHealthCheckParam {
+export abstract class AbstractHealthCheckParam {
+  lastUpdateTime: Date | undefined;
+  lastTrialError: string | undefined;
+
   /**
    * get param id
    */
   abstract getId: () => string;
+
+  /**
+   * get param title
+   */
+  abstract getTitle: () => string;
+
+  /**
+   * get param description
+   */
+  abstract getDescription: () => Promise<string>;
 
   /**
    * update health status for this param
@@ -21,16 +30,20 @@ abstract class AbstractHealthCheckParam {
   abstract getHealthStatus: () => Promise<HealthStatusLevel>;
 
   /**
-   * get health description for this param.
-   * if status is HEALTHY return undefined otherwise return description string
+   * get health status details for this param.
+   * if status is HEALTHY return undefined otherwise return detail string
    */
-  abstract getDescription: () => Promise<string | undefined>;
+  abstract getDetails: () => Promise<string | undefined>;
 
   /**
    * get last updated time
    * if not running till now return undefined
    */
-  abstract getLastUpdatedTime: () => Promise<Date | undefined>;
-}
+  getLastUpdatedTime = () => this.lastUpdateTime;
 
-export { AbstractHealthCheckParam, HealthStatusLevel };
+  /**
+   * get last update trial error
+   * if parameter update encounter any error, it stores the error message
+   */
+  getLastTrialError = () => this.lastTrialError;
+}

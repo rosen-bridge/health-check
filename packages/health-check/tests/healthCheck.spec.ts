@@ -140,8 +140,8 @@ describe('HealthCheck', () => {
       const param2 = new TestHealthCheckParam('id2', HealthStatusLevel.HEALTHY);
       healthCheck.register(param1);
       healthCheck.register(param2);
-      const result = await healthCheck.getOverallHealthStatus();
-      expect(result.status).toEqual(HealthStatusLevel.HEALTHY);
+      const status = await healthCheck.getOverallHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
 
     /**
@@ -171,9 +171,8 @@ describe('HealthCheck', () => {
       healthCheck.register(param1);
       healthCheck.register(param2);
       healthCheck.register(param3);
-      const result = await healthCheck.getOverallHealthStatus();
-      expect(result.status).toEqual(HealthStatusLevel.UNSTABLE);
-      expect(result.descriptions).toEqual(['description 1', 'description 2']);
+      const status = await healthCheck.getOverallHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
 
     /**
@@ -209,9 +208,8 @@ describe('HealthCheck', () => {
       healthCheck.register(param2);
       healthCheck.register(param3);
       healthCheck.register(param4);
-      const result = await healthCheck.getOverallHealthStatus();
-      expect(result.status).toEqual(HealthStatusLevel.BROKEN);
-      expect(result.descriptions).toEqual(['description 2', 'description 3']);
+      const status = await healthCheck.getOverallHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
   });
 
@@ -244,7 +242,7 @@ describe('HealthCheck', () => {
       healthCheck.register(param3);
       healthCheck.register(param2);
       healthCheck.register(param1);
-      const result = await healthCheck.getHealthStatusFor('id1');
+      const result = await healthCheck.getHealthStatusWithParamId('id1');
       if (result !== undefined) {
         expect(result.status).toEqual(HealthStatusLevel.HEALTHY);
       }
@@ -272,7 +270,7 @@ describe('HealthCheck', () => {
       );
       healthCheck.register(param1);
       healthCheck.register(param2);
-      const result = await healthCheck.getHealthStatusFor('id3');
+      const result = await healthCheck.getHealthStatusWithParamId('id3');
       expect(result).toBeUndefined();
     });
   });
