@@ -28,11 +28,27 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
   }
 
   /**
-   * generates a unique id with network name and type
+   * generate a unique id with network name and type
    * @returns parameter id
    */
   getId = (): string => {
+    return `cardano_ogmios_scanner`;
+  };
+
+  /**
+   * generate a unique title with network name and type
+   * @returns parameter title
+   */
+  getTitle = async () => {
     return `Cardano Scanner Sync (Ogmios)`;
+  };
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    return `Cardano ogmios scanner health status. Last saved block by cardano ogmios scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

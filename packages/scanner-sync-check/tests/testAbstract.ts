@@ -9,6 +9,20 @@ class TestScannerHealthCheckParam extends AbstractScannerSyncHealthCheckParam {
   };
 
   /**
+   * mocked getTitle method
+   */
+  getTitle = async () => {
+    return 'Title';
+  };
+
+  /**
+   * mocked getDescription method
+   */
+  getDescription = async () => {
+    return 'Description';
+  };
+
+  /**
    * mocked update method
    */
   getLastAvailableBlock = async () => {

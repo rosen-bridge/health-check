@@ -20,11 +20,27 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
   }
 
   /**
-   * generates a unique id with network name and type
+   * generate a unique id with network name and type
    * @returns parameter id
    */
   getId = (): string => {
+    return `bitcoin_esplora_scanner`;
+  };
+
+  /**
+   * generate a unique title with network name and type
+   * @returns parameter title
+   */
+  getTitle = async () => {
     return `Bitcoin Scanner Sync (Esplora)`;
+  };
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    return `Bitcoin esplora scanner health status. Last saved block by bitcoin esplora scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

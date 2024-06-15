@@ -18,11 +18,27 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
   }
 
   /**
-   * generates a unique id with network name and type
+   * generate a unique id with network name and type
    * @returns parameter id
    */
   getId = (): string => {
+    return `cardano_koios_scanner`;
+  };
+
+  /**
+   * generate a unique title with network name and type
+   * @returns parameter title
+   */
+  getTitle = async () => {
     return `Cardano Scanner Sync (Koios)`;
+  };
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    return `Cardano koios scanner health status. Last saved block by cardano koios scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**
