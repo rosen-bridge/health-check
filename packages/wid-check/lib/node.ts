@@ -20,7 +20,7 @@ class NodeWidHealthCheckParam extends AbstractWidHealthCheckParam {
   /**
    * Updates the wid health status and the update timestamp
    */
-  update = async () => {
+  updateStatus = async () => {
     // Finding all existing tokens for the address
     const assets = await this.nodeApi.getAddressBalanceTotal(this.address);
     const tokenIdList = assets?.confirmed?.tokens.map((token) => token.tokenId);
@@ -55,8 +55,6 @@ class NodeWidHealthCheckParam extends AbstractWidHealthCheckParam {
 
       offset += this.API_REQUEST_LIMIT;
     } while (boxes.length > 0);
-
-    this.updateTimeStamp = new Date();
   };
 }
 

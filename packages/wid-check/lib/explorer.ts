@@ -21,7 +21,7 @@ class ExplorerWidHealthCheckParam extends AbstractWidHealthCheckParam {
   /**
    * Updates the wid health status and the update timestamp
    */
-  update = async () => {
+  updateStatus = async () => {
     // Finding all existing tokens for the address
     const assets =
       await this.explorerApi.v1.getApiV1AddressesP1BalanceConfirmed(
@@ -66,8 +66,6 @@ class ExplorerWidHealthCheckParam extends AbstractWidHealthCheckParam {
       total = boxes.total ?? 0n;
       offset += this.API_REQUEST_LIMIT;
     } while (offset < total);
-
-    this.updateTimeStamp = new Date();
   };
 }
 
