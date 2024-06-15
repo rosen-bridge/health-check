@@ -22,7 +22,21 @@ export abstract class AbstractHealthCheckParam {
   /**
    * update health status for this param
    */
-  abstract update: () => unknown;
+  abstract updateStatus: () => unknown;
+
+  /**
+   * try to update the health status and store update timestamp
+   * store error message in case of failure
+   */
+  update = async () => {
+    try {
+      await this.updateStatus();
+      this.lastUpdateTime = new Date();
+    } catch (e) {
+      if (e instanceof Error) this.lastTrialError = e.message;
+      else this.lastTrialError = `Unknown error occurred during update: ${e}`;
+    }
+  };
 
   /**
    * get health status for this param

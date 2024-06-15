@@ -28,7 +28,7 @@ export class TestHealthCheckParam extends AbstractHealthCheckParam {
     return Promise.resolve(this.id);
   };
 
-  update = (): unknown => {
+  updateStatus = (): unknown => {
     this.callsCount += 1;
     return undefined;
   };
