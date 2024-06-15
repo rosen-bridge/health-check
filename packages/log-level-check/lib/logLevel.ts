@@ -20,8 +20,6 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
   protected readonly maxAllowedCount: number;
   // time window for occurrence of logs
   protected readonly timeWindow: number;
-  // last update time
-  protected lastUpdate: Date;
 
   /**
    * wrapping a log function.
@@ -74,18 +72,17 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
   /**
    * update parameter and remove old logging times
    */
-  update = () => {
-    this.lastUpdate = new Date();
+  updateStatus = () => {
     const firstTime = Date.now() - this.timeWindow;
     this.times = this.times.filter((item) => item > firstTime);
   };
 
   /**
-   * get logging description. if status is not HEALTHY return last occured error
+   * get logging description. if status is not HEALTHY return last occurred error
    */
-  getDescription = async () => {
+  getDetails = async () => {
     if (this.times.length > this.maxAllowedCount) {
-      return `There are ${this.times.length} ${this.level}s in logs. The last one is "${this.lastMessage}"`;
+      return `There are ${this.times.length} ${this.level}s in logs. The last one is "${this.lastMessage}".`;
     }
     return undefined;
   };
@@ -106,14 +103,21 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
    * get logger health param id
    */
   getId = () => {
+    return `${this.level}_logs`;
+  };
+
+  /**
+   * get logger health param title
+   */
+  getTitle = async () => {
     return `${upperFirst(this.level)} in Logs`;
   };
 
   /**
-   * get last updated time
+   * get logger health param description
    */
-  getLastUpdatedTime = () => {
-    return Promise.resolve(this.lastUpdate);
+  getDescription = async () => {
+    return `Number of ${upperFirst(this.level)} lines in Logs.`;
   };
 }
 
