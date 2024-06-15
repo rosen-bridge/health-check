@@ -27,21 +27,19 @@ export class ErgoNodeAssetHealthCheckParam extends AbstractAssetHealthCheckParam
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * update health status for this param
    */
-  update = async () => {
+  updateStatus = async () => {
     let tokenAmount = 0n;
+    const assets = await this.nodeApi.getAddressBalanceTotal(this.address);
     if (this.assetId == ERGO_NATIVE_ASSET) {
-      const assets = await this.nodeApi.getAddressBalanceTotal(this.address);
       if (assets.confirmed) tokenAmount = assets.confirmed.nanoErgs;
     } else {
-      const assets = await this.nodeApi.getAddressBalanceTotal(this.address);
       const token = assets?.confirmed?.tokens.find(
         (token) => token.tokenId == this.assetId,
       );
       if (token && token.amount) tokenAmount = token.amount;
     }
     this.tokenAmount = tokenAmount;
-    this.updateTimeStamp = new Date();
   };
 }

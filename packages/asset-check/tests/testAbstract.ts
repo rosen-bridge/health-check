@@ -4,7 +4,7 @@ class TestAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   /**
    * mocked update method
    */
-  update: () => undefined;
+  updateStatus: () => undefined;
 
   /**
    * set mocked amount

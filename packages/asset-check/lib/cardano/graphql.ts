@@ -37,9 +37,9 @@ export class CardanoGraphQLAssetHealthCheckParam extends AbstractAssetHealthChec
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * update health status for this param
    */
-  update = async () => {
+  updateStatus = async () => {
     let tokenAmount = 0n;
     const res = await this.client.query<AddressAssetsQuery>({
       query: addressAssetsQuery,
@@ -66,8 +66,6 @@ export class CardanoGraphQLAssetHealthCheckParam extends AbstractAssetHealthChec
         if (amount) tokenAmount = BigInt(amount);
       }
     }
-
     this.tokenAmount = tokenAmount;
-    this.updateTimeStamp = new Date();
   };
 }

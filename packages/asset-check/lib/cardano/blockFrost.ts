@@ -32,9 +32,9 @@ export class CardanoBlockFrostAssetHealthCheckParam extends AbstractAssetHealthC
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * update health status for this param
    */
-  update = async () => {
+  updateStatus = async () => {
     let tokenAmount = 0n;
     const assets = await this.blockFrost.addresses(this.address);
     if (this.assetId == CARDANO_NATIVE_ASSET) {
@@ -47,8 +47,6 @@ export class CardanoBlockFrostAssetHealthCheckParam extends AbstractAssetHealthC
       const token = assets.amount.find((asset) => asset.unit === unit);
       if (token) tokenAmount = BigInt(token.quantity);
     }
-
     this.tokenAmount = tokenAmount;
-    this.updateTimeStamp = new Date();
   };
 }

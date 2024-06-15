@@ -28,9 +28,9 @@ export class CardanoKoiosAssetHealthCheckParam extends AbstractAssetHealthCheckP
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * update health status for this param
    */
-  update = async () => {
+  updateStatus = async () => {
     let tokenAmount = 0n;
     if (this.assetId == CARDANO_NATIVE_ASSET) {
       const infos = await this.koiosApi.postAddressInfo({
@@ -46,8 +46,6 @@ export class CardanoKoiosAssetHealthCheckParam extends AbstractAssetHealthCheckP
       );
       if (token && token.quantity) tokenAmount = BigInt(token.quantity);
     }
-
     this.tokenAmount = tokenAmount;
-    this.updateTimeStamp = new Date();
   };
 }

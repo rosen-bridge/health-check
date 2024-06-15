@@ -28,15 +28,14 @@ export class BitcoinEsploraAssetHealthCheckParam extends AbstractAssetHealthChec
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * update health status for this param
    */
-  update = async () => {
+  updateStatus = async () => {
     const addressStats = (
       await this.client.get<EsploraAddress>(`/api/address/${this.address}`)
     ).data.chain_stats;
     this.tokenAmount = BigInt(
       addressStats.funded_txo_sum - addressStats.spent_txo_sum,
     );
-    this.updateTimeStamp = new Date();
   };
 }
