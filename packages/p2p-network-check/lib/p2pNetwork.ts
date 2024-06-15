@@ -18,7 +18,6 @@ export class P2PNetworkHealthCheck extends AbstractHealthCheckParam {
 
   private status = HealthStatusLevel.HEALTHY; // current health status
 
-  private lastUpdatedTime: Date | undefined; // the last time `update` was called
   private lastDefectTimestamp: number | undefined; // the last time a defect (relay disconnection or insufficient connected guards) was detected
 
   protected connectedGuards: number;
@@ -41,16 +40,26 @@ export class P2PNetworkHealthCheck extends AbstractHealthCheckParam {
   /**
    * get health check parameter id
    */
-  getId = () => 'P2P Network';
+  getId = () => 'P2P';
+
+  /**
+   * get health check parameter title
+   */
+  getTitle = async () => 'P2P Network';
+
+  /**
+   * get health check parameter description
+   */
+  getDescription = async () =>
+    `P2P network connection status, currently connected to ${this.connectedGuards} guards.`;
 
   /**
    * update health status for this param if needed (based on the scenario
    * described in comments)
    */
-  update = () => {
+  updateStatus = () => {
     const now = new Date();
     const nowTimestamp = now.getTime();
-    this.lastUpdatedTime = now;
 
     this.connectedGuards = this.getConnectedGuards();
     this.isAtLeastOneRelayConnected = this.getIsAtLeastOneRelayConnected();
@@ -92,9 +101,9 @@ export class P2PNetworkHealthCheck extends AbstractHealthCheckParam {
   };
 
   /**
-   * get health description for this param or undefined if status is healthy
+   * get health details for this param or undefined if status is healthy
    */
-  getDescription = async () => {
+  getDetails = async () => {
     if (this.status === HealthStatusLevel.HEALTHY) {
       return undefined;
     }
@@ -103,11 +112,6 @@ export class P2PNetworkHealthCheck extends AbstractHealthCheckParam {
       return 'Not connected to any relay. Please check the relay address and your connection.';
     }
 
-    return `Connected to only [${this.connectedGuards}] guards. At least [${this.connectedGuardsHealthyThreshold}] connections is required. Please check the connection.`;
+    return `Connected to only ${this.connectedGuards} guards. At least ${this.connectedGuardsHealthyThreshold} connections is required. Please check the connection.`;
   };
-
-  /**
-   * get last updated time or undefined if `update` is not called yet
-   */
-  getLastUpdatedTime = async () => this.lastUpdatedTime;
 }
