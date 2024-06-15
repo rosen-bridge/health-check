@@ -42,7 +42,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   }
 
   /**
-   * generates a title for parameter with asset name and asset id
+   * generates a title for parameter with asset name
    * @returns parameter title
    */
   getTitle = async (): Promise<string> => {

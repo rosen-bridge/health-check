@@ -31,7 +31,7 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
   }
 
   /**
-   * generates a unique id for node sync
+   * generate a unique id for node sync
    * @returns parameter id
    */
   getId = (): string => {
@@ -39,16 +39,16 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
   };
 
   /**
-   * generates a unique id for node sync
-   * @returns parameter id
+   * generate a unique title
+   * @returns parameter title
    */
   getTitle = async () => {
     return `Ergo Node Sync`;
   };
 
   /**
-   * generates a unique id for node sync
-   * @returns parameter id
+   * generate description
+   * @returns parameter description
    */
   getDescription = async () => {
     return `Ergo node syncing health status.`;
