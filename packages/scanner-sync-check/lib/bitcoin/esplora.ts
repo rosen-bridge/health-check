@@ -32,7 +32,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Bitcoin Scanner Sync (Esplora)`;
+    return `Bitcoin Esplora Scanner Sync`;
   };
 
   /**
@@ -40,7 +40,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Bitcoin esplora scanner health status. Last saved block by bitcoin esplora scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the Bitcoin Esplora scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

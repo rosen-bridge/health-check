@@ -30,7 +30,7 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Ergo Scanner Sync (Explorer)`;
+    return `Ergo Explorer Scanner Sync`;
   };
 
   /**
@@ -38,7 +38,7 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Ergo explorer scanner health status. Last saved block by ergo explorer scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the Ergo Explorer is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

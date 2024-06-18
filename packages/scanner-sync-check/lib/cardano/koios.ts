@@ -30,7 +30,7 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Cardano Scanner Sync (Koios)`;
+    return `Cardano Koios Scanner Sync`;
   };
 
   /**
@@ -38,7 +38,7 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Cardano koios scanner health status. Last saved block by cardano koios scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the Cardano Koios scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

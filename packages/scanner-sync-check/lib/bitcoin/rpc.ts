@@ -44,7 +44,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Bitcoin Scanner Sync (RPC)`;
+    return `Bitcoin RPC Scanner Sync`;
   };
 
   /**
@@ -52,7 +52,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Bitcoin rpc scanner health status. Last saved block by bitcoin rpc scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the Bitcoin RPC scanner is  ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

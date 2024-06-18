@@ -40,7 +40,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Cardano Scanner Sync (Ogmios)`;
+    return `Cardano Ogmios Scanner Sync`;
   };
 
   /**
@@ -48,7 +48,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Cardano ogmios scanner health status. Last saved block by cardano ogmios scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the Cardano Ogmios scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

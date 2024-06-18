@@ -38,7 +38,7 @@ abstract class AbstractWidHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = async () => {
-    return `The existence of the WID token in watcher address.`;
+    return `Checks for the existence of the WID token in the watcher address.`;
   };
 
   /**

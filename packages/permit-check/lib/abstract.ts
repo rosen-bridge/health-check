@@ -50,7 +50,7 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Reporting permits health status. You currently have ${this.reportsCount} available report permit.`;
+    return `Checks if the watcher has sufficient permits for reporting. Currently has ${this.reportsCount} available report permit.`;
   };
 
   /**

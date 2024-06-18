@@ -117,7 +117,7 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
    * get logger health param description
    */
   getDescription = async () => {
-    return `Number of ${upperFirst(this.level)} lines in Logs.`;
+    return `Counts number of ${upperFirst(this.level)}s in log.`;
   };
 }
 

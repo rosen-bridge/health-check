@@ -46,7 +46,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter title
    */
   getTitle = async (): Promise<string> => {
-    return `Available ${this.assetName}`;
+    return `Available ${this.assetName} Balance`;
   };
 
   /**
@@ -54,7 +54,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter id
    */
   getId = (): string => {
-    return `asset_${this.assetName}_${this.address.slice(0, 6)}`;
+    return `asset_${this.assetId.slice(0, 6)}_${this.address.slice(0, 6)}`;
   };
 
   /**
@@ -62,7 +62,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = async (): Promise<string> => {
-    return `Health status of ${this.assetName} balance in address ${this.address.slice(0, 6)}. Current balance is ${this.tokenAmount}.`;
+    return `Checks if the watcher wallet has a sufficient ${this.assetName} balance. The current balance is ${this.tokenAmount}.`;
   };
 
   /**

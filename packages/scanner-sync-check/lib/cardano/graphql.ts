@@ -36,7 +36,7 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Cardano Scanner Sync (Graphql)`;
+    return `Cardano Graphql Scanner Sync`;
   };
 
   /**
@@ -44,7 +44,7 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Cardano graphql scanner health status. Last saved block by cardano graphql scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the Cardano Graphql scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

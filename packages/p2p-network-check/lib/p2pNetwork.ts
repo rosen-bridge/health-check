@@ -51,7 +51,7 @@ export class P2PNetworkHealthCheck extends AbstractHealthCheckParam {
    * get health check parameter description
    */
   getDescription = async () =>
-    `P2P network connection status, currently connected to ${this.connectedGuards} guards.`;
+    `Checks if the guard is connected to other guards in the P2P network. Currently connected to ${this.connectedGuards} guards.`;
 
   /**
    * update health status for this param if needed (based on the scenario

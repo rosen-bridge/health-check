@@ -30,7 +30,7 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Ergo Scanner Sync (Node)`;
+    return `Ergo Node Scanner Sync`;
   };
 
   /**
@@ -38,7 +38,7 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Ergo node scanner health status. Last saved block by ergo node scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the Ergo Node scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

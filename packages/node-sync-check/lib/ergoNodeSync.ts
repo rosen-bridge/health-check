@@ -51,7 +51,7 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Ergo node syncing health status.`;
+    return `Checks if the specified Ergo Node is synced by comparing the scanned headers vs full blocks, the last scanned block time, and the connected peers.`;
   };
 
   /**
