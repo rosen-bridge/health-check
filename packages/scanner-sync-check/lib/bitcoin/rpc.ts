@@ -41,6 +41,8 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
     });
   }
 
+  private generateRandomId = () => randomBytes(32).toString('hex');
+
   /**
    * generates a unique id with network name and type
    * @returns parameter id
@@ -53,7 +55,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns last available block in network
    */
   getLastAvailableBlock = async () => {
-    const randomId = randomBytes(32).toString('hex');
+    const randomId = this.generateRandomId();
     const response = await this.client.post<PartialGetChainTipsResult>('', {
       method: 'getchaintips',
       params: [],

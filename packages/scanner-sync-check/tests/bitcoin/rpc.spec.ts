@@ -25,6 +25,8 @@ describe('BitcoinRPCScannerHealthCheck.getLastAvailableBlock', () => {
       10,
       'url',
     );
+    scannerHealthCheckParam['generateRandomId'] = () =>
+      '19774cdc6bc663926590dc2fe7bfe77ba57a5343aaa16db5ffc377e95663fd4e';
     const mockedHeight = 1115;
     vitest
       .spyOn(scannerHealthCheckParam.getClient(), 'post')
@@ -40,6 +42,7 @@ describe('BitcoinRPCScannerHealthCheck.getLastAvailableBlock', () => {
               status: 'invalid',
             },
           ],
+          id: '19774cdc6bc663926590dc2fe7bfe77ba57a5343aaa16db5ffc377e95663fd4e',
         },
       });
     const height = await scannerHealthCheckParam.getLastAvailableBlock();
