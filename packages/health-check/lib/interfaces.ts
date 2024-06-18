@@ -4,7 +4,8 @@ export interface HealthStatus {
   description: string;
   status: HealthStatusLevel;
   lastCheck?: Date;
-  lastTrialError?: string;
+  lastTrialErrorMessage?: string;
+  lastTrialErrorTime?: Date;
   details?: string;
 }
 

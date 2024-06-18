@@ -57,6 +57,18 @@ export class HealthCheck {
   };
 
   /**
+   * get trial errors for all parameters
+   */
+  getTrialErrors = async (): Promise<string[]> => {
+    const trialErrors: Array<string> = [];
+    (await this.getHealthStatus()).map((item) => {
+      if (item.lastTrialErrorMessage)
+        trialErrors.push(item.lastTrialErrorMessage);
+    });
+    return trialErrors;
+  };
+
+  /**
    *
    * @param param
    * @returns
@@ -68,7 +80,8 @@ export class HealthCheck {
       status: await param.getHealthStatus(),
       description: await param.getDescription(),
       lastCheck: param.getLastUpdatedTime(),
-      lastTrialError: param.getLastTrialError(),
+      lastTrialErrorMessage: param.getLastTrialErrorMessage(),
+      lastTrialErrorTime: param.getLastTrialErrorTime(),
       details: await param.getDetails(),
     };
   };

@@ -145,7 +145,7 @@ describe('HealthCheck', () => {
     });
 
     /**
-     * @target HealthCheck.getOverallHealthStatus should return UNSTABLE with first unhealthy param description when one or more UNSTABLE param and no BROKEN param available
+     * @target HealthCheck.getOverallHealthStatus should return UNSTABLE when one or more UNSTABLE param and no BROKEN param available
      * @dependencies
      * @scenario
      * - create new instance of HealthCheck
@@ -159,14 +159,12 @@ describe('HealthCheck', () => {
       const healthCheck = new TestHealthCheck();
       const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
       const param2 = new TestHealthCheckParam(
-        'id2',
+        'id1',
         HealthStatusLevel.UNSTABLE,
-        'description 1',
       );
       const param3 = new TestHealthCheckParam(
-        'id3',
+        'id1',
         HealthStatusLevel.UNSTABLE,
-        'description 2',
       );
       healthCheck.register(param1);
       healthCheck.register(param2);
@@ -176,7 +174,7 @@ describe('HealthCheck', () => {
     });
 
     /**
-     * @target HealthCheck.getOverallHealthStatus should return BROKEN with first BROKEN param description when one or more BROKEN param
+     * @target HealthCheck.getOverallHealthStatus should return BROKEN when one or more BROKEN param
      * @dependencies
      * @scenario
      * - create new instance of HealthCheck
@@ -192,24 +190,57 @@ describe('HealthCheck', () => {
       const param2 = new TestHealthCheckParam(
         'id2',
         HealthStatusLevel.UNSTABLE,
-        'description 1',
       );
       const param3 = new TestHealthCheckParam(
         'id3',
-        HealthStatusLevel.BROKEN,
-        'description 2',
+        HealthStatusLevel.UNSTABLE,
       );
-      const param4 = new TestHealthCheckParam(
-        'id3',
-        HealthStatusLevel.BROKEN,
-        'description 3',
-      );
+      const param4 = new TestHealthCheckParam('id4', HealthStatusLevel.BROKEN);
       healthCheck.register(param1);
       healthCheck.register(param2);
       healthCheck.register(param3);
       healthCheck.register(param4);
       const status = await healthCheck.getOverallHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
+    });
+  });
+
+  describe('getTrialErrors', () => {
+    /**
+     * @target HealthCheck.getOverallHealthStatus should return BROKEN with first BROKEN param description when one or more BROKEN param
+     * @dependencies
+     * @scenario
+     * - create new instance of HealthCheck
+     * - create two params with BROKEN status, one param with UNSTABLE status and one param with HEALTHY status
+     * - register params on healthCheck
+     * - call getOverallHealthStatus
+     * @expected
+     * - returned status must be BROKEN with descriptions equals to ['description 2', 'description 3']
+     */
+    it('should return all trial error messages', async () => {
+      const healthCheck = new TestHealthCheck();
+      const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
+      const param2 = new TestHealthCheckParam(
+        'id2',
+        HealthStatusLevel.UNSTABLE,
+        'error1',
+      );
+      const param3 = new TestHealthCheckParam(
+        'id3',
+        HealthStatusLevel.BROKEN,
+        'error2',
+      );
+      const param4 = new TestHealthCheckParam(
+        'id3',
+        HealthStatusLevel.BROKEN,
+        undefined,
+      );
+      healthCheck.register(param1);
+      healthCheck.register(param2);
+      healthCheck.register(param3);
+      healthCheck.register(param4);
+      const trialErrors = await healthCheck.getTrialErrors();
+      expect(trialErrors).toEqual(['error1', 'error2']);
     });
   });
 

@@ -1,8 +1,9 @@
 import { HealthStatusLevel } from './interfaces';
 
 export abstract class AbstractHealthCheckParam {
-  lastUpdateTime: Date | undefined;
-  lastTrialError: string | undefined;
+  protected lastUpdateTime: Date | undefined;
+  protected lastTrialErrorMessage: string | undefined;
+  protected lastTrialErrorTime: Date | undefined;
 
   /**
    * get param id
@@ -32,9 +33,13 @@ export abstract class AbstractHealthCheckParam {
     try {
       await this.updateStatus();
       this.lastUpdateTime = new Date();
+      this.lastTrialErrorMessage = undefined;
+      this.lastTrialErrorTime = undefined;
     } catch (e) {
-      if (e instanceof Error) this.lastTrialError = e.message;
-      else this.lastTrialError = `Unknown error occurred during update: ${e}`;
+      if (e instanceof Error) this.lastTrialErrorMessage = e.message;
+      else
+        this.lastTrialErrorMessage = `Unknown error occurred during update: ${e}`;
+      this.lastTrialErrorTime = new Date();
     }
   };
 
@@ -56,8 +61,14 @@ export abstract class AbstractHealthCheckParam {
   getLastUpdatedTime = () => this.lastUpdateTime;
 
   /**
-   * get last update trial error
-   * if parameter update encounter any error, it stores the error message
+   * get last update trial error message
+   * if parameter update encountered any error during last update, it returns the error message
    */
-  getLastTrialError = () => this.lastTrialError;
+  getLastTrialErrorMessage = () => this.lastTrialErrorMessage;
+
+  /**
+   * get last update trial error time
+   * if parameter update encountered any error during last update, it returns the error time
+   */
+  getLastTrialErrorTime = () => this.lastTrialErrorTime;
 }
