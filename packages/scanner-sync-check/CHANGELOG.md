@@ -1,5 +1,11 @@
 # @rosen-bridge/scanner-sync-check
 
+## 0.3.0
+
+### Minor Changes
+
+- Add authentication to bitcoin rpc connection
+
 ## 0.2.0
 
 ### Minor Changes
