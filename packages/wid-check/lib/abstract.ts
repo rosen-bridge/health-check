@@ -22,32 +22,36 @@ abstract class AbstractWidHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter id
    */
   getId = (): string => {
+    return `WID`;
+  };
+
+  /**
+   * generates a unique title
+   * @returns parameter title
+   */
+  getTitle = async () => {
     return `WID Token`;
   };
 
   /**
-   * if WID doesn't exist fot this address, returns the required notification.
-   * @returns parameter health description
+   * generates description
+   * @returns parameter description
    */
-  getDescription = async (): Promise<string | undefined> => {
-    if (!this.widExists)
-      return (
-        `Service has stopped working since there is no available WID for this address [${this.address}].\n` +
-        `You should lock RSN to get permit and WID.`
-      );
-    return undefined;
+  getDescription = async () => {
+    return `Checks for the existence of the WID token in the watcher address.`;
   };
 
   /**
-   * Updates the wid health status and the update timestamp
+   * if WID doesn't exist fot this address, returns the required notification.
+   * @returns parameter health details
    */
-  abstract update: () => unknown;
-
-  /**
-   * @returns last update time
-   */
-  getLastUpdatedTime = async (): Promise<Date | undefined> => {
-    return this.updateTimeStamp;
+  getDetails = async (): Promise<string | undefined> => {
+    if (!this.widExists)
+      return (
+        `Service has stopped working since there is no available WID for this address ${this.address}.\n` +
+        `You should lock RSN to get permit and WID.`
+      );
+    return undefined;
   };
 
   /**

@@ -1,21 +1,7 @@
-import {
-  AbstractHealthCheckParam,
-  HealthStatusLevel,
-} from './abstractHealthCheckParam';
+import { AbstractHealthCheckParam } from './abstractHealthCheckParam';
+import { HealthStatus, HealthStatusLevel } from './interfaces';
 
-interface HealthStatus {
-  id: string;
-  status: HealthStatusLevel;
-  description?: string;
-  lastCheck?: Date;
-}
-
-interface OverallHealthStatus {
-  status: HealthStatusLevel;
-  descriptions: Array<string>;
-}
-
-class HealthCheck {
+export class HealthCheck {
   protected params: Array<AbstractHealthCheckParam> = [];
 
   /**
@@ -56,43 +42,61 @@ class HealthCheck {
   /**
    * get overall health status for system
    */
-  getOverallHealthStatus = async (): Promise<OverallHealthStatus> => {
+  getOverallHealthStatus = async (): Promise<string> => {
     let status = HealthStatusLevel.HEALTHY;
-    let descriptions: Array<string> = [];
     (await this.getHealthStatus()).map((item) => {
-      if (item.status === status) {
-        descriptions.push(item.description || '');
-      } else if (
+      if (
         item.status === HealthStatusLevel.BROKEN ||
         (item.status === HealthStatusLevel.UNSTABLE &&
           status !== HealthStatusLevel.BROKEN)
       ) {
-        descriptions = [item.description || ''];
         status = item.status;
       }
     });
+    return status;
+  };
+
+  /**
+   * get trial errors for all parameters
+   */
+  getTrialErrors = async (): Promise<string[]> => {
+    const trialErrors: Array<string> = [];
+    (await this.getHealthStatus()).map((item) => {
+      if (item.lastTrialErrorMessage)
+        trialErrors.push(item.lastTrialErrorMessage);
+    });
+    return trialErrors;
+  };
+
+  /**
+   *
+   * @param param
+   * @returns
+   */
+  getHealthStatusForParam = async (param: AbstractHealthCheckParam) => {
     return {
-      status,
-      descriptions: descriptions.filter((item) => item !== ''),
+      id: param.getId(),
+      title: await param.getTitle(),
+      status: await param.getHealthStatus(),
+      description: await param.getDescription(),
+      lastCheck: param.getLastUpdatedTime(),
+      lastTrialErrorMessage: param.getLastTrialErrorMessage(),
+      lastTrialErrorTime: param.getLastTrialErrorTime(),
+      details: await param.getDetails(),
     };
   };
 
   /**
-   * check health status for on param
+   * check health status for a param with the id
    * @param paramId
    */
-  getHealthStatusFor = async (
+  getHealthStatusWithParamId = async (
     paramId: string,
   ): Promise<HealthStatus | undefined> => {
     const params = this.params.filter((param) => param.getId() === paramId);
     if (params.length > 0) {
       const param = params[0];
-      return {
-        id: param.getId(),
-        status: await param.getHealthStatus(),
-        description: await param.getDescription(),
-        lastCheck: await param.getLastUpdatedTime(),
-      };
+      return await this.getHealthStatusForParam(param);
     }
     return undefined;
   };
@@ -103,16 +107,8 @@ class HealthCheck {
   getHealthStatus = async (): Promise<Array<HealthStatus>> => {
     const res: Array<HealthStatus> = [];
     for (const param of this.params) {
-      const status = await param.getHealthStatus();
-      const description =
-        status === HealthStatusLevel.HEALTHY
-          ? undefined
-          : await param.getDescription();
-      const lastCheck = await param.getLastUpdatedTime();
-      res.push({ status, description, lastCheck, id: param.getId() });
+      res.push(await this.getHealthStatusForParam(param));
     }
     return res;
   };
 }
-
-export { HealthCheck, HealthStatus };

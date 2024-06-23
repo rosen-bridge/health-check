@@ -4,7 +4,7 @@ class TestWidHealthCheckParam extends AbstractWidHealthCheckParam {
   /**
    * mocked update method
    */
-  update: () => undefined;
+  updateStatus: () => undefined;
 
   /**
    * set mocked amount

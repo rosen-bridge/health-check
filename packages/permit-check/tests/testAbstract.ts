@@ -4,7 +4,7 @@ class TestPermitHealthCheckParam extends AbstractPermitHealthCheckParam {
   /**
    * mocked update method
    */
-  update: () => undefined;
+  updateStatus: () => undefined;
 
   /**
    * set mocked report count

@@ -28,9 +28,9 @@ class NodePermitHealthCheckParam extends AbstractPermitHealthCheckParam {
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * update the report permit health status
    */
-  update = async () => {
+  updateStatus = async () => {
     let RWTCount = 0n;
     let boxes = [],
       offset = 0;
@@ -58,7 +58,6 @@ class NodePermitHealthCheckParam extends AbstractPermitHealthCheckParam {
     } while (boxes.length > 0);
 
     this.reportsCount = RWTCount / this.rwtPerCommitment;
-    this.updateTimeStamp = new Date();
   };
 }
 

@@ -44,11 +44,27 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
   private generateRandomId = () => randomBytes(32).toString('hex');
 
   /**
-   * generates a unique id with network name and type
+   * generate a unique id with network name and type
    * @returns parameter id
    */
   getId = (): string => {
-    return `Bitcoin Scanner Sync (RPC)`;
+    return `bitcoin_rpc_scanner`;
+  };
+
+  /**
+   * generate a unique title with network name and type
+   * @returns parameter title
+   */
+  getTitle = async () => {
+    return `Bitcoin RPC Scanner Sync`;
+  };
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    return `Checks if the scanner is in sync with the network. The last block saved by the Bitcoin RPC scanner is  ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

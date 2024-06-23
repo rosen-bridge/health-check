@@ -18,11 +18,27 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
   }
 
   /**
-   * generates a unique id with network name and type
+   * generate a unique id with network name and type
    * @returns parameter id
    */
   getId = (): string => {
-    return `Ergo Scanner Sync (Explorer)`;
+    return `ergo_explorer_scanner`;
+  };
+
+  /**
+   * generate a unique title with network name and type
+   * @returns parameter title
+   */
+  getTitle = async () => {
+    return `Ergo Explorer Scanner Sync`;
+  };
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    return `Checks if the scanner is in sync with the network. The last block saved by the Ergo Explorer is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

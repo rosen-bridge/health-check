@@ -65,22 +65,6 @@ const runRelayDefectFixture = () => {
 };
 
 describe('P2PNetworkHealthCheck', () => {
-  describe('getId', () => {
-    /**
-     * @target P2PNetworkHealthCheck.getId should return the health check id
-     * @dependencies
-     * @scenario
-     * - run a healthy fixture
-     * @expected
-     * - the id should equal 'p2p network'
-     */
-    it('should return the health check id', () => {
-      const healthCheck = runHealthyFixture();
-
-      expect(healthCheck.getId()).toEqual('P2P Network');
-    });
-  });
-
   describe('update', () => {
     /**
      * @target P2PNetworkHealthCheck.update should change last updated time of
@@ -96,7 +80,7 @@ describe('P2PNetworkHealthCheck', () => {
       const now = Date.now();
       const healthCheck = runHealthyFixture();
 
-      healthCheck.update();
+      await healthCheck.update();
 
       const actualLastUpdatedTime = (
         await healthCheck.getLastUpdatedTime()
@@ -191,9 +175,9 @@ describe('P2PNetworkHealthCheck', () => {
     });
   });
 
-  describe('getDescription', () => {
+  describe('getDetails', () => {
     /**
-     * @target P2PNetworkHealthCheck.getDescription should return `undefined` if
+     * @target P2PNetworkHealthCheck.getDetails should return `undefined` if
      * status is healthy
      * @dependencies
      * @scenario
@@ -204,11 +188,11 @@ describe('P2PNetworkHealthCheck', () => {
     it('should return `undefined` if status is healthy', async () => {
       const healthCheck = runHealthyFixture();
 
-      expect(await healthCheck.getDescription()).toBeUndefined();
+      expect(await healthCheck.getDetails()).toBeUndefined();
     });
 
     /**
-     * @target P2PNetworkHealthCheck.getDescription should return relay
+     * @target P2PNetworkHealthCheck.getDetails should return relay
      * description if defect relates to relay
      * @dependencies
      * @scenario
@@ -219,13 +203,13 @@ describe('P2PNetworkHealthCheck', () => {
     it('should return relay description if defect relates to relay', async () => {
       const healthCheck = runRelayDefectFixture();
 
-      expect(await healthCheck.getDescription()).toEqual(
+      expect(await healthCheck.getDetails()).toEqual(
         'Not connected to any relay. Please check the relay address and your connection.',
       );
     });
 
     /**
-     * @target P2PNetworkHealthCheck.getDescription should return guards
+     * @target P2PNetworkHealthCheck.getDetails should return guards
      * description if defect relates to guards
      * @dependencies
      * @scenario
@@ -236,8 +220,8 @@ describe('P2PNetworkHealthCheck', () => {
     it('should return guards description if defect relates to guards', async () => {
       const healthCheck = runGuardsDefectFixture();
 
-      expect(await healthCheck.getDescription()).toEqual(
-        `Connected to only [${GUARDS_BROKEN_COUNT}] guards. At least [${GUARDS_THRESHOLD}] connections is required. Please check the connection.`,
+      expect(await healthCheck.getDetails()).toEqual(
+        `Connected to only ${GUARDS_BROKEN_COUNT} guards. At least ${GUARDS_THRESHOLD} connections is required. Please check the connection.`,
       );
     });
   });

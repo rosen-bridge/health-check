@@ -28,9 +28,9 @@ class ExplorerPermitHealthCheckParam extends AbstractPermitHealthCheckParam {
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * updates the report permit health status
    */
-  update = async () => {
+  updateStatus = async () => {
     let RWTCount = 0n;
     let total,
       offset = 0;
@@ -61,7 +61,6 @@ class ExplorerPermitHealthCheckParam extends AbstractPermitHealthCheckParam {
       offset += this.API_REQUEST_LIMIT;
     } while (offset < total);
     this.reportsCount = RWTCount / this.rwtPerCommitment;
-    this.updateTimeStamp = new Date();
   };
 }
 

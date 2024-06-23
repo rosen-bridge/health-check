@@ -16,7 +16,6 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   protected tokenAmount: bigint;
   protected warnThreshold: bigint;
   protected criticalThreshold: bigint;
-  protected updateTimeStamp: Date;
   protected assetDecimal: number;
 
   constructor(
@@ -29,7 +28,11 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   ) {
     super();
     this.assetId = assetId;
-    if ([ERGO_NATIVE_ASSET, CARDANO_NATIVE_ASSET].includes(assetId))
+    if (
+      [ERGO_NATIVE_ASSET, CARDANO_NATIVE_ASSET, BITCOIN_NATIVE_ASSET].includes(
+        assetId,
+      )
+    )
       this.assetName = assetName.toUpperCase();
     else this.assetName = assetName;
     this.address = address;
@@ -39,57 +42,55 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   }
 
   /**
-   * generates a unique id with asset name and asset id
+   * generates a title for parameter with asset name
+   * @returns parameter title
+   */
+  getTitle = async (): Promise<string> => {
+    return `Available ${this.assetName} Balance`;
+  };
+
+  /**
+   * generates a unique id with asset name and address
    * @returns parameter id
    */
   getId = (): string => {
-    if (
-      [ERGO_NATIVE_ASSET, CARDANO_NATIVE_ASSET, BITCOIN_NATIVE_ASSET].includes(
-        this.assetId,
-      )
-    )
-      return `Native Asset ${this.assetName}`;
-    return `Asset ${this.assetName} [${this.assetId.slice(0, 6)}...]`;
+    return `asset_${this.assetId}_${this.address}`;
+  };
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async (): Promise<string> => {
+    return `Checks if the ${this.address.slice(0, 6)} address has a sufficient ${this.assetName} balance. The current balance is ${this.tokenAmount}.`;
   };
 
   /**
    * if asset amount is less than the thresholds returns the required notification
    * @returns parameter health description
    */
-  getDescription = async (): Promise<string | undefined> => {
+  getDetails = async (): Promise<string | undefined> => {
     if (this.tokenAmount < this.criticalThreshold)
       return (
-        `Service has stopped working due to insufficient asset '${this.assetName}' balance` +
-        ` ([${this.getTokenDecimalStr(this.criticalThreshold)}] '${
+        `Service has stopped working due to insufficient ${this.assetName} balance` +
+        ` (${this.getTokenDecimalStr(this.criticalThreshold)} ${
           this.assetName
-        }' is required, but [${this.getTokenDecimalStr(
+        } is required, but ${this.getTokenDecimalStr(
           this.tokenAmount,
-        )}] is available.).\n` +
-        `Please top up [${this.address}] with asset [${this.assetId}]`
+        )} is available).\n` +
+        `Please top up ${this.address} with ${this.assetName}`
       );
     else if (this.tokenAmount < this.warnThreshold)
       return (
-        `Service is in unstable situation due to low asset '${this.assetName}' balance` +
-        ` ([${this.getTokenDecimalStr(this.warnThreshold)}] '${
+        `Service is in an unstable situation due to a low ${this.assetName} balance` +
+        ` (${this.getTokenDecimalStr(this.warnThreshold)} ${
           this.assetName
-        }' is recommended, but [${this.getTokenDecimalStr(
+        } is recommended, but ${this.getTokenDecimalStr(
           this.tokenAmount,
-        )}] is available.).\n` +
-        `Please top up [${this.address}] with asset [${this.assetId}], otherwise your service will stop working soon.`
+        )} is available).\n` +
+        `Please top up ${this.address} with ${this.assetName}, otherwise your service will stop working soon.`
       );
     return undefined;
-  };
-
-  /**
-   * Updates the asset health status and the update timestamp
-   */
-  abstract update: () => unknown;
-
-  /**
-   * @returns last update time
-   */
-  getLastUpdatedTime = async (): Promise<Date | undefined> => {
-    return this.updateTimeStamp;
   };
 
   /**

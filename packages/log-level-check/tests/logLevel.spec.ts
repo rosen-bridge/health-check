@@ -97,10 +97,10 @@ describe('LogLevelHealthCheck', () => {
      * @expected
      * - two lastUpdateTime must not be equal
      */
-    it('should update lastUpdatedTime', () => {
-      logLevelHealthCheck.update();
+    it('should update lastUpdatedTime', async () => {
+      await logLevelHealthCheck.update();
       const initialLastUpdatedTime = logLevelHealthCheck.getLastUpdatedTime();
-      logLevelHealthCheck.update();
+      await logLevelHealthCheck.update();
       const updatedLastUpdatedTime = logLevelHealthCheck.getLastUpdatedTime();
 
       expect(updatedLastUpdatedTime).not.toBe(initialLastUpdatedTime);
@@ -141,13 +141,13 @@ describe('LogLevelHealthCheck', () => {
     });
   });
 
-  describe('getDescription', () => {
+  describe('getDetails', () => {
     /**
-     * @target LogLevelHealthCheck.getDescription should return last logged error as description
+     * @target LogLevelHealthCheck.getDetails should return last logged error as description
      * @dependencies
      * @scenario
      * - log error messages 4 times
-     * - call getDescription function
+     * - call getDetails function
      * @expected
      * - return last logged message
      */
@@ -157,18 +157,18 @@ describe('LogLevelHealthCheck', () => {
       logger.error('Test error 3');
       logger.error('Test error 4');
 
-      const description = await logLevelHealthCheck.getDescription();
+      const description = await logLevelHealthCheck.getDetails();
       expect(description).toEqual(
-        'There are 4 errors in logs. The last one is "Test error 4"',
+        'There are 4 errors in logs. The last one is "Test error 4".',
       );
     });
 
     /**
-     * @target LogLevelHealthCheck.getDescription should return `undefined` when times length is shorter than expected
+     * @target LogLevelHealthCheck.getDetails should return `undefined` when times length is shorter than expected
      * @dependencies
      * @scenario
      * - log error messages 2 times
-     * - call getDescription function
+     * - call getDetails function
      * @expected
      * - return `undefined`
      */
@@ -176,7 +176,7 @@ describe('LogLevelHealthCheck', () => {
       logger.error('Test error 1');
       logger.error('Test error 2');
 
-      const description = await logLevelHealthCheck.getDescription();
+      const description = await logLevelHealthCheck.getDetails();
       expect(description).toBeUndefined();
     });
   });

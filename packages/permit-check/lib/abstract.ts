@@ -10,7 +10,6 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
   protected warnThreshold: bigint;
   protected criticalThreshold: bigint;
   protected reportsCount: bigint;
-  protected updateTimeStamp: Date;
   protected rwtPerCommitment: bigint;
 
   constructor(
@@ -35,38 +34,42 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter id
    */
   getId = (): string => {
+    return `permit`;
+  };
+
+  /**
+   * generates a unique title
+   * @returns parameter title
+   */
+  getTitle = async () => {
     return `Available Reporting Permits`;
+  };
+
+  /**
+   * generate description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    return `Checks if the watcher has sufficient permits for reporting. Currently has ${this.reportsCount} available report permit.`;
   };
 
   /**
    * if RWT count in permits is less than the thresholds returns the required notification
    * @returns parameter health description
    */
-  getDescription = async (): Promise<string | undefined> => {
+  getDetails = async (): Promise<string | undefined> => {
     if (this.reportsCount <= this.criticalThreshold)
       return (
         `Insufficient or critical amount of permit tokens.\n` +
-        `Service may stop working soon. [${this.reportsCount}] report permits is left.` +
+        `Service may stop working soon. Only ${this.reportsCount} report permits is left.` +
         ` Please lock more RSN to get more report permits.`
       );
     else if (this.reportsCount <= this.warnThreshold)
       return (
-        `Service may stop working soon. Available report permits [${this.reportsCount}] are less than ` +
-        `the recommended reports [${this.warnThreshold}]. Please lock more RSN to get more report permits.`
+        `Service may stop working soon. Available report permits ${this.reportsCount} is less than ` +
+        `the recommended reports ${this.warnThreshold}. Please lock more RSN to get more report permits.`
       );
     return undefined;
-  };
-
-  /**
-   * Updates the asset health status and the update timestamp
-   */
-  abstract update: () => unknown;
-
-  /**
-   * @returns last update time
-   */
-  getLastUpdatedTime = async (): Promise<Date | undefined> => {
-    return this.updateTimeStamp;
   };
 
   /**

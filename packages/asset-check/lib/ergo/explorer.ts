@@ -27,28 +27,22 @@ export class ErgoExplorerAssetHealthCheckParam extends AbstractAssetHealthCheckP
   }
 
   /**
-   * Updates the asset health status and the update timestamp
+   * update health status for this param
    */
-  update = async () => {
+  updateStatus = async () => {
     let tokenAmount = 0n;
+    const assets =
+      await this.explorerApi.v1.getApiV1AddressesP1BalanceConfirmed(
+        this.address,
+      );
     if (this.assetId == ERGO_NATIVE_ASSET) {
-      const assets =
-        await this.explorerApi.v1.getApiV1AddressesP1BalanceConfirmed(
-          this.address,
-        );
       if (assets) tokenAmount = assets.nanoErgs;
     } else {
-      const assets =
-        await this.explorerApi.v1.getApiV1AddressesP1BalanceConfirmed(
-          this.address,
-        );
       const token = assets.tokens?.find(
         (token) => token.tokenId == this.assetId,
       );
       if (token) tokenAmount = token.amount;
     }
-
     this.tokenAmount = tokenAmount;
-    this.updateTimeStamp = new Date();
   };
 }

@@ -24,11 +24,27 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
   }
 
   /**
-   * generates a unique id with network name and type
+   * generate a unique id with network name and type
    * @returns parameter id
    */
   getId = (): string => {
-    return `Cardano Scanner Sync (GraphQL)`;
+    return `cardano_graphql_scanner`;
+  };
+
+  /**
+   * generate a unique title with network name and type
+   * @returns parameter title
+   */
+  getTitle = async () => {
+    return `Cardano Graphql Scanner Sync`;
+  };
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    return `Checks if the scanner is in sync with the network. The last block saved by the Cardano Graphql scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

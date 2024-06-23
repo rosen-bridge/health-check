@@ -140,12 +140,12 @@ describe('HealthCheck', () => {
       const param2 = new TestHealthCheckParam('id2', HealthStatusLevel.HEALTHY);
       healthCheck.register(param1);
       healthCheck.register(param2);
-      const result = await healthCheck.getOverallHealthStatus();
-      expect(result.status).toEqual(HealthStatusLevel.HEALTHY);
+      const status = await healthCheck.getOverallHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
 
     /**
-     * @target HealthCheck.getOverallHealthStatus should return UNSTABLE with first unhealthy param description when one or more UNSTABLE param and no BROKEN param available
+     * @target HealthCheck.getOverallHealthStatus should return UNSTABLE when one or more UNSTABLE param and no BROKEN param available
      * @dependencies
      * @scenario
      * - create new instance of HealthCheck
@@ -153,31 +153,28 @@ describe('HealthCheck', () => {
      * - register params on healthCheck
      * - call getOverallHealthStatus
      * @expected
-     * - returned status must be UNSTABLE with description equals to ['description 1', 'description 2']
+     * - returned status must be UNSTABLE
      */
-    it('should return UNSTABLE with first unhealthy param description when one or more UNSTABLE param and no BROKEN param available', async () => {
+    it('should return UNSTABLE when one or more UNSTABLE param and no BROKEN param available', async () => {
       const healthCheck = new TestHealthCheck();
       const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
       const param2 = new TestHealthCheckParam(
-        'id2',
+        'id1',
         HealthStatusLevel.UNSTABLE,
-        'description 1',
       );
       const param3 = new TestHealthCheckParam(
-        'id3',
+        'id1',
         HealthStatusLevel.UNSTABLE,
-        'description 2',
       );
       healthCheck.register(param1);
       healthCheck.register(param2);
       healthCheck.register(param3);
-      const result = await healthCheck.getOverallHealthStatus();
-      expect(result.status).toEqual(HealthStatusLevel.UNSTABLE);
-      expect(result.descriptions).toEqual(['description 1', 'description 2']);
+      const status = await healthCheck.getOverallHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
 
     /**
-     * @target HealthCheck.getOverallHealthStatus should return BROKEN with first BROKEN param description when one or more BROKEN param
+     * @target HealthCheck.getOverallHealthStatus should return BROKEN when one or more BROKEN param
      * @dependencies
      * @scenario
      * - create new instance of HealthCheck
@@ -185,33 +182,65 @@ describe('HealthCheck', () => {
      * - register params on healthCheck
      * - call getOverallHealthStatus
      * @expected
-     * - returned status must be BROKEN with descriptions equals to ['description 2', 'description 3']
+     * - returned status must be BROKEN
      */
-    it('should return BROKEN with first BROKEN param description when one or more BROKEN param', async () => {
+    it('should return BROKEN when one or more BROKEN param', async () => {
       const healthCheck = new TestHealthCheck();
       const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
       const param2 = new TestHealthCheckParam(
         'id2',
         HealthStatusLevel.UNSTABLE,
-        'description 1',
+      );
+      const param3 = new TestHealthCheckParam(
+        'id3',
+        HealthStatusLevel.UNSTABLE,
+      );
+      const param4 = new TestHealthCheckParam('id4', HealthStatusLevel.BROKEN);
+      healthCheck.register(param1);
+      healthCheck.register(param2);
+      healthCheck.register(param3);
+      healthCheck.register(param4);
+      const status = await healthCheck.getOverallHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.BROKEN);
+    });
+  });
+
+  describe('getTrialErrors', () => {
+    /**
+     * @target HealthCheck.getOverallHealthStatus should return all trial error messages
+     * @dependencies
+     * @scenario
+     * - create new instance of HealthCheck
+     * - create two params with trial errors
+     * - register params on healthCheck
+     * - call getTrialErrors
+     * @expected
+     * - return all trial errors
+     */
+    it('should return all trial error messages', async () => {
+      const healthCheck = new TestHealthCheck();
+      const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
+      const param2 = new TestHealthCheckParam(
+        'id2',
+        HealthStatusLevel.UNSTABLE,
+        'error1',
       );
       const param3 = new TestHealthCheckParam(
         'id3',
         HealthStatusLevel.BROKEN,
-        'description 2',
+        'error2',
       );
       const param4 = new TestHealthCheckParam(
         'id3',
         HealthStatusLevel.BROKEN,
-        'description 3',
+        undefined,
       );
       healthCheck.register(param1);
       healthCheck.register(param2);
       healthCheck.register(param3);
       healthCheck.register(param4);
-      const result = await healthCheck.getOverallHealthStatus();
-      expect(result.status).toEqual(HealthStatusLevel.BROKEN);
-      expect(result.descriptions).toEqual(['description 2', 'description 3']);
+      const trialErrors = await healthCheck.getTrialErrors();
+      expect(trialErrors).toEqual(['error1', 'error2']);
     });
   });
 
@@ -244,7 +273,7 @@ describe('HealthCheck', () => {
       healthCheck.register(param3);
       healthCheck.register(param2);
       healthCheck.register(param1);
-      const result = await healthCheck.getHealthStatusFor('id1');
+      const result = await healthCheck.getHealthStatusWithParamId('id1');
       if (result !== undefined) {
         expect(result.status).toEqual(HealthStatusLevel.HEALTHY);
       }
@@ -272,7 +301,7 @@ describe('HealthCheck', () => {
       );
       healthCheck.register(param1);
       healthCheck.register(param2);
-      const result = await healthCheck.getHealthStatusFor('id3');
+      const result = await healthCheck.getHealthStatusWithParamId('id3');
       expect(result).toBeUndefined();
     });
   });
