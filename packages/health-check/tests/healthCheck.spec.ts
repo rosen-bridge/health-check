@@ -153,9 +153,9 @@ describe('HealthCheck', () => {
      * - register params on healthCheck
      * - call getOverallHealthStatus
      * @expected
-     * - returned status must be UNSTABLE with description equals to ['description 1', 'description 2']
+     * - returned status must be UNSTABLE
      */
-    it('should return UNSTABLE with first unhealthy param description when one or more UNSTABLE param and no BROKEN param available', async () => {
+    it('should return UNSTABLE when one or more UNSTABLE param and no BROKEN param available', async () => {
       const healthCheck = new TestHealthCheck();
       const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
       const param2 = new TestHealthCheckParam(
@@ -182,9 +182,9 @@ describe('HealthCheck', () => {
      * - register params on healthCheck
      * - call getOverallHealthStatus
      * @expected
-     * - returned status must be BROKEN with descriptions equals to ['description 2', 'description 3']
+     * - returned status must be BROKEN
      */
-    it('should return BROKEN with first BROKEN param description when one or more BROKEN param', async () => {
+    it('should return BROKEN when one or more BROKEN param', async () => {
       const healthCheck = new TestHealthCheck();
       const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
       const param2 = new TestHealthCheckParam(
@@ -207,15 +207,15 @@ describe('HealthCheck', () => {
 
   describe('getTrialErrors', () => {
     /**
-     * @target HealthCheck.getOverallHealthStatus should return BROKEN with first BROKEN param description when one or more BROKEN param
+     * @target HealthCheck.getOverallHealthStatus should return all trial error messages
      * @dependencies
      * @scenario
      * - create new instance of HealthCheck
-     * - create two params with BROKEN status, one param with UNSTABLE status and one param with HEALTHY status
+     * - create two params with trial errors
      * - register params on healthCheck
-     * - call getOverallHealthStatus
+     * - call getTrialErrors
      * @expected
-     * - returned status must be BROKEN with descriptions equals to ['description 2', 'description 3']
+     * - return all trial errors
      */
     it('should return all trial error messages', async () => {
       const healthCheck = new TestHealthCheck();
