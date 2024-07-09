@@ -5,6 +5,7 @@ export interface ParamHistoryItem {
   result: HealthStatusLevel | 'unknown'; // unknown means a status check failure
   tag?: string;
 }
+export type ParamHistory = ParamHistoryItem[];
 export type ParamId = string;
 
 export type History = Record<ParamId, ParamHistoryItem[]>;
