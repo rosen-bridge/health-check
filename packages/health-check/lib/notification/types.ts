@@ -1,4 +1,5 @@
-import { NotificationSeverity } from '@rosen-bridge/abstract-notification/dist/types';
+import { NotificationSeverity } from '@rosen-bridge/abstract-notification';
+
 import { ParamHistory } from '../history/types';
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
 

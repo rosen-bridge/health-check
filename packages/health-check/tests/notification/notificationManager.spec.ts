@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification/dist/types';
+import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from '../../lib';
 import NotificationManager from '../../lib/notification/notificationManager';

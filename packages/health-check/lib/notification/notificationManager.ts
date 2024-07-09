@@ -1,4 +1,4 @@
-import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification/dist/types';
+import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
 
