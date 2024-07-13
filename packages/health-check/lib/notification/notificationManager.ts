@@ -16,6 +16,8 @@ class NotificationManager {
   private getParamById: (id: ParamId) => AbstractHealthCheckParam | undefined;
   private notifiedHandler: (param: ParamId) => unknown;
 
+  [Symbol.toStringTag] = 'NotificationManager';
+
   /**
    * @param notify the function that sends notifications
    * @param notifiedHandler an event handler that gets called when a

@@ -17,6 +17,8 @@ class HealthHistory {
   private history: History = {};
   private updateHandler: HealthHistoryUpdateHandler;
 
+  [Symbol.toStringTag] = 'HealthHistory';
+
   constructor({
     updateHandler = async () => {},
     cleanupInterval = DEFAULT_HISTORY_CLEANUP_INTERVAL,
