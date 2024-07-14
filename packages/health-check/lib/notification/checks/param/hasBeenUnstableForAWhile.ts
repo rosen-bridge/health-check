@@ -61,7 +61,8 @@ const createHasBeenUnstableForAWhile: (
   severity: 'warning',
   getTitle: async (param) => `Unstable For A While: ${await param.getTitle()}`,
   getDescription: async (param) =>
-    (await param.getDetails()) ?? 'The reason for the broken state is unknown',
+    (await param.getDetails()) ??
+    'The reason for the unstable state is unknown',
 });
 
 export default createHasBeenUnstableForAWhile;

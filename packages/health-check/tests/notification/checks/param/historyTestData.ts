@@ -84,6 +84,14 @@ export const recentlyUnstableHistory: ParamHistory = [
 ];
 
 /**
+ * a bunch of last items are unknown
+ */
+export const recentlyUnknownHistory: ParamHistory = [
+  it.next({ status: 'unknown' }).value!,
+  it.next({ status: 'unknown' }).value!,
+];
+
+/**
  * append a history item with status `status` to a history
  * @param status
  * @param history
