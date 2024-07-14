@@ -92,6 +92,17 @@ export const recentlyUnknownHistory: ParamHistory = [
 ];
 
 /**
+ * a bunch of broken items, first one being tagged
+ */
+export const taggedBrokenHistory: ParamHistory = [
+  it.next({ status: HealthStatusLevel.BROKEN, tag: true }).value!,
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+];
+
+/**
  * append a history item with status `status` to a history
  * @param status
  * @param history
