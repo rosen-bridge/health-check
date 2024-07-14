@@ -95,6 +95,36 @@ describe('HealthCheck', () => {
       expect(param1.callsCount).toEqual(1);
       expect(param2.callsCount).toEqual(1);
     });
+
+    /**
+     * @target HealthCheck.update should update history
+     * @dependencies
+     * @scenario
+     * - create new instance of HealthCheck
+     * - create two params
+     * - register params on healthCheck
+     * - call update
+     * @expected
+     * - history should contain a new item for each of the params
+     */
+    it('should update history', async () => {
+      const healthCheck = new TestHealthCheck();
+      const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
+      const param2 = new TestHealthCheckParam('id2', HealthStatusLevel.BROKEN);
+      healthCheck.register(param1);
+      healthCheck.register(param2);
+      await healthCheck.update();
+
+      expect(healthCheck['healthHistory'].getHistory().id1.length).toEqual(1);
+      expect(healthCheck['healthHistory'].getHistory().id1[0].result).toEqual(
+        HealthStatusLevel.HEALTHY,
+      );
+
+      expect(healthCheck['healthHistory'].getHistory().id2.length).toEqual(1);
+      expect(healthCheck['healthHistory'].getHistory().id2[0].result).toEqual(
+        HealthStatusLevel.BROKEN,
+      );
+    });
   });
 
   describe('updateParam', () => {
@@ -119,6 +149,34 @@ describe('HealthCheck', () => {
       await healthCheck.updateParam(param1.getId());
       expect(param1.callsCount).toEqual(1);
       expect(param2.callsCount).toEqual(0);
+    });
+
+    /**
+     * @target HealthCheck.updateParam should update history
+     * @dependencies
+     * @scenario
+     * - create new instance of HealthCheck
+     * - create two params
+     * - register params on healthCheck
+     * - call refresh with param1 id
+     * @expected
+     * - param1 history should be updated
+     * - param2 history shouldn't be updated
+     */
+    it('should update history', async () => {
+      const healthCheck = new TestHealthCheck();
+      const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
+      const param2 = new TestHealthCheckParam('id2', HealthStatusLevel.HEALTHY);
+      healthCheck.register(param1);
+      healthCheck.register(param2);
+      await healthCheck.updateParam(param1.getId());
+
+      expect(healthCheck['healthHistory'].getHistory().id1.length).toEqual(1);
+      expect(healthCheck['healthHistory'].getHistory().id1[0].result).toEqual(
+        HealthStatusLevel.HEALTHY,
+      );
+
+      expect(healthCheck['healthHistory'].getHistory().id2).toEqual(undefined);
     });
   });
 
