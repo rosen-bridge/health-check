@@ -43,7 +43,8 @@ const createHasBeenUnknownForAWhile: (
   },
   severity: 'error',
   getTitle: async (param) => `Unknown For A While: ${await param.getTitle()}`,
-  getDescription: async () =>
+  getDescription: async (param) =>
+    param.getLastTrialErrorMessage() ??
     'There are no details for the reason of the unknown state',
 });
 
