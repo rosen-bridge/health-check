@@ -1,7 +1,7 @@
 import { withoutUnknowns } from './utils';
 
-import { HealthStatusLevel } from '../../../interfaces';
-import { NotificationCheck } from '../../types';
+import { HealthStatusLevel } from '../../interfaces';
+import { NotificationCheck } from '../types';
 
 /**
  * check if a param is broken just now (that is, wasn't broken before recently)

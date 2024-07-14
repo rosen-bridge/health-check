@@ -1,5 +1,5 @@
-import { HealthStatusLevel } from '../../../../lib';
-import { ParamHistory, ParamHistoryItem } from '../../../../lib/history/types';
+import { HealthStatusLevel } from '../../../lib';
+import { ParamHistory, ParamHistoryItem } from '../../../lib/history/types';
 
 /**
  * The difference between the timestamp of history items

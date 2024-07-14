@@ -1,7 +1,7 @@
 import { withoutUnknowns } from './utils';
 
-import { HealthStatusLevel } from '../../../interfaces';
-import { NotificationCheck } from '../../types';
+import { HealthStatusLevel } from '../../interfaces';
+import { NotificationCheck } from '../types';
 
 const DEFAULT_WINDOW_DURATION = 15 * 60_000;
 

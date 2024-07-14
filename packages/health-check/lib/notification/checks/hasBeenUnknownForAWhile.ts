@@ -1,4 +1,4 @@
-import { NotificationCheck } from '../../types';
+import { NotificationCheck } from '../types';
 
 const DEFAULT_WINDOW_DURATION = 15 * 60_000;
 

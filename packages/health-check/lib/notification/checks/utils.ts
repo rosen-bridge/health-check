@@ -1,4 +1,4 @@
-import { ParamHistory } from '../../../history/types';
+import { ParamHistory } from '../../history/types';
 
 /**
  * filter out all unknown items from a history

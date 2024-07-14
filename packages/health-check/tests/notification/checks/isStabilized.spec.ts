@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import IsStabilized from '../../../../lib/notification/checks/param/isStabilized';
+import IsStabilized from '../../../lib/notification/checks/isStabilized';
 
 import {
   alreadyStabilizedHistory,

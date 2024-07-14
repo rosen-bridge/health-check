@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import IsBroken from '../../../../lib/notification/checks/param/isBroken';
+import IsBroken from '../../../lib/notification/checks/isBroken';
 import {
   brokenHistory,
   recentlyBrokenHistory,
