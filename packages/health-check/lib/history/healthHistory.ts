@@ -1,3 +1,5 @@
+import { day, second } from '../constants';
+
 import {
   HealthHistoryUpdateHandler,
   History,
@@ -5,8 +7,8 @@ import {
   ParamId,
 } from './types';
 
-export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10_000; // 10 seconds
-export const DEFAULT_HISTORY_CLEANUP_THRESHOLD_MS = 24 * 60_000; // 1 day
+export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10 * second;
+export const DEFAULT_HISTORY_CLEANUP_THRESHOLD_MS = 1 * day;
 
 /**
  * Hold a history of health check param statuses in specific timestamps,

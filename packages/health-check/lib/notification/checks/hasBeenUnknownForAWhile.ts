@@ -1,6 +1,8 @@
+import { minute } from '../../constants';
+
 import { NotificationCheck } from '../types';
 
-const DEFAULT_WINDOW_DURATION = 15 * 60_000;
+const DEFAULT_WINDOW_DURATION = 15 * minute;
 
 /**
  * factory for a check checking if a param history has a tail of multiple

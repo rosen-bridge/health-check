@@ -1,7 +1,9 @@
+import { day } from '../../constants';
+
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
 
-const DEFAULT_WINDOW_DURATION = 24 * 60 * 60_000; // one day
+const DEFAULT_WINDOW_DURATION = 1 * day;
 
 /**
  * factory for a check checking if a notification for an unhealthy state is sent
