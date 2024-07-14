@@ -4,6 +4,7 @@ import {
   brokenHistory,
   recentlyBrokenHistory,
   stabilizedHistory,
+  withLast,
 } from './historyTestData';
 
 describe('IsBroken', () => {
@@ -56,6 +57,18 @@ describe('IsBroken', () => {
      */
     it('should return false if history is empty', () => {
       expect(IsBroken.check([])).toEqual(false);
+    });
+
+    /**
+     * @target `check` should ignore unknown statuses
+     * @dependencies
+     * @scenario
+     * - call `check` with a broken history items followed by an unknown one
+     * @expected
+     * - return value should be true
+     */
+    it('should ignore unknown statuses', () => {
+      expect(IsBroken.check(withLast('unknown', brokenHistory))).toEqual(true);
     });
   });
 });

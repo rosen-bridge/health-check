@@ -7,6 +7,7 @@ import {
   brokenHistory,
   notNotifiedStabilizedHistory,
   stabilizedHistory,
+  withLast,
 } from './historyTestData';
 
 describe('IsStabilized', () => {
@@ -75,6 +76,20 @@ describe('IsStabilized', () => {
      */
     it('should return false if last history item has unhealthy status', () => {
       expect(IsStabilized.check(brokenHistory)).toEqual(false);
+    });
+
+    /**
+     * @target `check` should ignore unknown history items
+     * @dependencies
+     * @scenario
+     * - call `check` with stabilized history items followed by an unknown one
+     * @expected
+     * - return value should be true
+     */
+    it('should ignore unknown history items', () => {
+      expect(
+        IsStabilized.check(withLast('unknown', stabilizedHistory)),
+      ).toEqual(true);
     });
   });
 });

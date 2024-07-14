@@ -1,4 +1,4 @@
-import { rejectUnknowns } from './utils';
+import { withoutUnknowns } from './utils';
 
 import { HealthStatusLevel } from '../../../interfaces';
 import { NotificationCheck } from '../../types';
@@ -13,15 +13,13 @@ const createHasBeenUnstableForAWhile: (
   windowDuration?: number,
 ) => NotificationCheck = (windowDuration = DEFAULT_WINDOW_DURATION) => ({
   id: 'has-been-unstable-for-a-while',
-  check: (history) => {
-    const knownHistory = rejectUnknowns(history);
-
-    const recentHistoryItem = knownHistory.at(-1);
+  check: withoutUnknowns((history) => {
+    const recentHistoryItem = history.at(-1);
 
     if (recentHistoryItem?.result !== HealthStatusLevel.UNSTABLE) return false;
 
     // find the last unstable item whose previous item isn't unstable
-    const unstableTimeWindowStartItemIndex = knownHistory.findLastIndex(
+    const unstableTimeWindowStartItemIndex = history.findLastIndex(
       (historyItem, index) => {
         return (
           historyItem.result === HealthStatusLevel.UNSTABLE &&
@@ -31,13 +29,13 @@ const createHasBeenUnstableForAWhile: (
            * history contains only unstable items, so it's essentially a "window
            * start" and we return it, though it doesn't have a previous item
            */
-          knownHistory[index - 1]?.result !== HealthStatusLevel.UNSTABLE
+          history[index - 1]?.result !== HealthStatusLevel.UNSTABLE
         );
       },
     );
 
     const unstableTimeWindowStartItem =
-      knownHistory[unstableTimeWindowStartItemIndex];
+      history[unstableTimeWindowStartItemIndex];
 
     // this case should never occur occur and is here for unpredicted cases
     if (!unstableTimeWindowStartItem) return false;
@@ -49,7 +47,7 @@ const createHasBeenUnstableForAWhile: (
      * notifications are required
      */
     if (
-      knownHistory[unstableTimeWindowStartItemIndex - 1]?.result ===
+      history[unstableTimeWindowStartItemIndex - 1]?.result ===
       HealthStatusLevel.BROKEN
     ) {
       return false;
@@ -59,7 +57,7 @@ const createHasBeenUnstableForAWhile: (
       recentHistoryItem.timestamp - unstableTimeWindowStartItem.timestamp;
 
     return timeDifference > windowDuration;
-  },
+  }),
   severity: 'warning',
   getTitle: async (param) => `Unstable For A While: ${await param.getTitle()}`,
   getDescription: async (param) =>

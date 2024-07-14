@@ -1,3 +1,5 @@
+import { withoutUnknowns } from './utils';
+
 import { HealthStatusLevel } from '../../../interfaces';
 import { NotificationCheck } from '../../types';
 
@@ -6,12 +8,12 @@ import { NotificationCheck } from '../../types';
  */
 const IsBroken: NotificationCheck = {
   id: 'is-broken',
-  check: (history) => {
+  check: withoutUnknowns((history) => {
     return (
       history.at(-1)?.result === HealthStatusLevel.BROKEN &&
       history.at(-2)?.result !== HealthStatusLevel.BROKEN
     );
-  },
+  }),
   severity: 'error',
   getTitle: async (param) => `Broken: ${await param.getTitle()}`,
   getDescription: async (param) =>
