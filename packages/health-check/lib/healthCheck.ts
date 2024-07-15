@@ -49,27 +49,41 @@ export class HealthCheck {
   };
 
   /**
+   * update history for a param, based on if the last update call was successful
+   * @param param
+   */
+  private updateHistoryForParam = async (param: AbstractHealthCheckParam) => {
+    const paramId = param.getId();
+    const lastTrialErrorTime = await param.getLastTrialErrorTime();
+    if (lastTrialErrorTime) {
+      this.healthHistory.updateHistoryForParam(paramId, {
+        result: 'unknown',
+        timestamp: lastTrialErrorTime.valueOf(),
+      });
+    } else {
+      this.healthHistory.updateHistoryForParam(paramId, {
+        result: await param.getHealthStatus(),
+        timestamp: param.getLastUpdatedTime()!.valueOf(),
+      });
+    }
+  };
+
+  /**
+   * update a param and its history
+   * @param param
+   */
+  private updateParamAndItsHistory = async (
+    param: AbstractHealthCheckParam,
+  ) => {
+    await param.update();
+    await this.updateHistoryForParam(param);
+  };
+
+  /**
    * check all params health status
    */
   update = async (): Promise<void> => {
-    await Promise.all(
-      this.params.map(async (param) => {
-        const paramId = param.getId();
-        await param.update();
-        const lastTrialErrorTime = await param.getLastTrialErrorTime();
-        if (lastTrialErrorTime) {
-          this.healthHistory.updateHistoryForParam(paramId, {
-            result: 'unknown',
-            timestamp: lastTrialErrorTime.valueOf(),
-          });
-        } else {
-          this.healthHistory.updateHistoryForParam(paramId, {
-            result: await param.getHealthStatus(),
-            timestamp: param.getLastUpdatedTime()!.valueOf(),
-          });
-        }
-      }),
-    );
+    await Promise.all(this.params.map(this.updateParamAndItsHistory));
   };
 
   /**
@@ -80,19 +94,7 @@ export class HealthCheck {
     for (const param of this.params.filter(
       (item) => item.getId() === paramId,
     )) {
-      await param.update();
-      const lastTrialErrorTime = await param.getLastTrialErrorTime();
-      if (lastTrialErrorTime) {
-        this.healthHistory.updateHistoryForParam(paramId, {
-          result: 'unknown',
-          timestamp: lastTrialErrorTime.valueOf(),
-        });
-      } else {
-        this.healthHistory.updateHistoryForParam(paramId, {
-          result: await param.getHealthStatus(),
-          timestamp: param.getLastUpdatedTime()!.valueOf(),
-        });
-      }
+      await this.updateParamAndItsHistory(param);
     }
   };
 
