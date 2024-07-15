@@ -47,12 +47,18 @@ class HealthHistory {
    * @param threshold
    */
   startCleanup = (interval: number, threshold: number) => {
+    /**
+     * cleanup history for a param
+     * @param param
+     */
+    const cleanupParamHistory = (param: ParamId) => {
+      this.history[param] = this.history[param].filter(
+        (historyItem) => Date.now() - historyItem.timestamp < threshold,
+      );
+    };
+
     setInterval(() => {
-      Object.keys(this.history).forEach((param) => {
-        this.history[param] = this.history[param].filter(
-          (historyItem) => Date.now() - historyItem.timestamp < threshold,
-        );
-      });
+      Object.keys(this.history).forEach(cleanupParamHistory);
     }, interval);
   };
 
