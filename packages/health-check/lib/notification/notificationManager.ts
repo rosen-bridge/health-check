@@ -7,7 +7,7 @@ import { ParamHistory, ParamId } from '../history/types';
 
 /**
  * Wrap a function for sending notifications based on a history. Whenever the
- * function gets called, a list of checks or run against the history and a list
+ * function gets called, a list of checks are run against the history and a list
  * of notifications are sent for passed checks.
  */
 class NotificationManager {
