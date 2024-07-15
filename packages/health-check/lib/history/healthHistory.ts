@@ -102,8 +102,9 @@ class HealthHistory {
   };
 
   /**
-   * set a tag for a param's history head which can contain any metadata (e.g.
-   * for checking if the status update caused a notification to be sent)
+   * set a tag for a param's history tail (that is, the most recent item), which
+   * can contain any metadata (e.g. for checking if the status update caused a
+   * notification to be sent)
    *
    * note that setting a tag doesn't trigger onUpdate
    * @param param
