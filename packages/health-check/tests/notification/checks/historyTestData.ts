@@ -1,5 +1,10 @@
 import { HealthStatusLevel } from '../../../lib';
-import { ParamHistory, ParamHistoryItem } from '../../../lib/history/types';
+
+import {
+  ErrorProneHealthStatusLevel,
+  ParamHistory,
+  ParamHistoryItem,
+} from '../../../lib/history/types';
 
 /**
  * The difference between the timestamp of history items
@@ -12,13 +17,13 @@ export const historyItemsInterval = 1000;
 function* createHistoryItem(): Generator<
   ParamHistoryItem,
   void,
-  { status: HealthStatusLevel | 'unknown'; tag?: true }
+  { status: ErrorProneHealthStatusLevel; tag?: true }
 > {
-  let status = 'unknown' as HealthStatusLevel | 'unknown';
+  let status = 'unknown' as ErrorProneHealthStatusLevel;
   let tag = undefined;
   let timestamp = 0;
   while (true) {
-    const input: { status: HealthStatusLevel | 'unknown'; tag?: true } = yield {
+    const input: { status: ErrorProneHealthStatusLevel; tag?: true } = yield {
       result: status,
       timestamp: timestamp,
       ...(tag && { tag: 'notified' }),
@@ -108,7 +113,7 @@ export const taggedBrokenHistory: ParamHistory = [
  * @param history
  */
 export const withLast: (
-  status: HealthStatusLevel | 'unknown',
+  status: ErrorProneHealthStatusLevel,
   history: ParamHistory,
 ) => ParamHistory = (
   status,

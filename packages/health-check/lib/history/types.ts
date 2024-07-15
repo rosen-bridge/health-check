@@ -1,8 +1,13 @@
 import { HealthStatusLevel } from '../interfaces';
 
+/**
+ * an enhanced `HealthStatusLevel` that can also be 'unknown' when status update
+ * fails
+ */
+export type ErrorProneHealthStatusLevel = HealthStatusLevel | 'unknown';
 export interface ParamHistoryItem {
   timestamp: EpochTimeStamp;
-  result: HealthStatusLevel | 'unknown'; // unknown means a status check failure
+  result: ErrorProneHealthStatusLevel;
   tag?: string;
 }
 export type ParamHistory = ParamHistoryItem[];
