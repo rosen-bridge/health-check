@@ -16,6 +16,13 @@ export const DEFAULT_HISTORY_CLEANUP_THRESHOLD_MS = 1 * day;
  * change occurs
  */
 class HealthHistory {
+  /**
+   * TODO: Decouple history logic by introducing its own interface, so that it
+   * can be implemented in various ways other than a normal JS object (e.g. for
+   * persisting history in a file, database, etc.)
+   *
+   * local:ergo/rosen-bridge/health-check#21
+   */
   private history: History = {};
   private updateHandler: HealthHistoryUpdateHandler;
 
