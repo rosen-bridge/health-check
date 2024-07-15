@@ -11,13 +11,24 @@ export class HealthCheck {
   protected params: Array<AbstractHealthCheckParam> = [];
   private healthHistory: HealthHistory;
 
-  constructor(notify: NotifyWithSeverity) {
+  constructor(
+    notify: NotifyWithSeverity,
+    {
+      historyConfig,
+    }: {
+      historyConfig?: Omit<
+        NonNullable<ConstructorParameters<typeof HealthHistory>[0]>,
+        'updateHandler'
+      >;
+    } = {},
+  ) {
     const notificationManager = new NotificationManager(
       notify,
       this.getParamById,
     );
     const healthHistory = new HealthHistory({
       updateHandler: notificationManager.sendNotifications,
+      ...historyConfig,
     });
 
     healthHistory.onUpdate(notificationManager.sendNotifications);
