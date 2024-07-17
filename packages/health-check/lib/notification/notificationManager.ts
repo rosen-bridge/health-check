@@ -2,7 +2,10 @@ import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
 
-import { NotificationCheck } from './types';
+import {
+  HealthNotificationManagerNotifiedHandler,
+  NotificationCheck,
+} from './types';
 import { ParamHistory, ParamId } from '../history/types';
 
 /**
@@ -14,7 +17,7 @@ class NotificationManager {
   private notificationChecks: NotificationCheck[] = [];
   private notify: NotifyWithSeverity;
   private getParamById: (id: ParamId) => AbstractHealthCheckParam | undefined;
-  private notifiedHandler: (param: ParamId) => unknown;
+  private notifiedHandler: HealthNotificationManagerNotifiedHandler;
 
   [Symbol.toStringTag] = 'NotificationManager';
 
@@ -27,12 +30,20 @@ class NotificationManager {
   constructor(
     notify: NotifyWithSeverity,
     getParamById: (id: ParamId) => AbstractHealthCheckParam | undefined,
-    notifiedHandler?: (param: ParamId) => unknown,
+    notifiedHandler?: HealthNotificationManagerNotifiedHandler,
   ) {
     this.notify = notify;
     this.getParamById = getParamById;
     this.notifiedHandler = notifiedHandler ?? (() => {});
   }
+
+  /**
+   * set a callback to be run whenever a notification for a param is sent
+   * @param updateHandler
+   */
+  onNotified = (notifiedHandler: HealthNotificationManagerNotifiedHandler) => {
+    this.notifiedHandler = notifiedHandler;
+  };
 
   /**
    * register a notification check

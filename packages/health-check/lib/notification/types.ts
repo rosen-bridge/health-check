@@ -1,6 +1,6 @@
 import { NotificationSeverity } from '@rosen-bridge/abstract-notification';
 
-import { ParamHistory } from '../history/types';
+import { ParamHistory, ParamId } from '../history/types';
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
 
 export interface NotificationCheck {
@@ -25,3 +25,7 @@ export interface NotificationCheck {
    */
   getDescription: (param: AbstractHealthCheckParam) => Promise<string>;
 }
+
+export type HealthNotificationManagerNotifiedHandler = (
+  param: ParamId,
+) => unknown;
