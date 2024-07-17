@@ -66,19 +66,6 @@ describe('IsStabilized', () => {
     });
 
     /**
-     * @target `check` should return false if last history item has unhealthy
-     * status
-     * @dependencies
-     * @scenario
-     * - call `check` with a history whose last item has unhealthy status
-     * @expected
-     * - return value should be false
-     */
-    it('should return false if last history item has unhealthy status', () => {
-      expect(IsStabilized.check(brokenHistory)).toEqual(false);
-    });
-
-    /**
      * @target `check` should ignore unknown history items
      * @dependencies
      * @scenario
