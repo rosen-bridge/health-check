@@ -1,4 +1,4 @@
-import { withoutUnknowns } from './utils';
+import { rejectUnknowns } from './utils';
 
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
@@ -8,17 +8,29 @@ import { NotificationCheck } from '../types';
  */
 const IsStabilized: NotificationCheck = {
   id: 'is-stabilized',
-  check: withoutUnknowns((history) => {
+  check: (history) => {
     const lastNotified = history.findLast(
       (historyItem) => historyItem.tag === 'notified',
     );
+    /**
+     * Based on the status of last notified item, we may or may not need to
+     * ignore unknown items
+     */
+    if (lastNotified?.result === 'unknown') {
+      return (
+        history.at(-1)?.result === HealthStatusLevel.HEALTHY &&
+        history.at(-2)?.result !== HealthStatusLevel.HEALTHY
+      );
+    }
+
+    const historyWithoutUnknowns = rejectUnknowns(history);
     return (
-      history.at(-1)?.result === HealthStatusLevel.HEALTHY &&
-      history.at(-2)?.result !== HealthStatusLevel.HEALTHY &&
+      historyWithoutUnknowns.at(-1)?.result === HealthStatusLevel.HEALTHY &&
+      historyWithoutUnknowns.at(-2)?.result !== HealthStatusLevel.HEALTHY &&
       !!lastNotified &&
       lastNotified?.result !== HealthStatusLevel.HEALTHY
     );
-  }),
+  },
   severity: 'success',
   getTitle: async (param) => `Now Healthy: ${await param.getTitle()}`,
   getDescription: async () =>

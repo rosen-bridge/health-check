@@ -7,7 +7,8 @@ import {
   brokenHistory,
   notNotifiedStabilizedHistory,
   stabilizedHistory,
-  withLast,
+  unknownStabilizedHistory,
+  alreadyStabilizedHistoryWithUnknownItems,
 } from './historyTestData';
 
 describe('IsStabilized', () => {
@@ -24,6 +25,22 @@ describe('IsStabilized', () => {
      */
     it('should return true if param stabilized after an unhealthy notification', () => {
       expect(IsStabilized.check(stabilizedHistory)).toEqual(true);
+    });
+
+    /**
+     * @target `check` should return true if param stabilized after an unknown
+     * notification
+     * @dependencies
+     * @scenario
+     * - call `check` with a history which is notified for becoming healthy,
+     * then followed by some unknown items which one is tagged, and then another
+     * healthy item
+     * healthy+tagged -> unknown -> unknown+tagged -> healthy
+     * @expected
+     * - return value should be true
+     */
+    it('should return true if param stabilized after an unknown notification', () => {
+      expect(IsStabilized.check(unknownStabilizedHistory)).toEqual(true);
     });
 
     /**
@@ -66,17 +83,19 @@ describe('IsStabilized', () => {
     });
 
     /**
-     * @target `check` should ignore unknown history items
+     * @target `check` should ignore unknown history items if the last notified
+     * item is not unknown
      * @dependencies
      * @scenario
-     * - call `check` with stabilized history items followed by an unknown one
+     * - call `check` with an already stabilized history, including an unknown
+     * item
      * @expected
-     * - return value should be true
+     * - return value should be false
      */
-    it('should ignore unknown history items', () => {
+    it('should ignore unknown history items if the last notified item is not unknown', () => {
       expect(
-        IsStabilized.check(withLast('unknown', stabilizedHistory)),
-      ).toEqual(true);
+        IsStabilized.check(alreadyStabilizedHistoryWithUnknownItems),
+      ).toEqual(false);
     });
   });
 });

@@ -80,6 +80,17 @@ export const stabilizedHistory: ParamHistory = [
 ];
 
 /**
+ * last item returned to healthy after being unhealthy and notified
+ */
+export const unknownStabilizedHistory: ParamHistory = [
+  it.next({ status: HealthStatusLevel.HEALTHY, tag: true }).value!,
+  it.next({ status: 'unknown' }).value!,
+  it.next({ status: 'unknown' }).value!,
+  it.next({ status: 'unknown', tag: true }).value!,
+  it.next({ status: HealthStatusLevel.HEALTHY }).value!,
+];
+
+/**
  * last item returned to healthy after being unhealthy without being notified
  */
 export const notNotifiedStabilizedHistory: ParamHistory = [
@@ -94,6 +105,16 @@ export const notNotifiedStabilizedHistory: ParamHistory = [
 export const alreadyStabilizedHistory: ParamHistory = [
   it.next({ status: HealthStatusLevel.BROKEN }).value!,
   it.next({ status: HealthStatusLevel.HEALTHY }).value!,
+  it.next({ status: HealthStatusLevel.HEALTHY }).value!,
+];
+
+/**
+ * last two items are healthy after being unhealthy without being notified
+ */
+export const alreadyStabilizedHistoryWithUnknownItems: ParamHistory = [
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+  it.next({ status: HealthStatusLevel.HEALTHY, tag: true }).value!,
+  it.next({ status: 'unknown' }).value!,
   it.next({ status: HealthStatusLevel.HEALTHY }).value!,
 ];
 
