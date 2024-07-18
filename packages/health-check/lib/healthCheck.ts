@@ -4,8 +4,18 @@ import { AbstractHealthCheckParam } from './abstractHealthCheckParam';
 import HealthHistory from './history/healthHistory';
 import NotificationManager from './notification/notificationManager';
 
+import createHasBeenUnknownForAWhile from './notification/checks/hasBeenUnknownForAWhile';
+import createHasBeenUnstableForAWhile from './notification/checks/hasBeenUnstableForAWhile';
+import isBroken from './notification/checks/isBroken';
+import isStabilized from './notification/checks/isStabilized';
+import createIsStillUnhealthy from './notification/checks/isStillUnhealthy';
+
 import { ParamId } from './history/types';
-import { HealthStatus, HealthStatusLevel } from './interfaces';
+import {
+  HealthStatus,
+  HealthStatusLevel,
+  HealthCheckHistoryConfig,
+} from './interfaces';
 
 export class HealthCheck {
   protected params: Array<AbstractHealthCheckParam> = [];
@@ -13,14 +23,7 @@ export class HealthCheck {
 
   constructor(
     notify: NotifyWithSeverity,
-    {
-      historyConfig,
-    }: {
-      historyConfig?: Omit<
-        NonNullable<ConstructorParameters<typeof HealthHistory>[0]>,
-        'updateHandler'
-      >;
-    } = {},
+    { historyConfig, notificationCheckConfig }: HealthCheckHistoryConfig = {},
   ) {
     const notificationManager = new NotificationManager(
       notify,
@@ -31,10 +34,44 @@ export class HealthCheck {
       ...historyConfig,
     });
 
-    healthHistory.onUpdate(notificationManager.sendNotifications);
-
     this.healthHistory = healthHistory;
+
+    notificationManager.onNotified((param) =>
+      healthHistory.setTag(param, 'notified'),
+    );
+    this.registerNotificationManagerChecks(
+      notificationManager,
+      notificationCheckConfig,
+    );
   }
+
+  /**
+   * register all notification checks to notificationManager
+   * @param notificationManager
+   * @param notificationCheckConfig
+   */
+  private registerNotificationManagerChecks = (
+    notificationManager: NotificationManager,
+    notificationCheckConfig: HealthCheckHistoryConfig['notificationCheckConfig'],
+  ) => {
+    notificationManager.registerCheck(
+      createHasBeenUnknownForAWhile(
+        notificationCheckConfig?.hasBeenUnknownForAWhile?.windowDuration,
+      ),
+    );
+    notificationManager.registerCheck(
+      createHasBeenUnstableForAWhile(
+        notificationCheckConfig?.hasBeenUnstableForAWhile?.windowDuration,
+      ),
+    );
+    notificationManager.registerCheck(isBroken);
+    notificationManager.registerCheck(isStabilized);
+    notificationManager.registerCheck(
+      createIsStillUnhealthy(
+        notificationCheckConfig?.isStillUnhealthy?.windowDuration,
+      ),
+    );
+  };
 
   /**
    * get a param by its id
