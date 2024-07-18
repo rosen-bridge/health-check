@@ -1,4 +1,4 @@
-import { day } from '../../constants';
+import { day, HistoryItemTag } from '../../constants';
 
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
@@ -16,7 +16,7 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck = (
   id: 'is-still-unhealthy',
   check: (history) => {
     const lastNotified = history.findLast(
-      (historyItem) => historyItem.tag === 'notified',
+      (historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED,
     );
     const recentHistoryItem = history.at(-1);
 

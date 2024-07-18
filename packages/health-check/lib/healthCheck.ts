@@ -10,6 +10,8 @@ import isBroken from './notification/checks/isBroken';
 import isStabilized from './notification/checks/isStabilized';
 import createIsStillUnhealthy from './notification/checks/isStillUnhealthy';
 
+import { HistoryItemTag } from './constants';
+
 import { ParamId } from './history/types';
 import {
   HealthStatus,
@@ -37,7 +39,7 @@ export class HealthCheck {
     this.healthHistory = healthHistory;
 
     notificationManager.onNotified((param) =>
-      healthHistory.setTag(param, 'notified'),
+      healthHistory.setTag(param, HistoryItemTag.NOTIFIED),
     );
     this.registerNotificationManagerChecks(
       notificationManager,

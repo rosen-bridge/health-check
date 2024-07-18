@@ -1,4 +1,4 @@
-import { minute } from '../../constants';
+import { minute, HistoryItemTag } from '../../constants';
 
 import { NotificationCheck } from '../types';
 
@@ -44,7 +44,7 @@ const createHasBeenUnknownForAWhile: (
     if (
       history
         .slice(unknownTimeWindowStartItemIndex)
-        .some((historyItem) => historyItem.tag === 'notified')
+        .some((historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED)
     ) {
       return false;
     }

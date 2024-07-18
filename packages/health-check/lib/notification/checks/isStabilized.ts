@@ -1,5 +1,7 @@
 import { rejectUnknowns } from './utils';
 
+import { HistoryItemTag } from '../../constants';
+
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
 
@@ -10,7 +12,7 @@ const IsStabilized: NotificationCheck = {
   id: 'is-stabilized',
   check: (history) => {
     const lastNotified = history.findLast(
-      (historyItem) => historyItem.tag === 'notified',
+      (historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED,
     );
     /**
      * Based on the status of last notified item, we may or may not need to

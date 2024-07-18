@@ -1,5 +1,7 @@
 import { withoutUnknowns } from './utils';
 
+import { HistoryItemTag } from '../../constants';
+
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
 
@@ -16,7 +18,7 @@ const IsBroken: NotificationCheck = {
        * healthy -> broken -> unknown
        * we have already sent a notification, and we shouldn't repeat it
        */
-      history.at(-1)?.tag !== 'notified' &&
+      history.at(-1)?.tag !== HistoryItemTag.NOTIFIED &&
       history.at(-2)?.result !== HealthStatusLevel.BROKEN
     );
   }),

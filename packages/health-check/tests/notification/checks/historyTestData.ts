@@ -1,5 +1,7 @@
 import { HealthStatusLevel } from '../../../lib';
 
+import { HistoryItemTag } from '../../../lib/constants';
+
 import {
   ErrorProneHealthStatusLevel,
   ParamHistory,
@@ -26,7 +28,7 @@ function* createHistoryItem(): Generator<
     const input: { status: ErrorProneHealthStatusLevel; tag?: true } = yield {
       result: status,
       timestamp: timestamp,
-      ...(tag && { tag: 'notified' }),
+      ...(tag && { tag: HistoryItemTag.NOTIFIED }),
     };
     if (!input) return;
 

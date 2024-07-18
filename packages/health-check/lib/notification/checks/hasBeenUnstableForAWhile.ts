@@ -1,6 +1,6 @@
 import { withoutUnknowns } from './utils';
 
-import { minute } from '../../constants';
+import { minute, HistoryItemTag } from '../../constants';
 
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
@@ -48,7 +48,7 @@ const createHasBeenUnstableForAWhile: (
     if (
       history
         .slice(unstableTimeWindowStartItemIndex)
-        .some((historyItem) => historyItem.tag === 'notified')
+        .some((historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED)
     ) {
       return false;
     }
