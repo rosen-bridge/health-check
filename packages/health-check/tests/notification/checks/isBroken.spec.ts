@@ -4,7 +4,8 @@ import {
   brokenHistory,
   recentlyBrokenHistory,
   stabilizedHistory,
-  withLast,
+  recentlyBrokenHistoryWithUnknownBeforeTail,
+  notifiedBrokenHistoryWithUnknownTail,
 } from './historyTestData';
 
 describe('IsBroken', () => {
@@ -63,12 +64,33 @@ describe('IsBroken', () => {
      * @target `check` should ignore unknown statuses
      * @dependencies
      * @scenario
-     * - call `check` with a broken history items followed by an unknown one
+     * - call `check` with a broken history that is notified, followed by an
+     * unknown item and another broken one:
+     * broken+notified -> unknown -> broken
      * @expected
-     * - return value should be true
+     * - return value should be false
      */
     it('should ignore unknown statuses', () => {
-      expect(IsBroken.check(withLast('unknown', brokenHistory))).toEqual(true);
+      expect(
+        IsBroken.check(recentlyBrokenHistoryWithUnknownBeforeTail),
+      ).toEqual(false);
+    });
+
+    /**
+     * @target `check` should return false if history has a tail of notified
+     * broken item followed by an unknown
+     * @dependencies
+     * @scenario
+     * - call `check` with a broken history that is notified, followed by an
+     * unknown item
+     * broken+notified -> unknown
+     * @expected
+     * - return value should be false
+     */
+    it('should return false if history has a tail of notified broken item followed by an unknown', () => {
+      expect(IsBroken.check(notifiedBrokenHistoryWithUnknownTail)).toEqual(
+        false,
+      );
     });
   });
 });

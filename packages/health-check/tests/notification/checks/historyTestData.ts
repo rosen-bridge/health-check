@@ -55,6 +55,23 @@ export const recentlyBrokenHistory: ParamHistory = [
 ];
 
 /**
+ * a bunch of last items are broken
+ */
+export const recentlyBrokenHistoryWithUnknownBeforeTail: ParamHistory = [
+  it.next({ status: HealthStatusLevel.BROKEN, tag: true }).value!,
+  it.next({ status: 'unknown' }).value!,
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+];
+
+/**
+ * a bunch of last items are broken
+ */
+export const notifiedBrokenHistoryWithUnknownTail: ParamHistory = [
+  it.next({ status: HealthStatusLevel.BROKEN, tag: true }).value!,
+  it.next({ status: 'unknown' }).value!,
+];
+
+/**
  * last item returned to healthy after being unhealthy and notified
  */
 export const stabilizedHistory: ParamHistory = [

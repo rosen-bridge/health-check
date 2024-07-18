@@ -11,6 +11,12 @@ const IsBroken: NotificationCheck = {
   check: withoutUnknowns((history) => {
     return (
       history.at(-1)?.result === HealthStatusLevel.BROKEN &&
+      /**
+       * because we reject unknowns, if we have the such a history:
+       * healthy -> broken -> unknown
+       * we have already sent a notification, and we shouldn't repeat it
+       */
+      history.at(-1)?.tag !== 'notified' &&
       history.at(-2)?.result !== HealthStatusLevel.BROKEN
     );
   }),
