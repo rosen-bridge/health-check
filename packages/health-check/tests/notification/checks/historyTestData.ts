@@ -89,6 +89,16 @@ export const recentlyUnstableHistory: ParamHistory = [
 ];
 
 /**
+ * a bunch of last items are unstable, one of which has notified tag
+ */
+export const notifiedRecentlyUnstableHistory: ParamHistory = [
+  it.next({ status: HealthStatusLevel.UNSTABLE }).value!,
+  it.next({ status: HealthStatusLevel.UNSTABLE }).value!,
+  it.next({ status: HealthStatusLevel.UNSTABLE, tag: true }).value!,
+  it.next({ status: HealthStatusLevel.UNSTABLE }).value!,
+];
+
+/**
  * a bunch of last items are unknown
  */
 export const recentlyUnknownHistory: ParamHistory = [

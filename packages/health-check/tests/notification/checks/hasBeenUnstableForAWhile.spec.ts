@@ -8,6 +8,7 @@ import {
   recentlyUnstableHistory,
   withLast,
   historyItemsInterval,
+  notifiedRecentlyUnstableHistory,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -106,6 +107,24 @@ describe('createHasBeenUnstableForAWhile', () => {
       expect(HasBeenUnstableForAWhile.check(recentlyUnstableHistory)).toEqual(
         true,
       );
+    });
+
+    /**
+     * @target `check` should return true if unstable window is long enough
+     * @dependencies
+     * @scenario
+     * - create the check object with a small window duration
+     * - call `check` with an unstable history which is longer than the window
+     * duration
+     * @expected
+     * - return value should be true
+     */
+    it('should not return true if an event history in the window is already notified', () => {
+      const HasBeenUnstableForAWhile =
+        createHasBeenUnstableForAWhile(smallWindowDuration);
+      expect(
+        HasBeenUnstableForAWhile.check(notifiedRecentlyUnstableHistory),
+      ).toEqual(false);
     });
   });
 });

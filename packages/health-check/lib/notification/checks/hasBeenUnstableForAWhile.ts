@@ -43,6 +43,17 @@ const createHasBeenUnstableForAWhile: (
     if (!unstableTimeWindowStartItem) return false;
 
     /**
+     * if a notification has been already sent, return false
+     */
+    if (
+      history
+        .slice(unstableTimeWindowStartItemIndex)
+        .some((historyItem) => historyItem.tag === 'notified')
+    ) {
+      return false;
+    }
+
+    /**
      * if a param changes from `BROKEN` to `UNSTABLE` and remains `UNSTABLE`,
      * we have previously sent a notification with higher severity for the
      * `BROKEN` state without sending its stabilization notification, so no more
