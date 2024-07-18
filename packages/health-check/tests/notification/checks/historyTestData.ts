@@ -97,6 +97,16 @@ export const recentlyUnknownHistory: ParamHistory = [
 ];
 
 /**
+ * a bunch of last items are unknown, one of which has notified tag
+ */
+export const notifiedRecentlyUnknownHistory: ParamHistory = [
+  it.next({ status: 'unknown' }).value!,
+  it.next({ status: 'unknown' }).value!,
+  it.next({ status: 'unknown', tag: true }).value!,
+  it.next({ status: 'unknown' }).value!,
+];
+
+/**
  * a bunch of broken items, first one being tagged
  */
 export const taggedBrokenHistory: ParamHistory = [

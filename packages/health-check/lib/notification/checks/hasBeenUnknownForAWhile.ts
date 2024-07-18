@@ -38,6 +38,17 @@ const createHasBeenUnknownForAWhile: (
     // this case should never occur occur and is here for unpredicted cases
     if (!unknownTimeWindowStartItem) return false;
 
+    /**
+     * if a notification has been already sent, return false
+     */
+    if (
+      history
+        .slice(unknownTimeWindowStartItemIndex)
+        .some((historyItem) => historyItem.tag === 'notified')
+    ) {
+      return false;
+    }
+
     const timeDifference =
       recentHistoryItem.timestamp - unknownTimeWindowStartItem.timestamp;
 

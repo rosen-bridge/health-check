@@ -5,6 +5,7 @@ import createHasBeenUnknownForAWhile from '../../../lib/notification/checks/hasB
 import {
   brokenHistory,
   historyItemsInterval,
+  notifiedRecentlyUnknownHistory,
   recentlyUnknownHistory,
 } from './historyTestData';
 
@@ -63,6 +64,25 @@ describe('createHasBeenUnknownForAWhile', () => {
       expect(HasBeenUnknownForAWhile.check(recentlyUnknownHistory)).toEqual(
         true,
       );
+    });
+
+    /**
+     * @target `check` should not return true if an event history in the window
+     * is already notified
+     * @dependencies
+     * @scenario
+     * - create the check object with a small window duration
+     * - call `check` with an unknown history which is longer than the window
+     * duration, but one of its items has notified tag
+     * @expected
+     * - return value should be true
+     */
+    it('should not return true if an event history in the window is already notified', () => {
+      const HasBeenUnknownForAWhile =
+        createHasBeenUnknownForAWhile(smallWindowDuration);
+      expect(
+        HasBeenUnknownForAWhile.check(notifiedRecentlyUnknownHistory),
+      ).toEqual(false);
     });
   });
 });
