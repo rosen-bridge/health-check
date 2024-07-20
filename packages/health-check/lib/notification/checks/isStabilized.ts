@@ -35,8 +35,7 @@ const IsStabilized: NotificationCheck = {
   },
   getSeverity: () => 'success',
   getTitle: async (param) => `Now Healthy: ${await param.getTitle()}`,
-  getDescription: async () =>
-    'The parameter that was not healthy recently returned to healthy state',
+  getDescription: async () => 'Returned to healthy state',
 };
 
 export default IsStabilized;

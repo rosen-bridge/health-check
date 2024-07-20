@@ -69,7 +69,7 @@ class NotificationManager {
     await Promise.all(
       eligibleNotificationChecks.map(async (notificationCheck) => {
         await this.notify(
-          notificationCheck.severity,
+          notificationCheck.getSeverity(paramHistory),
           await notificationCheck.getTitle(param),
           await notificationCheck.getDescription(param),
         );
