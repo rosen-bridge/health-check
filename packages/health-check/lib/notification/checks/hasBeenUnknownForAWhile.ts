@@ -12,13 +12,13 @@ const createHasBeenUnknownForAWhile: (
   windowDuration?: number,
 ) => NotificationCheck = (windowDuration = DEFAULT_WINDOW_DURATION) => ({
   id: 'has-been-unknown-for-a-while',
-  check: (history) => {
-    const recentHistoryItem = history.at(-1);
+  check() {
+    const recentHistoryItem = this.history.at(-1);
 
     if (recentHistoryItem?.result !== 'unknown') return false;
 
     // find the last unknown item whose previous item isn't unknown
-    const unknownTimeWindowStartItemIndex = history.findLastIndex(
+    const unknownTimeWindowStartItemIndex = this.history.findLastIndex(
       (historyItem, index) => {
         return (
           historyItem.result === 'unknown' &&
@@ -28,12 +28,13 @@ const createHasBeenUnknownForAWhile: (
            * history contains only unknown items, so it's essentially a "window
            * start" and we return it, though it doesn't have a previous item
            */
-          history[index - 1]?.result !== 'unknown'
+          this.history[index - 1]?.result !== 'unknown'
         );
       },
     );
 
-    const unknownTimeWindowStartItem = history[unknownTimeWindowStartItemIndex];
+    const unknownTimeWindowStartItem =
+      this.history[unknownTimeWindowStartItemIndex];
 
     // this case should never occur occur and is here for unpredicted cases
     if (!unknownTimeWindowStartItem) return false;
@@ -42,7 +43,7 @@ const createHasBeenUnknownForAWhile: (
      * if a notification has been already sent, return false
      */
     if (
-      history
+      this.history
         .slice(unknownTimeWindowStartItemIndex)
         .some((historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED)
     ) {
@@ -54,11 +55,18 @@ const createHasBeenUnknownForAWhile: (
 
     return timeDifference > windowDuration;
   },
-  getSeverity: () => 'error',
-  getTitle: async (param) => `Unknown For A While: ${await param.getTitle()}`,
-  getDescription: async (param) =>
-    param.getLastTrialErrorMessage() ??
-    'There are no details for the reason of the unknown state',
+  getSeverity() {
+    return 'error';
+  },
+  async getTitle() {
+    return `Unknown For A While: ${await this.param.getTitle()}`;
+  },
+  async getDescription() {
+    return (
+      this.param.getLastTrialErrorMessage() ??
+      'There are no details for the reason of the unknown state'
+    );
+  },
 });
 
 export default createHasBeenUnknownForAWhile;

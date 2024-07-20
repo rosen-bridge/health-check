@@ -9,6 +9,7 @@ import {
   withLast,
   historyItemsInterval,
   notifiedRecentlyUnstableHistory,
+  withDummyParam,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -29,7 +30,9 @@ describe('createHasBeenUnstableForAWhile', () => {
     it('should return false if the very recent item is not unstable but is known', () => {
       const HasBeenUnstableForAWhile =
         createHasBeenUnstableForAWhile(smallWindowDuration);
-      expect(HasBeenUnstableForAWhile.check(brokenHistory)).toEqual(false);
+      expect(
+        HasBeenUnstableForAWhile.check.call(withDummyParam(brokenHistory)),
+      ).toEqual(false);
     });
 
     /**
@@ -46,8 +49,8 @@ describe('createHasBeenUnstableForAWhile', () => {
       const HasBeenUnstableForAWhile =
         createHasBeenUnstableForAWhile(smallWindowDuration);
       expect(
-        HasBeenUnstableForAWhile.check(
-          withLast('unknown', recentlyUnstableHistory),
+        HasBeenUnstableForAWhile.check.call(
+          withDummyParam(withLast('unknown', recentlyUnstableHistory)),
         ),
       ).toEqual(true);
     });
@@ -67,8 +70,10 @@ describe('createHasBeenUnstableForAWhile', () => {
       const HasBeenUnstableForAWhile =
         createHasBeenUnstableForAWhile(smallWindowDuration);
       expect(
-        HasBeenUnstableForAWhile.check(
-          combineHistories(brokenHistory, recentlyUnstableHistory),
+        HasBeenUnstableForAWhile.check.call(
+          withDummyParam(
+            combineHistories(brokenHistory, recentlyUnstableHistory),
+          ),
         ),
       ).toEqual(false);
     });
@@ -86,9 +91,11 @@ describe('createHasBeenUnstableForAWhile', () => {
     it('should return false if unstable window is not long enough', () => {
       const HasBeenUnstableForAWhile =
         createHasBeenUnstableForAWhile(largeWindowDuration);
-      expect(HasBeenUnstableForAWhile.check(recentlyUnstableHistory)).toEqual(
-        false,
-      );
+      expect(
+        HasBeenUnstableForAWhile.check.call(
+          withDummyParam(recentlyUnstableHistory),
+        ),
+      ).toEqual(false);
     });
 
     /**
@@ -104,9 +111,11 @@ describe('createHasBeenUnstableForAWhile', () => {
     it('should return true if unstable window is long enough', () => {
       const HasBeenUnstableForAWhile =
         createHasBeenUnstableForAWhile(smallWindowDuration);
-      expect(HasBeenUnstableForAWhile.check(recentlyUnstableHistory)).toEqual(
-        true,
-      );
+      expect(
+        HasBeenUnstableForAWhile.check.call(
+          withDummyParam(recentlyUnstableHistory),
+        ),
+      ).toEqual(true);
     });
 
     /**
@@ -123,7 +132,9 @@ describe('createHasBeenUnstableForAWhile', () => {
       const HasBeenUnstableForAWhile =
         createHasBeenUnstableForAWhile(smallWindowDuration);
       expect(
-        HasBeenUnstableForAWhile.check(notifiedRecentlyUnstableHistory),
+        HasBeenUnstableForAWhile.check.call(
+          withDummyParam(notifiedRecentlyUnstableHistory),
+        ),
       ).toEqual(false);
     });
   });

@@ -2,6 +2,8 @@ import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
 
+import createCheck from './checks/createCheck';
+
 import {
   HealthNotificationManagerNotifiedHandler,
   NotificationCheck,
@@ -14,7 +16,7 @@ import { ParamHistory, ParamId } from '../history/types';
  * of notifications are sent for passed checks.
  */
 class NotificationManager {
-  private notificationChecks: NotificationCheck[] = [];
+  private NotificationChecks: NotificationCheck[] = [];
   private notify: NotifyWithSeverity;
   private getParamById: (id: ParamId) => AbstractHealthCheckParam | undefined;
   private notifiedHandler: HealthNotificationManagerNotifiedHandler;
@@ -50,7 +52,7 @@ class NotificationManager {
    * @param notificationCheck
    */
   registerCheck = (notificationCheck: NotificationCheck) => {
-    this.notificationChecks.push(notificationCheck);
+    this.NotificationChecks.push(notificationCheck);
   };
 
   /**
@@ -59,19 +61,27 @@ class NotificationManager {
    * @param paramHistory
    */
   sendNotifications = async (paramId: ParamId, paramHistory: ParamHistory) => {
-    const eligibleNotificationChecks = this.notificationChecks.filter(
-      (notificationCheck) => notificationCheck.check(paramHistory),
-    );
-
     const param = this.getParamById(paramId);
     if (!param) return;
+
+    const context = {
+      param,
+      history: paramHistory,
+    };
+    const notificationChecks = this.NotificationChecks.map(
+      (NotificationCheck) => createCheck(NotificationCheck, context),
+    );
+
+    const eligibleNotificationChecks = notificationChecks.filter(
+      (notificationCheck) => notificationCheck.check(),
+    );
 
     await Promise.all(
       eligibleNotificationChecks.map(async (notificationCheck) => {
         await this.notify(
-          notificationCheck.getSeverity(paramHistory),
-          await notificationCheck.getTitle(param),
-          await notificationCheck.getDescription(param),
+          notificationCheck.getSeverity(),
+          await notificationCheck.getTitle(),
+          await notificationCheck.getDescription(),
         );
         await this.notifiedHandler(paramId);
       }),

@@ -6,6 +6,7 @@ import {
   stabilizedHistory,
   recentlyBrokenHistoryWithUnknownBeforeTail,
   notifiedBrokenHistoryWithUnknownTail,
+  withDummyParam,
 } from './historyTestData';
 
 describe('IsBroken', () => {
@@ -20,7 +21,7 @@ describe('IsBroken', () => {
      * - return value should be true
      */
     it('should return true if the last history item has broken status', () => {
-      expect(IsBroken.check(brokenHistory)).toEqual(true);
+      expect(IsBroken.check.call(withDummyParam(brokenHistory))).toEqual(true);
     });
 
     /**
@@ -33,7 +34,9 @@ describe('IsBroken', () => {
      * - return value should be false
      */
     it("should return false if the last history item doesn't have broken status", () => {
-      expect(IsBroken.check(stabilizedHistory)).toEqual(false);
+      expect(IsBroken.check.call(withDummyParam(stabilizedHistory))).toEqual(
+        false,
+      );
     });
 
     /**
@@ -45,7 +48,9 @@ describe('IsBroken', () => {
      * - return value should be false
      */
     it('should return false if the param has recently been broken', () => {
-      expect(IsBroken.check(recentlyBrokenHistory)).toEqual(false);
+      expect(
+        IsBroken.check.call(withDummyParam(recentlyBrokenHistory)),
+      ).toEqual(false);
     });
 
     /**
@@ -57,7 +62,7 @@ describe('IsBroken', () => {
      * - return value should be false
      */
     it('should return false if history is empty', () => {
-      expect(IsBroken.check([])).toEqual(false);
+      expect(IsBroken.check.call(withDummyParam([]))).toEqual(false);
     });
 
     /**
@@ -72,7 +77,9 @@ describe('IsBroken', () => {
      */
     it('should ignore unknown statuses', () => {
       expect(
-        IsBroken.check(recentlyBrokenHistoryWithUnknownBeforeTail),
+        IsBroken.check.call(
+          withDummyParam(recentlyBrokenHistoryWithUnknownBeforeTail),
+        ),
       ).toEqual(false);
     });
 
@@ -88,9 +95,11 @@ describe('IsBroken', () => {
      * - return value should be false
      */
     it('should return false if history has a tail of notified broken item followed by an unknown', () => {
-      expect(IsBroken.check(notifiedBrokenHistoryWithUnknownTail)).toEqual(
-        false,
-      );
+      expect(
+        IsBroken.check.call(
+          withDummyParam(notifiedBrokenHistoryWithUnknownTail),
+        ),
+      ).toEqual(false);
     });
   });
 });

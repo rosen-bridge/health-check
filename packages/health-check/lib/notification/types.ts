@@ -3,27 +3,32 @@ import { NotificationSeverity } from '@rosen-bridge/abstract-notification';
 import { ParamHistory, ParamId } from '../history/types';
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
 
+export interface NotificationCheckContext {
+  history: ParamHistory;
+  param: AbstractHealthCheckParam;
+}
+
 export interface NotificationCheck {
   id: string;
   /**
    * notifications of this check will be sent with this severity
    */
-  getSeverity: (history: ParamHistory) => NotificationSeverity;
+  getSeverity(this: NotificationCheckContext): NotificationSeverity;
   /**
    * check if a notification should be sent based on the history
    * @param history
    */
-  check: (history: ParamHistory) => boolean;
+  check(this: NotificationCheckContext): boolean;
   /**
    * get title for the notification to be sent
    * @param param
    */
-  getTitle: (param: AbstractHealthCheckParam) => Promise<string>;
+  getTitle(this: NotificationCheckContext): Promise<string>;
   /**
    * get description for the notification to be sent
    * @param param
    */
-  getDescription: (param: AbstractHealthCheckParam) => Promise<string>;
+  getDescription(this: NotificationCheckContext): Promise<string>;
 }
 
 export type HealthNotificationManagerNotifiedHandler = (

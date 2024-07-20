@@ -14,11 +14,11 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck = (
   windowDuration = DEFAULT_WINDOW_DURATION,
 ) => ({
   id: 'is-still-unhealthy',
-  check: (history) => {
-    const lastNotified = history.findLast(
+  check() {
+    const lastNotified = this.history.findLast(
       (historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED,
     );
-    const recentHistoryItem = history.at(-1);
+    const recentHistoryItem = this.history.at(-1);
 
     if (!lastNotified || !recentHistoryItem) {
       return false;
@@ -32,10 +32,15 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck = (
 
     return timeDifference > windowDuration;
   },
-  getSeverity: () => 'warning',
-  getTitle: async (param) => `Is Still Unhealthy: ${await param.getTitle()}`,
-  getDescription: async () =>
-    'The previous issue for this param is not resolved yet',
+  getSeverity() {
+    return 'warning';
+  },
+  async getTitle() {
+    return `Is Still Unhealthy: ${await this.param.getTitle()}`;
+  },
+  async getDescription() {
+    return 'The previous issue for this param is not resolved yet';
+  },
 });
 
 export default createIsStillUnhealthy;

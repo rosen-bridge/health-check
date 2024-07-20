@@ -1,4 +1,4 @@
-import { withoutUnknowns } from './utils';
+import { rejectUnknowns } from './utils';
 
 import { HistoryItemTag } from '../../constants';
 
@@ -10,7 +10,8 @@ import { NotificationCheck } from '../types';
  */
 const IsBroken: NotificationCheck = {
   id: 'is-broken',
-  check: withoutUnknowns(function (history) {
+  check() {
+    const history = rejectUnknowns(this.history);
     return (
       history.at(-1)?.result === HealthStatusLevel.BROKEN &&
       /**
@@ -21,11 +22,19 @@ const IsBroken: NotificationCheck = {
       history.at(-1)?.tag !== HistoryItemTag.NOTIFIED &&
       history.at(-2)?.result !== HealthStatusLevel.BROKEN
     );
-  }),
-  getSeverity: () => 'error',
-  getTitle: async (param) => `Broken: ${await param.getTitle()}`,
-  getDescription: async (param) =>
-    (await param.getDetails()) ?? 'The reason for the broken state is unknown',
+  },
+  getSeverity() {
+    return 'error';
+  },
+  async getTitle() {
+    return `Broken: ${await this.param.getTitle()}`;
+  },
+  async getDescription() {
+    return (
+      (await this.param.getDetails()) ??
+      'The reason for the broken state is unknown'
+    );
+  },
 };
 
 export default IsBroken;

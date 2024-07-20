@@ -1,4 +1,4 @@
-import { withoutUnknowns } from './utils';
+import { rejectUnknowns } from './utils';
 
 import { minute, HistoryItemTag } from '../../constants';
 
@@ -15,7 +15,8 @@ const createHasBeenUnstableForAWhile: (
   windowDuration?: number,
 ) => NotificationCheck = (windowDuration = DEFAULT_WINDOW_DURATION) => ({
   id: 'has-been-unstable-for-a-while',
-  check: withoutUnknowns((history) => {
+  check() {
+    const history = rejectUnknowns(this.history);
     const recentHistoryItem = history.at(-1);
 
     if (recentHistoryItem?.result !== HealthStatusLevel.UNSTABLE) return false;
@@ -70,12 +71,19 @@ const createHasBeenUnstableForAWhile: (
       recentHistoryItem.timestamp - unstableTimeWindowStartItem.timestamp;
 
     return timeDifference > windowDuration;
-  }),
-  getSeverity: () => 'warning',
-  getTitle: async (param) => `Unstable For A While: ${await param.getTitle()}`,
-  getDescription: async (param) =>
-    (await param.getDetails()) ??
-    'The reason for the unstable state is unknown',
+  },
+  getSeverity() {
+    return 'warning';
+  },
+  async getTitle() {
+    return `Unstable For A While: ${await this.param.getTitle()}`;
+  },
+  async getDescription() {
+    return (
+      (await this.param.getDetails()) ??
+      'The reason for the unstable state is unknown'
+    );
+  },
 });
 
 export default createHasBeenUnstableForAWhile;

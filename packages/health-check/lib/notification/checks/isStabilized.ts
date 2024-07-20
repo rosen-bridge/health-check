@@ -10,8 +10,8 @@ import { NotificationCheck } from '../types';
  */
 const IsStabilized: NotificationCheck = {
   id: 'is-stabilized',
-  check: (history) => {
-    const lastNotified = history.findLast(
+  check() {
+    const lastNotified = this.history.findLast(
       (historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED,
     );
     /**
@@ -20,12 +20,12 @@ const IsStabilized: NotificationCheck = {
      */
     if (lastNotified?.result === 'unknown') {
       return (
-        history.at(-1)?.result === HealthStatusLevel.HEALTHY &&
-        history.at(-2)?.result !== HealthStatusLevel.HEALTHY
+        this.history.at(-1)?.result === HealthStatusLevel.HEALTHY &&
+        this.history.at(-2)?.result !== HealthStatusLevel.HEALTHY
       );
     }
 
-    const historyWithoutUnknowns = rejectUnknowns(history);
+    const historyWithoutUnknowns = rejectUnknowns(this.history);
     return (
       historyWithoutUnknowns.at(-1)?.result === HealthStatusLevel.HEALTHY &&
       historyWithoutUnknowns.at(-2)?.result !== HealthStatusLevel.HEALTHY &&
@@ -33,9 +33,15 @@ const IsStabilized: NotificationCheck = {
       lastNotified?.result !== HealthStatusLevel.HEALTHY
     );
   },
-  getSeverity: () => 'success',
-  getTitle: async (param) => `Now Healthy: ${await param.getTitle()}`,
-  getDescription: async () => 'Returned to healthy state',
+  getSeverity() {
+    return 'success';
+  },
+  async getTitle() {
+    return `Now Healthy: ${await this.param.getTitle()}`;
+  },
+  async getDescription() {
+    return 'Returned to healthy state';
+  },
 };
 
 export default IsStabilized;

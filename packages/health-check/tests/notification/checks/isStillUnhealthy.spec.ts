@@ -7,6 +7,7 @@ import {
   alreadyStabilizedHistory,
   notNotifiedStabilizedHistory,
   taggedBrokenHistory,
+  withDummyParam,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -25,7 +26,7 @@ describe('createIsStillUnhealthy', () => {
      */
     it('should return false if history is empty', () => {
       const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(IsStillUnhealthy.check([])).toEqual(false);
+      expect(IsStillUnhealthy.check.call(withDummyParam([]))).toEqual(false);
     });
 
     /**
@@ -39,7 +40,9 @@ describe('createIsStillUnhealthy', () => {
      */
     it('should return false if no history item has a tag', () => {
       const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(IsStillUnhealthy.check(alreadyStabilizedHistory)).toEqual(false);
+      expect(
+        IsStillUnhealthy.check.call(withDummyParam(alreadyStabilizedHistory)),
+      ).toEqual(false);
     });
 
     /**
@@ -54,9 +57,11 @@ describe('createIsStillUnhealthy', () => {
      */
     it('should return false if last tagged history item has healthy result', () => {
       const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(IsStillUnhealthy.check(notNotifiedStabilizedHistory)).toEqual(
-        false,
-      );
+      expect(
+        IsStillUnhealthy.check.call(
+          withDummyParam(notNotifiedStabilizedHistory),
+        ),
+      ).toEqual(false);
     });
 
     /**
@@ -73,7 +78,9 @@ describe('createIsStillUnhealthy', () => {
      */
     it('should return false if passed time since last tagged item is not large enough', () => {
       const IsStillUnhealthy = createIsStillUnhealthy(largeWindowDuration);
-      expect(IsStillUnhealthy.check(taggedBrokenHistory)).toEqual(false);
+      expect(
+        IsStillUnhealthy.check.call(withDummyParam(taggedBrokenHistory)),
+      ).toEqual(false);
     });
 
     /**
@@ -89,7 +96,9 @@ describe('createIsStillUnhealthy', () => {
      */
     it('should return false if passed time since last tagged item is large enough', () => {
       const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(IsStillUnhealthy.check(taggedBrokenHistory)).toEqual(true);
+      expect(
+        IsStillUnhealthy.check.call(withDummyParam(taggedBrokenHistory)),
+      ).toEqual(true);
     });
   });
 });

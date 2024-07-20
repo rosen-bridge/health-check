@@ -1,4 +1,4 @@
-import { HealthStatusLevel } from '../../../lib';
+import { AbstractHealthCheckParam, HealthStatusLevel } from '../../../lib';
 
 import { HistoryItemTag } from '../../../lib/constants';
 
@@ -7,11 +7,37 @@ import {
   ParamHistory,
   ParamHistoryItem,
 } from '../../../lib/history/types';
+import { NotificationCheckContext } from '../../../lib/notification/types';
 
 /**
  * The difference between the timestamp of history items
  */
 export const historyItemsInterval = 1000;
+
+/**
+ * A param serving as the context param for notification check objects
+ */
+class DummyParam extends AbstractHealthCheckParam {
+  getId = () => 'dummy-param';
+  getTitle = async () => 'Dummy Param';
+  getDescription = async () => 'This is a dummy param';
+  updateStatus = () => {};
+  getHealthStatus = async () => HealthStatusLevel.HEALTHY;
+  getDetails = async () => undefined;
+}
+
+/**
+ * Create a `NotificationCheckContext` with the provided history and a dummy
+ * param
+ * @param history
+ * @returns
+ */
+export const withDummyParam = (
+  history: ParamHistory,
+): NotificationCheckContext => ({
+  history,
+  param: new DummyParam(),
+});
 
 /**
  * generate history items based on the provided status and an optional tag

@@ -7,6 +7,7 @@ import {
   historyItemsInterval,
   notifiedRecentlyUnknownHistory,
   recentlyUnknownHistory,
+  withDummyParam,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -27,7 +28,9 @@ describe('createHasBeenUnknownForAWhile', () => {
     it('should return false if the very recent item is not unknown', () => {
       const HasBeenUnknownForAWhile =
         createHasBeenUnknownForAWhile(smallWindowDuration);
-      expect(HasBeenUnknownForAWhile.check(brokenHistory)).toEqual(false);
+      expect(
+        HasBeenUnknownForAWhile.check.call(withDummyParam(brokenHistory)),
+      ).toEqual(false);
     });
 
     /**
@@ -43,9 +46,11 @@ describe('createHasBeenUnknownForAWhile', () => {
     it('should return false if unknown window is not long enough', () => {
       const HasBeenUnknownForAWhile =
         createHasBeenUnknownForAWhile(largeWindowDuration);
-      expect(HasBeenUnknownForAWhile.check(recentlyUnknownHistory)).toEqual(
-        false,
-      );
+      expect(
+        HasBeenUnknownForAWhile.check.call(
+          withDummyParam(recentlyUnknownHistory),
+        ),
+      ).toEqual(false);
     });
 
     /**
@@ -61,9 +66,11 @@ describe('createHasBeenUnknownForAWhile', () => {
     it('should return true if unknown window is long enough', () => {
       const HasBeenUnknownForAWhile =
         createHasBeenUnknownForAWhile(smallWindowDuration);
-      expect(HasBeenUnknownForAWhile.check(recentlyUnknownHistory)).toEqual(
-        true,
-      );
+      expect(
+        HasBeenUnknownForAWhile.check.call(
+          withDummyParam(recentlyUnknownHistory),
+        ),
+      ).toEqual(true);
     });
 
     /**
@@ -81,7 +88,9 @@ describe('createHasBeenUnknownForAWhile', () => {
       const HasBeenUnknownForAWhile =
         createHasBeenUnknownForAWhile(smallWindowDuration);
       expect(
-        HasBeenUnknownForAWhile.check(notifiedRecentlyUnknownHistory),
+        HasBeenUnknownForAWhile.check.call(
+          withDummyParam(notifiedRecentlyUnknownHistory),
+        ),
       ).toEqual(false);
     });
   });
