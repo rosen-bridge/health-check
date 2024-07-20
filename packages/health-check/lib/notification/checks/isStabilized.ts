@@ -33,7 +33,7 @@ const IsStabilized: NotificationCheck = {
       lastNotified?.result !== HealthStatusLevel.HEALTHY
     );
   },
-  severity: 'success',
+  getSeverity: () => 'success',
   getTitle: async (param) => `Now Healthy: ${await param.getTitle()}`,
   getDescription: async () =>
     'The parameter that was not healthy recently returned to healthy state',

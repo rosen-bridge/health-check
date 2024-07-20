@@ -54,7 +54,7 @@ const createHasBeenUnknownForAWhile: (
 
     return timeDifference > windowDuration;
   },
-  severity: 'error',
+  getSeverity: () => 'error',
   getTitle: async (param) => `Unknown For A While: ${await param.getTitle()}`,
   getDescription: async (param) =>
     param.getLastTrialErrorMessage() ??

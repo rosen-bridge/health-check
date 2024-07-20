@@ -8,7 +8,7 @@ export interface NotificationCheck {
   /**
    * notifications of this check will be sent with this severity
    */
-  severity: NotificationSeverity;
+  getSeverity: (history: ParamHistory) => NotificationSeverity;
   /**
    * check if a notification should be sent based on the history
    * @param history

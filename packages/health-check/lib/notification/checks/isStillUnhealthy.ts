@@ -32,7 +32,7 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck = (
 
     return timeDifference > windowDuration;
   },
-  severity: 'warning',
+  getSeverity: () => 'warning',
   getTitle: async (param) => `Is Still Unhealthy: ${await param.getTitle()}`,
   getDescription: async () =>
     'The previous issue for this param is not resolved yet',

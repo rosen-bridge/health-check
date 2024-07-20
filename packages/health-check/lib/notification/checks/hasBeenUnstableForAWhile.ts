@@ -71,7 +71,7 @@ const createHasBeenUnstableForAWhile: (
 
     return timeDifference > windowDuration;
   }),
-  severity: 'warning',
+  getSeverity: () => 'warning',
   getTitle: async (param) => `Unstable For A While: ${await param.getTitle()}`,
   getDescription: async (param) =>
     (await param.getDetails()) ??

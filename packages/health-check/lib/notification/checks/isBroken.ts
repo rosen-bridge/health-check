@@ -10,7 +10,7 @@ import { NotificationCheck } from '../types';
  */
 const IsBroken: NotificationCheck = {
   id: 'is-broken',
-  check: withoutUnknowns((history) => {
+  check: withoutUnknowns(function (history) {
     return (
       history.at(-1)?.result === HealthStatusLevel.BROKEN &&
       /**
@@ -22,7 +22,7 @@ const IsBroken: NotificationCheck = {
       history.at(-2)?.result !== HealthStatusLevel.BROKEN
     );
   }),
-  severity: 'error',
+  getSeverity: () => 'error',
   getTitle: async (param) => `Broken: ${await param.getTitle()}`,
   getDescription: async (param) =>
     (await param.getDetails()) ?? 'The reason for the broken state is unknown',

@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
+import {
+  NotificationSeverity,
+  NotifyWithSeverity,
+} from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from '../../lib';
 import NotificationManager from '../../lib/notification/notificationManager';
@@ -9,7 +12,7 @@ const trueCheckTitle = 'Always true title';
 const trueCheckDescription = 'Always true description';
 const falseCheckTitle = 'Always false title';
 const falseCheckDescription = 'Always false description';
-const checkSeverity = 'info';
+const checkSeverity = () => 'info' as NotificationSeverity;
 
 /**
  * create an instance of NotificationManager and register two checks to it
@@ -32,14 +35,14 @@ const createFixture = ({
     check: () => true,
     getTitle: async () => trueCheckTitle,
     getDescription: async () => trueCheckDescription,
-    severity: checkSeverity,
+    getSeverity: checkSeverity,
   });
   notificationManager.registerCheck({
     id: 'always-false',
     check: () => false,
     getTitle: async () => falseCheckTitle,
     getDescription: async () => falseCheckDescription,
-    severity: checkSeverity,
+    getSeverity: checkSeverity,
   });
 
   return notificationManager;
@@ -68,7 +71,7 @@ describe('NotificationManager', () => {
 
       expect(notify).toHaveBeenCalledOnce();
       expect(notify).toBeCalledWith(
-        checkSeverity,
+        checkSeverity(),
         trueCheckTitle,
         trueCheckDescription,
       );
