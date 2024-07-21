@@ -1,3 +1,4 @@
+import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 import { day, HistoryItemTag } from '../../constants';
 
 import { HealthStatusLevel } from '../../interfaces';
@@ -33,13 +34,31 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck = (
     return timeDifference > windowDuration;
   },
   getSeverity() {
-    return 'warning';
+    const lastNotified = this.history.findLast(
+      (historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED,
+    );
+    const notifyArgs = lastNotified?.tag
+      ?.data as Parameters<NotifyWithSeverity>;
+
+    return notifyArgs[0];
   },
   async getTitle() {
-    return `Is Still Unhealthy: ${await this.param.getTitle()}`;
+    const lastNotified = this.history.findLast(
+      (historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED,
+    );
+    const notifyArgs = lastNotified?.tag
+      ?.data as Parameters<NotifyWithSeverity>;
+
+    return notifyArgs[1];
   },
   async getDescription() {
-    return 'The previous issue for this param is not resolved yet';
+    const lastNotified = this.history.findLast(
+      (historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED,
+    );
+    const notifyArgs = lastNotified?.tag
+      ?.data as Parameters<NotifyWithSeverity>;
+
+    return notifyArgs[2];
   },
 });
 

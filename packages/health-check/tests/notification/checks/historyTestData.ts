@@ -39,6 +39,10 @@ export const withDummyParam = (
   param: new DummyParam(),
 });
 
+export const notificationSeverity = HealthStatusLevel.UNSTABLE;
+export const notificationTitle = 'Notification Title';
+export const notificationDescription = 'Notification Description';
+
 /**
  * generate history items based on the provided status and an optional tag
  */
@@ -54,7 +58,16 @@ function* createHistoryItem(): Generator<
     const input: { status: ErrorProneHealthStatusLevel; tag?: true } = yield {
       result: status,
       timestamp: timestamp,
-      ...(tag && { tag: { id: HistoryItemTag.NOTIFIED } }),
+      ...(tag && {
+        tag: {
+          id: HistoryItemTag.NOTIFIED,
+          data: [
+            notificationSeverity,
+            notificationTitle,
+            notificationDescription,
+          ],
+        },
+      }),
     };
     if (!input) return;
 

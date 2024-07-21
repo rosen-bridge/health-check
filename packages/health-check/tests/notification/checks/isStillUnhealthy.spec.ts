@@ -8,6 +8,9 @@ import {
   notNotifiedStabilizedHistory,
   taggedBrokenHistory,
   withDummyParam,
+  notificationSeverity,
+  notificationTitle,
+  notificationDescription,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -99,6 +102,63 @@ describe('createIsStillUnhealthy', () => {
       expect(
         IsStillUnhealthy.check.call(withDummyParam(taggedBrokenHistory)),
       ).toEqual(true);
+    });
+  });
+
+  describe('getSeverity', () => {
+    it('should get severity from the last tagged item', () => {
+      /**
+       * @target `getSeverity` should get severity from the last tagged item
+       * @dependencies
+       * @scenario
+       * - call `getSeverity` with a history whose last tagged item includes
+       * unstable severity
+       * @expected
+       * - return value should be unstable
+       */
+      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
+      expect(
+        IsStillUnhealthy.getSeverity.call(withDummyParam(taggedBrokenHistory)),
+      ).toEqual(notificationSeverity);
+    });
+  });
+
+  describe('getTitle', () => {
+    it('should get title from the last tagged item', async () => {
+      /**
+       * @target `getTitle` should get title from the last tagged item
+       * @dependencies
+       * @scenario
+       * - call `getSeverity`
+       * @expected
+       * - return value should be valid title
+       */
+      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
+      expect(
+        await IsStillUnhealthy.getTitle.call(
+          withDummyParam(taggedBrokenHistory),
+        ),
+      ).toEqual(notificationTitle);
+    });
+  });
+
+  describe('getDescription', () => {
+    it('should get description from the last tagged item', async () => {
+      /**
+       * @target `getDescription` should get description from the last tagged
+       * item
+       * @dependencies
+       * @scenario
+       * - call `getSeverity`
+       * @expected
+       * - return value should be valid description
+       */
+      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
+      expect(
+        await IsStillUnhealthy.getDescription.call(
+          withDummyParam(taggedBrokenHistory),
+        ),
+      ).toEqual(notificationDescription);
     });
   });
 });
