@@ -31,6 +31,7 @@ const createFixture = ({
   );
 
   notificationManager.registerCheck({
+    [Symbol.toStringTag]: 'AlwaysTrueCheck',
     id: 'always-true',
     check: () => true,
     getTitle: async () => trueCheckTitle,
@@ -38,6 +39,7 @@ const createFixture = ({
     getSeverity: checkSeverity,
   });
   notificationManager.registerCheck({
+    [Symbol.toStringTag]: 'AlwaysFalseCheck',
     id: 'always-false',
     check: () => false,
     getTitle: async () => falseCheckTitle,

@@ -12,6 +12,7 @@ export interface NotificationCheckContext {
 }
 
 export interface NotificationCheck {
+  [Symbol.toStringTag]: string;
   id: string;
   /**
    * notifications of this check will be sent with this severity

@@ -14,6 +14,7 @@ const DEFAULT_WINDOW_DURATION = 15 * minute;
 const createHasBeenUnstableForAWhile: (
   windowDuration?: number,
 ) => NotificationCheck = (windowDuration = DEFAULT_WINDOW_DURATION) => ({
+  [Symbol.toStringTag]: 'HasBeenUnstableForAWhile',
   id: 'has-been-unstable-for-a-while',
   check() {
     const history = rejectUnknowns(this.history);

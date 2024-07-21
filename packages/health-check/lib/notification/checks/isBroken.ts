@@ -9,6 +9,7 @@ import { NotificationCheck } from '../types';
  * check if a param is broken just now (that is, wasn't broken before recently)
  */
 const IsBroken: NotificationCheck = {
+  [Symbol.toStringTag]: 'IsBroken',
   id: 'is-broken',
   check() {
     const history = rejectUnknowns(this.history);

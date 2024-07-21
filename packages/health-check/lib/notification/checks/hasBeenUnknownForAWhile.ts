@@ -11,6 +11,7 @@ const DEFAULT_WINDOW_DURATION = 15 * minute;
 const createHasBeenUnknownForAWhile: (
   windowDuration?: number,
 ) => NotificationCheck = (windowDuration = DEFAULT_WINDOW_DURATION) => ({
+  [Symbol.toStringTag]: 'HasBeenUnknownForAWhile',
   id: 'has-been-unknown-for-a-while',
   check() {
     const recentHistoryItem = this.history.at(-1);

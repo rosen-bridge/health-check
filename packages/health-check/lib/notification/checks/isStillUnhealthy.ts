@@ -14,6 +14,7 @@ const DEFAULT_WINDOW_DURATION = 1 * day;
 const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck = (
   windowDuration = DEFAULT_WINDOW_DURATION,
 ) => ({
+  [Symbol.toStringTag]: 'IsStillUnhealthy',
   id: 'is-still-unhealthy',
   check() {
     const lastNotified = this.history.findLast(

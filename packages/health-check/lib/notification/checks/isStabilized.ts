@@ -9,6 +9,7 @@ import { NotificationCheck } from '../types';
  * check if a param that was unstable or broken is now healthy
  */
 const IsStabilized: NotificationCheck = {
+  [Symbol.toStringTag]: 'IsStabilized',
   id: 'is-stabilized',
   check() {
     const lastNotified = this.history.findLast(
