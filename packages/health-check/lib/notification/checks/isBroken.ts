@@ -6,7 +6,7 @@ import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
 
 /**
- * check if a param is broken just now (that is, wasn't broken before recently)
+ * check if a param has become broken
  */
 const IsBroken: NotificationCheck = {
   [Symbol.toStringTag]: 'IsBroken',

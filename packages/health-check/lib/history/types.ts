@@ -1,8 +1,8 @@
 import { HealthStatusLevel } from '../interfaces';
 
 /**
- * an enhanced `HealthStatusLevel` that can also be 'unknown' when status update
- * fails
+ * an enhanced {@link HealthStatusLevel} that can also be 'unknown' when status
+ * update fails
  */
 export type ErrorProneHealthStatusLevel = HealthStatusLevel | 'unknown';
 export interface ParamHistoryItemTag {
