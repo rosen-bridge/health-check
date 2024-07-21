@@ -1,5 +1,5 @@
 {
-  "name": "tx-progress-check",
+  "name": "@rosen-bridge/tx-progress-check",
   "version": "0.1.0",
   "description": "Rosen bridge tx-progress health-check parameter",
   "repository": "",

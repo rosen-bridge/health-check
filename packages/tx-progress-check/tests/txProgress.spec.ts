@@ -25,14 +25,14 @@ describe('TxProgressHealthCheckParam', () => {
      * @expected
      * - The status should be HEALTHY
      */
-    it('should return HEALTHY when token amount is more than warning threshold', async () => {
+    it('should return HEALTHY when there is no sign failed transaction', async () => {
       txProgressHealthCheckParam['txWithMaxSigningFailure'] = undefined;
       const status = await txProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.HEALTHY);
     });
 
     /**
-     * @target TxProgressHealthCheckParam.getHealthStatus Should return UNSTABLE
+     * @target TxProgressHealthCheckParam.getHealthStatus should return UNSTABLE
      * when transaction signing failure attempts is more than warn threshold
      * @dependencies
      * @scenario
@@ -41,15 +41,15 @@ describe('TxProgressHealthCheckParam', () => {
      * @expected
      * - The status should be UNSTABLE
      */
-    it(`TxProgressHealthCheckParam.getHealthStatus Should return UNSTABLE when 
-    transaction signing failure attempts is more than warn threshold `, async () => {
+    it(`should return UNSTABLE when transaction signing failure attempts is more
+    than warn threshold `, async () => {
       txProgressHealthCheckParam['txWithMaxSigningFailure'] = signFailedTxs[0];
       const status = await txProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.UNSTABLE);
     });
 
     /**
-     * @target TxProgressHealthCheckParam.getHealthStatus Should return UNSTABLE
+     * @target TxProgressHealthCheckParam.getHealthStatus should return UNSTABLE
      * when transaction signing failure attempts is more than critical threshold
      * @dependencies
      * @scenario
@@ -58,8 +58,8 @@ describe('TxProgressHealthCheckParam', () => {
      * @expected
      * - The status should be BROKEN
      */
-    it(`TxProgressHealthCheckParam.getHealthStatus Should return BROKEN when 
-    transaction signing failure attempts is more than critical threshold `, async () => {
+    it(`should return BROKEN when transaction signing failure attempts is more
+    than critical threshold `, async () => {
       txProgressHealthCheckParam['txWithMaxSigningFailure'] = signFailedTxs[6];
       const status = await txProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.BROKEN);
@@ -78,7 +78,7 @@ describe('TxProgressHealthCheckParam', () => {
      * - should set stuckTransactions to an empty array
      * - should set txWithMaxSigningFailure to undefined
      */
-    it('should update stuck transactions to an empty array', () => {
+    it('should update stuck transaction list to an empty array', () => {
       const txProgressHealthCheckParam = new TxProgressHealthCheckParam(
         () => healthyTxs,
         5,

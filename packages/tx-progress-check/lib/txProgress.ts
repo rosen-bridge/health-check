@@ -88,9 +88,9 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
       `The transaction with the highest number of failed signing attempt is ` +
       `${this.txWithMaxSigningFailure.txId}. It's a ` +
       `${this.txWithMaxSigningFailure.txType} txn on ` +
-      `${this.txWithMaxSigningFailure.chain} chain` +
+      `${this.txWithMaxSigningFailure.chain} chain ` +
       eventInfo +
-      ` which failed to sign after ` +
+      `which failed to sign after ` +
       `${this.txWithMaxSigningFailure.signFailedCount} attempts.`
     );
   };
