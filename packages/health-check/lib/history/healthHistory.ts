@@ -5,6 +5,7 @@ import {
   History,
   ParamHistoryItem,
   ParamId,
+  ParamHistoryItemTag,
 } from './types';
 
 export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10 * second;
@@ -109,14 +110,14 @@ class HealthHistory {
 
   /**
    * set a tag for a param's history tail (that is, the most recent item), which
-   * can contain any metadata (e.g. for checking if the status update caused a
+   * can contain any data (e.g. for checking if the status update caused a
    * notification to be sent)
    *
    * note that setting a tag doesn't trigger onUpdate
    * @param param
    * @param tag
    */
-  setTag = (param: string, tag: string) => {
+  setTag = (param: string, tag: ParamHistoryItemTag) => {
     if (this.history[param]?.at(-1)) {
       this.history[param].at(-1)!.tag = tag;
     }

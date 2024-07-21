@@ -16,7 +16,7 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck = (
   id: 'is-still-unhealthy',
   check() {
     const lastNotified = this.history.findLast(
-      (historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED,
+      (historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED,
     );
     const recentHistoryItem = this.history.at(-1);
 

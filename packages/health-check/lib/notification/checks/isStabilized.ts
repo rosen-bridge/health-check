@@ -12,7 +12,7 @@ const IsStabilized: NotificationCheck = {
   id: 'is-stabilized',
   check() {
     const lastNotified = this.history.findLast(
-      (historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED,
+      (historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED,
     );
     /**
      * Based on the status of last notified item, we may or may not need to

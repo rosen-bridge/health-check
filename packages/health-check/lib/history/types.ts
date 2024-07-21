@@ -5,10 +5,14 @@ import { HealthStatusLevel } from '../interfaces';
  * fails
  */
 export type ErrorProneHealthStatusLevel = HealthStatusLevel | 'unknown';
+export interface ParamHistoryItemTag {
+  id: string;
+  data?: unknown;
+}
 export interface ParamHistoryItem {
   timestamp: EpochTimeStamp;
   result: ErrorProneHealthStatusLevel;
-  tag?: string;
+  tag?: ParamHistoryItemTag;
 }
 export type ParamHistory = ParamHistoryItem[];
 export type ParamId = string;

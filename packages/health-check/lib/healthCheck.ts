@@ -38,8 +38,11 @@ export class HealthCheck {
 
     this.healthHistory = healthHistory;
 
-    notificationManager.onNotified((param) =>
-      healthHistory.setTag(param, HistoryItemTag.NOTIFIED),
+    notificationManager.onNotified((param, notifyArgs) =>
+      healthHistory.setTag(param, {
+        id: HistoryItemTag.NOTIFIED,
+        data: notifyArgs,
+      }),
     );
     this.registerNotificationManagerChecks(
       notificationManager,

@@ -45,7 +45,7 @@ const createHasBeenUnknownForAWhile: (
     if (
       this.history
         .slice(unknownTimeWindowStartItemIndex)
-        .some((historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED)
+        .some((historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED)
     ) {
       return false;
     }

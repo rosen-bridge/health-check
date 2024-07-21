@@ -49,7 +49,7 @@ const createHasBeenUnstableForAWhile: (
     if (
       history
         .slice(unstableTimeWindowStartItemIndex)
-        .some((historyItem) => historyItem.tag === HistoryItemTag.NOTIFIED)
+        .some((historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED)
     ) {
       return false;
     }

@@ -78,12 +78,13 @@ class NotificationManager {
 
     await Promise.all(
       eligibleNotificationChecks.map(async (notificationCheck) => {
-        await this.notify(
+        const notifyArgs = [
           notificationCheck.getSeverity(),
           await notificationCheck.getTitle(),
           await notificationCheck.getDescription(),
-        );
-        await this.notifiedHandler(paramId);
+        ] as const;
+        await this.notify(...notifyArgs);
+        await this.notifiedHandler(paramId, notifyArgs);
       }),
     );
   };

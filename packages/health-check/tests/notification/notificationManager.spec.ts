@@ -99,7 +99,11 @@ describe('NotificationManager', () => {
       ]);
 
       expect(notifiedHandler).toHaveBeenCalledOnce();
-      expect(notifiedHandler).toBeCalledWith(paramName);
+      expect(notifiedHandler).toBeCalledWith(paramName, [
+        checkSeverity(),
+        trueCheckTitle,
+        trueCheckDescription,
+      ]);
     });
   });
 });

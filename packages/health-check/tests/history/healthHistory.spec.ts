@@ -97,7 +97,7 @@ describe('HealthHistory', () => {
     it('should set tag to the history head of a param', () => {
       const timestamp1 = 12345;
       const timestamp2 = 67890;
-      const tag = 'hello world';
+      const tag = { id: 'hello world' };
       const healthHistory = new HealthHistory();
 
       healthHistory.updateHistoryForParam(param, {

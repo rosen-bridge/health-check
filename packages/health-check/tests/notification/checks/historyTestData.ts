@@ -54,7 +54,7 @@ function* createHistoryItem(): Generator<
     const input: { status: ErrorProneHealthStatusLevel; tag?: true } = yield {
       result: status,
       timestamp: timestamp,
-      ...(tag && { tag: HistoryItemTag.NOTIFIED }),
+      ...(tag && { tag: { id: HistoryItemTag.NOTIFIED } }),
     };
     if (!input) return;
 

@@ -1,4 +1,7 @@
-import { NotificationSeverity } from '@rosen-bridge/abstract-notification';
+import {
+  NotificationSeverity,
+  NotifyWithSeverity,
+} from '@rosen-bridge/abstract-notification';
 
 import { ParamHistory, ParamId } from '../history/types';
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
@@ -33,4 +36,8 @@ export interface NotificationCheck {
 
 export type HealthNotificationManagerNotifiedHandler = (
   param: ParamId,
+  /**
+   * the arguments that were passed to `notify`
+   */
+  notifyArgs: Readonly<Parameters<NotifyWithSeverity>>,
 ) => unknown;

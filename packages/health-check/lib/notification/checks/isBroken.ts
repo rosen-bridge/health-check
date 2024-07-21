@@ -19,7 +19,7 @@ const IsBroken: NotificationCheck = {
        * healthy -> broken -> unknown
        * we have already sent a notification, and we shouldn't repeat it
        */
-      history.at(-1)?.tag !== HistoryItemTag.NOTIFIED &&
+      history.at(-1)?.tag?.id !== HistoryItemTag.NOTIFIED &&
       history.at(-2)?.result !== HealthStatusLevel.BROKEN
     );
   },
