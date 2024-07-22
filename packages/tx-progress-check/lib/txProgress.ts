@@ -79,9 +79,11 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
   getDetails = async (): Promise<string | undefined> => {
     if (!this.txWithMaxSigningFailure) return undefined;
     const { failureAttempts, signFailedTxCount } = this.getFailureAttempts()!;
-    const eventInfo = this.txWithMaxSigningFailure.eventId
-      ? `related to event ${this.txWithMaxSigningFailure.eventId} `
-      : '';
+    const eventInfo =
+      this.txWithMaxSigningFailure.eventId &&
+      this.txWithMaxSigningFailure.txType in ['payment', 'reward']
+        ? `related to event ${this.txWithMaxSigningFailure.eventId} `
+        : '';
     return (
       `Service is not working correctly because ${signFailedTxCount} ` +
       `transactions failed in sign more than ${failureAttempts} times.` +
