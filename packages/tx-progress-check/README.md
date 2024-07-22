@@ -1,4 +1,4 @@
-# tx-progress-check
+# @rosen-bridge/tx-progress-check
 
 ## Table of contents
 
