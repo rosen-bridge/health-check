@@ -42,7 +42,11 @@ class NotificationManager {
    * @param updateHandler
    */
   onNotified = (notifiedHandler: HealthNotificationManagerNotifiedHandler) => {
-    this.notifiedHandler = notifiedHandler;
+    const currentHandler = this.notifiedHandler;
+    this.notifiedHandler = async (param, paramHistory) => {
+      currentHandler?.(param, paramHistory);
+      notifiedHandler(param, paramHistory);
+    };
   };
 
   /**

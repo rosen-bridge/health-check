@@ -108,4 +108,31 @@ describe('NotificationManager', () => {
       ]);
     });
   });
+
+  describe('onNotified', () => {
+    /**
+     * @target `onNotified` should call all of the notified handlers
+     * @dependencies
+     * @scenario
+     * - create an instance of notification manager
+     * - register two additional notified handlers
+     * - call `sendNotification`
+     * @expected
+     * - both notified handlers should get called
+     */
+    it('should call all of the update handlers', async () => {
+      const notifiedHandler1 = vi.fn();
+      const notifiedHandler2 = vi.fn();
+      const notificationManager = createFixture();
+      notificationManager.onNotified(notifiedHandler1);
+      notificationManager.onNotified(notifiedHandler2);
+
+      await notificationManager.sendNotifications('some-param', [
+        { result: 'unknown', timestamp: 123456 },
+      ]);
+
+      expect(notifiedHandler1).toHaveBeenCalledOnce();
+      expect(notifiedHandler2).toHaveBeenCalledOnce();
+    });
+  });
 });

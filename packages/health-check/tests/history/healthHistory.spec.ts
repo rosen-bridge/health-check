@@ -113,4 +113,34 @@ describe('HealthHistory', () => {
       expect(healthHistory.getHistory()[param].at(-1)!.tag).toBe(tag);
     });
   });
+
+  describe('onUpdate', () => {
+    /**
+     * @target `onUpdate` should call all of the update handlers
+     * @dependencies
+     * @scenario
+     * - create an instance of health history
+     * - register two updated handlers
+     * - update history
+     * @expected
+     * - both updated handlers should get called
+     */
+    it('should call all of the update handlers', async () => {
+      const updateHandler1 = vi.fn();
+      const updateHandler2 = vi.fn();
+      const healthHistory = new HealthHistory({
+        updateHandler: updateHandler1,
+      });
+      healthHistory.onUpdate(updateHandler2);
+
+      const timestamp1 = 12345;
+      healthHistory.updateHistoryForParam(param, {
+        result: 'unknown',
+        timestamp: timestamp1,
+      });
+
+      expect(updateHandler1).toHaveBeenCalledOnce();
+      expect(updateHandler2).toHaveBeenCalledOnce();
+    });
+  });
 });

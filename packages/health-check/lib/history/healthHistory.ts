@@ -73,7 +73,11 @@ class HealthHistory {
    * @param updateHandler
    */
   onUpdate = (updateHandler: HealthHistoryUpdateHandler) => {
-    this.updateHandler = updateHandler;
+    const currentHandler = this.updateHandler;
+    this.updateHandler = async (param, paramHistory) => {
+      currentHandler?.(param, paramHistory);
+      updateHandler(param, paramHistory);
+    };
   };
 
   /**
