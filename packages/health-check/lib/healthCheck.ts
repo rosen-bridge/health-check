@@ -6,8 +6,8 @@ import NotificationManager from './notification/notificationManager';
 
 import createHasBeenUnknownForAWhile from './notification/checks/hasBeenUnknownForAWhile';
 import createHasBeenUnstableForAWhile from './notification/checks/hasBeenUnstableForAWhile';
-import IsBroken from './notification/checks/isBroken';
-import IsStabilized from './notification/checks/isStabilized';
+import isBroken from './notification/checks/isBroken';
+import isStabilized from './notification/checks/isStabilized';
 import createIsStillUnhealthy from './notification/checks/isStillUnhealthy';
 
 import { HistoryItemTag } from './constants';
@@ -59,20 +59,20 @@ export class HealthCheck {
     notificationManager: NotificationManager,
     notificationCheckConfig: HealthCheckHistoryConfig['notificationCheckConfig'],
   ) => {
-    const HasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
+    const hasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
       notificationCheckConfig?.hasBeenUnknownForAWhile?.windowDuration,
     );
-    notificationManager.registerCheck(HasBeenUnknownForAWhile);
-    const HasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+    notificationManager.registerCheck(hasBeenUnknownForAWhile);
+    const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
       notificationCheckConfig?.hasBeenUnstableForAWhile?.windowDuration,
     );
-    notificationManager.registerCheck(HasBeenUnstableForAWhile);
-    notificationManager.registerCheck(IsBroken);
-    notificationManager.registerCheck(IsStabilized);
-    const IsStillUnhealthy = createIsStillUnhealthy(
+    notificationManager.registerCheck(hasBeenUnstableForAWhile);
+    notificationManager.registerCheck(isBroken);
+    notificationManager.registerCheck(isStabilized);
+    const isStillUnhealthy = createIsStillUnhealthy(
       notificationCheckConfig?.isStillUnhealthy?.windowDuration,
     );
-    notificationManager.registerCheck(IsStillUnhealthy);
+    notificationManager.registerCheck(isStillUnhealthy);
   };
 
   /**

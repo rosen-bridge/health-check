@@ -2,8 +2,6 @@ import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
 
-import createCheck from './checks/createCheck';
-
 import {
   HealthNotificationManagerNotifiedHandler,
   NotificationCheck,
@@ -16,7 +14,7 @@ import { ParamHistory, ParamId } from '../history/types';
  * of notifications are sent for passed checks.
  */
 class NotificationManager {
-  private NotificationChecks: NotificationCheck[] = [];
+  private notificationChecks: NotificationCheck[] = [];
   private notify: NotifyWithSeverity;
   private getParamById: (id: ParamId) => AbstractHealthCheckParam | undefined;
   private notifiedHandler: HealthNotificationManagerNotifiedHandler;
@@ -52,7 +50,7 @@ class NotificationManager {
    * @param notificationCheck
    */
   registerCheck = (notificationCheck: NotificationCheck) => {
-    this.NotificationChecks.push(notificationCheck);
+    this.notificationChecks.push(notificationCheck);
   };
 
   /**
@@ -64,15 +62,11 @@ class NotificationManager {
     const param = this.getParamById(paramId);
     if (!param) return;
 
-    const context = {
-      param,
-      history: paramHistory,
-    };
-    const notificationChecks = this.NotificationChecks.map(
-      (NotificationCheck) => createCheck(NotificationCheck, context),
+    const notificationCheckResults = this.notificationChecks.map(
+      (notificationCheck) => notificationCheck(param, paramHistory),
     );
 
-    const eligibleNotificationChecks = notificationChecks.filter(
+    const eligibleNotificationChecks = notificationCheckResults.filter(
       (notificationCheck) => notificationCheck.check(),
     );
 

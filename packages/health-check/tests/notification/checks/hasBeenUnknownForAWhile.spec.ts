@@ -4,10 +4,10 @@ import createHasBeenUnknownForAWhile from '../../../lib/notification/checks/hasB
 
 import {
   brokenHistory,
+  dummyParam,
   historyItemsInterval,
   notifiedRecentlyUnknownHistory,
   recentlyUnknownHistory,
-  withDummyParam,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -26,11 +26,10 @@ describe('createHasBeenUnknownForAWhile', () => {
      * - return value should be false
      */
     it('should return false if the very recent item is not unknown', () => {
-      const HasBeenUnknownForAWhile =
-        createHasBeenUnknownForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnknownForAWhile.check.call(withDummyParam(brokenHistory)),
-      ).toEqual(false);
+      const hasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
+        smallWindowDuration,
+      )(dummyParam, brokenHistory);
+      expect(hasBeenUnknownForAWhile.check()).toEqual(false);
     });
 
     /**
@@ -44,13 +43,10 @@ describe('createHasBeenUnknownForAWhile', () => {
      * - return value should be false
      */
     it('should return false if unknown window is not long enough', () => {
-      const HasBeenUnknownForAWhile =
-        createHasBeenUnknownForAWhile(largeWindowDuration);
-      expect(
-        HasBeenUnknownForAWhile.check.call(
-          withDummyParam(recentlyUnknownHistory),
-        ),
-      ).toEqual(false);
+      const hasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
+        largeWindowDuration,
+      )(dummyParam, recentlyUnknownHistory);
+      expect(hasBeenUnknownForAWhile.check()).toEqual(false);
     });
 
     /**
@@ -64,13 +60,10 @@ describe('createHasBeenUnknownForAWhile', () => {
      * - return value should be true
      */
     it('should return true if unknown window is long enough', () => {
-      const HasBeenUnknownForAWhile =
-        createHasBeenUnknownForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnknownForAWhile.check.call(
-          withDummyParam(recentlyUnknownHistory),
-        ),
-      ).toEqual(true);
+      const hasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
+        smallWindowDuration,
+      )(dummyParam, recentlyUnknownHistory);
+      expect(hasBeenUnknownForAWhile.check()).toEqual(true);
     });
 
     /**
@@ -85,13 +78,10 @@ describe('createHasBeenUnknownForAWhile', () => {
      * - return value should be true
      */
     it('should not return true if an event history in the window is already notified', () => {
-      const HasBeenUnknownForAWhile =
-        createHasBeenUnknownForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnknownForAWhile.check.call(
-          withDummyParam(notifiedRecentlyUnknownHistory),
-        ),
-      ).toEqual(false);
+      const hasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
+        smallWindowDuration,
+      )(dummyParam, notifiedRecentlyUnknownHistory);
+      expect(hasBeenUnknownForAWhile.check()).toEqual(false);
     });
   });
 });

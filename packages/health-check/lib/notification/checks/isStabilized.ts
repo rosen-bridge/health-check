@@ -8,11 +8,11 @@ import { NotificationCheck } from '../types';
 /**
  * check if a param that was unstable or broken is now healthy
  */
-const IsStabilized: NotificationCheck = {
+const isStabilized: NotificationCheck = (param, history) => ({
   [Symbol.toStringTag]: 'IsStabilized',
   id: 'is-stabilized',
   check() {
-    const lastNotified = this.history.findLast(
+    const lastNotified = history.findLast(
       (historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED,
     );
     /**
@@ -21,12 +21,12 @@ const IsStabilized: NotificationCheck = {
      */
     if (lastNotified?.result === 'unknown') {
       return (
-        this.history.at(-1)?.result === HealthStatusLevel.HEALTHY &&
-        this.history.at(-2)?.result !== HealthStatusLevel.HEALTHY
+        history.at(-1)?.result === HealthStatusLevel.HEALTHY &&
+        history.at(-2)?.result !== HealthStatusLevel.HEALTHY
       );
     }
 
-    const historyWithoutUnknowns = rejectUnknowns(this.history);
+    const historyWithoutUnknowns = rejectUnknowns(history);
     return (
       historyWithoutUnknowns.at(-1)?.result === HealthStatusLevel.HEALTHY &&
       historyWithoutUnknowns.at(-2)?.result !== HealthStatusLevel.HEALTHY &&
@@ -38,11 +38,11 @@ const IsStabilized: NotificationCheck = {
     return 'success';
   },
   async getTitle() {
-    return `Now Healthy: ${await this.param.getTitle()}`;
+    return `Now Healthy: ${await param.getTitle()}`;
   },
   async getDescription() {
     return 'Returned to healthy state';
   },
-};
+});
 
-export default IsStabilized;
+export default isStabilized;

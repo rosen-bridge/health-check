@@ -30,22 +30,22 @@ const createFixture = ({
     notifiedHandler,
   );
 
-  notificationManager.registerCheck({
+  notificationManager.registerCheck(() => ({
     [Symbol.toStringTag]: 'AlwaysTrueCheck',
     id: 'always-true',
     check: () => true,
     getTitle: async () => trueCheckTitle,
     getDescription: async () => trueCheckDescription,
     getSeverity: checkSeverity,
-  });
-  notificationManager.registerCheck({
+  }));
+  notificationManager.registerCheck(() => ({
     [Symbol.toStringTag]: 'AlwaysFalseCheck',
     id: 'always-false',
     check: () => false,
     getTitle: async () => falseCheckTitle,
     getDescription: async () => falseCheckDescription,
     getSeverity: checkSeverity,
-  });
+  }));
 
   return notificationManager;
 };

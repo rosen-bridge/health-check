@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import IsStabilized from '../../../lib/notification/checks/isStabilized';
+import isStabilized from '../../../lib/notification/checks/isStabilized';
 
 import {
   alreadyStabilizedHistory,
@@ -9,7 +9,7 @@ import {
   stabilizedHistory,
   unknownStabilizedHistory,
   alreadyStabilizedHistoryWithUnknownItems,
-  withDummyParam,
+  dummyParam,
 } from './historyTestData';
 
 describe('IsStabilized', () => {
@@ -25,9 +25,7 @@ describe('IsStabilized', () => {
      * - return value should be true
      */
     it('should return true if param stabilized after an unhealthy notification', () => {
-      expect(
-        IsStabilized.check.call(withDummyParam(stabilizedHistory)),
-      ).toEqual(true);
+      expect(isStabilized(dummyParam, stabilizedHistory).check()).toEqual(true);
     });
 
     /**
@@ -44,7 +42,7 @@ describe('IsStabilized', () => {
      */
     it('should return true if param stabilized after an unknown notification', () => {
       expect(
-        IsStabilized.check.call(withDummyParam(unknownStabilizedHistory)),
+        isStabilized(dummyParam, unknownStabilizedHistory).check(),
       ).toEqual(true);
     });
 
@@ -60,7 +58,7 @@ describe('IsStabilized', () => {
      */
     it('should return false if param stabilized after an unhealthy but not notified status', () => {
       expect(
-        IsStabilized.check.call(withDummyParam(notNotifiedStabilizedHistory)),
+        isStabilized(dummyParam, notNotifiedStabilizedHistory).check(),
       ).toEqual(false);
     });
 
@@ -74,7 +72,7 @@ describe('IsStabilized', () => {
      */
     it('should return false if the notification is already sent', () => {
       expect(
-        IsStabilized.check.call(withDummyParam(alreadyStabilizedHistory)),
+        isStabilized(dummyParam, alreadyStabilizedHistory).check(),
       ).toEqual(false);
     });
 
@@ -88,9 +86,7 @@ describe('IsStabilized', () => {
      * - return value should be false
      */
     it('should return false if last history item has unhealthy status', () => {
-      expect(IsStabilized.check.call(withDummyParam(brokenHistory))).toEqual(
-        false,
-      );
+      expect(isStabilized(dummyParam, brokenHistory).check()).toEqual(false);
     });
 
     /**
@@ -105,9 +101,10 @@ describe('IsStabilized', () => {
      */
     it('should ignore unknown history items if the last notified item is not unknown', () => {
       expect(
-        IsStabilized.check.call(
-          withDummyParam(alreadyStabilizedHistoryWithUnknownItems),
-        ),
+        isStabilized(
+          dummyParam,
+          alreadyStabilizedHistoryWithUnknownItems,
+        ).check(),
       ).toEqual(false);
     });
   });

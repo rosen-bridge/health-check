@@ -9,7 +9,7 @@ import {
   withLast,
   historyItemsInterval,
   notifiedRecentlyUnstableHistory,
-  withDummyParam,
+  dummyParam,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -28,11 +28,10 @@ describe('createHasBeenUnstableForAWhile', () => {
      * - return value should be false
      */
     it('should return false if the very recent item is not unstable but is known', () => {
-      const HasBeenUnstableForAWhile =
-        createHasBeenUnstableForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnstableForAWhile.check.call(withDummyParam(brokenHistory)),
-      ).toEqual(false);
+      const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+        smallWindowDuration,
+      )(dummyParam, brokenHistory);
+      expect(hasBeenUnstableForAWhile.check()).toEqual(false);
     });
 
     /**
@@ -46,13 +45,10 @@ describe('createHasBeenUnstableForAWhile', () => {
      * - return value should be true
      */
     it('should ignore the very recent unknown item', () => {
-      const HasBeenUnstableForAWhile =
-        createHasBeenUnstableForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnstableForAWhile.check.call(
-          withDummyParam(withLast('unknown', recentlyUnstableHistory)),
-        ),
-      ).toEqual(true);
+      const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+        smallWindowDuration,
+      )(dummyParam, withLast('unknown', recentlyUnstableHistory));
+      expect(hasBeenUnstableForAWhile.check()).toEqual(true);
     });
 
     /**
@@ -67,15 +63,10 @@ describe('createHasBeenUnstableForAWhile', () => {
      * - return value should be false
      */
     it('should return false if the status was broken before becoming unstable', () => {
-      const HasBeenUnstableForAWhile =
-        createHasBeenUnstableForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnstableForAWhile.check.call(
-          withDummyParam(
-            combineHistories(brokenHistory, recentlyUnstableHistory),
-          ),
-        ),
-      ).toEqual(false);
+      const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+        smallWindowDuration,
+      )(dummyParam, combineHistories(brokenHistory, recentlyUnstableHistory));
+      expect(hasBeenUnstableForAWhile.check()).toEqual(false);
     });
 
     /**
@@ -89,13 +80,10 @@ describe('createHasBeenUnstableForAWhile', () => {
      * - return value should be false
      */
     it('should return false if unstable window is not long enough', () => {
-      const HasBeenUnstableForAWhile =
-        createHasBeenUnstableForAWhile(largeWindowDuration);
-      expect(
-        HasBeenUnstableForAWhile.check.call(
-          withDummyParam(recentlyUnstableHistory),
-        ),
-      ).toEqual(false);
+      const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+        largeWindowDuration,
+      )(dummyParam, recentlyUnstableHistory);
+      expect(hasBeenUnstableForAWhile.check()).toEqual(false);
     });
 
     /**
@@ -109,13 +97,10 @@ describe('createHasBeenUnstableForAWhile', () => {
      * - return value should be true
      */
     it('should return true if unstable window is long enough', () => {
-      const HasBeenUnstableForAWhile =
-        createHasBeenUnstableForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnstableForAWhile.check.call(
-          withDummyParam(recentlyUnstableHistory),
-        ),
-      ).toEqual(true);
+      const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+        smallWindowDuration,
+      )(dummyParam, recentlyUnstableHistory);
+      expect(hasBeenUnstableForAWhile.check()).toEqual(true);
     });
 
     /**
@@ -129,13 +114,10 @@ describe('createHasBeenUnstableForAWhile', () => {
      * - return value should be true
      */
     it('should not return true if an event history in the window is already notified', () => {
-      const HasBeenUnstableForAWhile =
-        createHasBeenUnstableForAWhile(smallWindowDuration);
-      expect(
-        HasBeenUnstableForAWhile.check.call(
-          withDummyParam(notifiedRecentlyUnstableHistory),
-        ),
-      ).toEqual(false);
+      const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+        smallWindowDuration,
+      )(dummyParam, notifiedRecentlyUnstableHistory);
+      expect(hasBeenUnstableForAWhile.check()).toEqual(false);
     });
   });
 });

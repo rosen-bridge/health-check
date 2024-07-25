@@ -7,10 +7,10 @@ import {
   alreadyStabilizedHistory,
   notNotifiedStabilizedHistory,
   taggedBrokenHistory,
-  withDummyParam,
   notificationSeverity,
   notificationTitle,
   notificationDescription,
+  dummyParam,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -28,8 +28,11 @@ describe('createIsStillUnhealthy', () => {
      * - return value should be false
      */
     it('should return false if history is empty', () => {
-      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(IsStillUnhealthy.check.call(withDummyParam([]))).toEqual(false);
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        [],
+      );
+      expect(isStillUnhealthy.check()).toEqual(false);
     });
 
     /**
@@ -42,10 +45,11 @@ describe('createIsStillUnhealthy', () => {
      * - return value should be false
      */
     it('should return false if no history item has a tag', () => {
-      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(
-        IsStillUnhealthy.check.call(withDummyParam(alreadyStabilizedHistory)),
-      ).toEqual(false);
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        alreadyStabilizedHistory,
+      );
+      expect(isStillUnhealthy.check()).toEqual(false);
     });
 
     /**
@@ -59,12 +63,11 @@ describe('createIsStillUnhealthy', () => {
      * - return value should be false
      */
     it('should return false if last tagged history item has healthy result', () => {
-      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(
-        IsStillUnhealthy.check.call(
-          withDummyParam(notNotifiedStabilizedHistory),
-        ),
-      ).toEqual(false);
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        notNotifiedStabilizedHistory,
+      );
+      expect(isStillUnhealthy.check()).toEqual(false);
     });
 
     /**
@@ -80,10 +83,11 @@ describe('createIsStillUnhealthy', () => {
      * - return value should be false
      */
     it('should return false if passed time since last tagged item is not large enough', () => {
-      const IsStillUnhealthy = createIsStillUnhealthy(largeWindowDuration);
-      expect(
-        IsStillUnhealthy.check.call(withDummyParam(taggedBrokenHistory)),
-      ).toEqual(false);
+      const isStillUnhealthy = createIsStillUnhealthy(largeWindowDuration)(
+        dummyParam,
+        taggedBrokenHistory,
+      );
+      expect(isStillUnhealthy.check()).toEqual(false);
     });
 
     /**
@@ -98,10 +102,11 @@ describe('createIsStillUnhealthy', () => {
      * - return value should be true
      */
     it('should return false if passed time since last tagged item is large enough', () => {
-      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(
-        IsStillUnhealthy.check.call(withDummyParam(taggedBrokenHistory)),
-      ).toEqual(true);
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        taggedBrokenHistory,
+      );
+      expect(isStillUnhealthy.check()).toEqual(true);
     });
   });
 
@@ -116,10 +121,11 @@ describe('createIsStillUnhealthy', () => {
        * @expected
        * - return value should be unstable
        */
-      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(
-        IsStillUnhealthy.getSeverity.call(withDummyParam(taggedBrokenHistory)),
-      ).toEqual(notificationSeverity);
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        taggedBrokenHistory,
+      );
+      expect(isStillUnhealthy.getSeverity()).toEqual(notificationSeverity);
     });
   });
 
@@ -133,12 +139,11 @@ describe('createIsStillUnhealthy', () => {
        * @expected
        * - return value should be valid title
        */
-      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(
-        await IsStillUnhealthy.getTitle.call(
-          withDummyParam(taggedBrokenHistory),
-        ),
-      ).toEqual(notificationTitle);
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        taggedBrokenHistory,
+      );
+      expect(await isStillUnhealthy.getTitle()).toEqual(notificationTitle);
     });
   });
 
@@ -153,12 +158,13 @@ describe('createIsStillUnhealthy', () => {
        * @expected
        * - return value should be valid description
        */
-      const IsStillUnhealthy = createIsStillUnhealthy(smallWindowDuration);
-      expect(
-        await IsStillUnhealthy.getDescription.call(
-          withDummyParam(taggedBrokenHistory),
-        ),
-      ).toEqual(notificationDescription);
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        taggedBrokenHistory,
+      );
+      expect(await isStillUnhealthy.getDescription()).toEqual(
+        notificationDescription,
+      );
     });
   });
 });
