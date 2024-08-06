@@ -17,7 +17,7 @@ export enum HealthStatusLevel {
   BROKEN = 'Broken',
 }
 
-export interface HealthCheckHistoryConfig {
+export interface HealthCheckConfig {
   historyConfig?: Omit<
     NonNullable<ConstructorParameters<typeof HealthHistory>[0]>,
     'updateHandler'

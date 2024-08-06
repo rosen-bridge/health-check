@@ -16,7 +16,7 @@ import { ParamId } from './history/types';
 import {
   HealthStatus,
   HealthStatusLevel,
-  HealthCheckHistoryConfig,
+  HealthCheckConfig,
 } from './interfaces';
 
 export class HealthCheck {
@@ -25,7 +25,7 @@ export class HealthCheck {
 
   constructor(
     notify: NotifyWithSeverity,
-    { historyConfig, notificationCheckConfig }: HealthCheckHistoryConfig = {},
+    { historyConfig, notificationCheckConfig }: HealthCheckConfig = {},
   ) {
     const notificationManager = new NotificationManager(
       notify,
@@ -57,7 +57,7 @@ export class HealthCheck {
    */
   private registerNotificationManagerChecks = (
     notificationManager: NotificationManager,
-    notificationCheckConfig: HealthCheckHistoryConfig['notificationCheckConfig'],
+    notificationCheckConfig: HealthCheckConfig['notificationCheckConfig'],
   ) => {
     const hasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
       notificationCheckConfig?.hasBeenUnknownForAWhile?.windowDuration,
