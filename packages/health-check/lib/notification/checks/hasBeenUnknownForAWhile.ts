@@ -39,7 +39,7 @@ const createHasBeenUnknownForAWhile: (
       const unknownTimeWindowStartItem =
         history[unknownTimeWindowStartItemIndex];
 
-      // this case should never occur occur and is here for unpredicted cases
+      // this case should never occur and is here for unpredicted cases
       if (!unknownTimeWindowStartItem) return false;
 
       /**
