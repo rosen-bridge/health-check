@@ -84,8 +84,7 @@ describe('HealthHistory', () => {
 
   describe('setTag', () => {
     /**
-     * @target `updateHistoryForParam` should set tag to the history head of a
-     * param
+     * @target `setTag` should set tag to the history head of a param
      * @dependencies
      * @scenario
      * - create a health history instance
@@ -111,6 +110,35 @@ describe('HealthHistory', () => {
       healthHistory.setTag(param, tag);
 
       expect(healthHistory.getHistory()[param].at(-1)!.tag).toBe(tag);
+    });
+
+    /**
+     * @target `setTag` should not trigger update handler
+     * @dependencies
+     * @scenario
+     * - create a health history instance
+     * - update history for a param
+     * - clear call data of update handler mock
+     * - set a tag for the same param
+     * @expected
+     * - the last history item for the param should have the tag
+     */
+    it('should not trigger update handler', () => {
+      const updateHandler = vi.fn();
+      const healthHistory = new HealthHistory({ updateHandler });
+
+      healthHistory.updateHistoryForParam(param, {
+        result: 'unknown',
+        timestamp: 12345,
+      });
+      updateHandler.mockClear();
+      healthHistory.setTag(param, { id: 'hello world' });
+
+      /**
+       * `setTag` is sync, so there is no need to wait before checking calls
+       * count
+       */
+      expect(updateHandler).toHaveBeenCalledTimes(0);
     });
   });
 
