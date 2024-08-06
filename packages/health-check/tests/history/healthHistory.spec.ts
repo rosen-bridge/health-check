@@ -1,7 +1,7 @@
 import { expect, vi, describe, it } from 'vitest';
 
 import HealthHistory, {
-  DEFAULT_HISTORY_CLEANUP_THRESHOLD_MS,
+  DEFAULT_HISTORY_CLEANUP_THRESHOLD,
 } from '../../lib/history/healthHistory';
 
 const param = 'param-xyz';
@@ -27,7 +27,7 @@ describe('HealthHistory', () => {
         result: 'unknown',
         timestamp: Date.now(),
       });
-      vi.advanceTimersByTime(DEFAULT_HISTORY_CLEANUP_THRESHOLD_MS);
+      vi.advanceTimersByTime(DEFAULT_HISTORY_CLEANUP_THRESHOLD * 1000);
 
       expect(healthHistory.getHistory()[param]).toEqual([]);
 

@@ -1,11 +1,11 @@
 import { rejectUnknowns } from './utils';
 
-import { minute, HistoryItemTag } from '../../constants';
+import { MINUTE, HistoryItemTag } from '../../constants';
 
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
 
-const DEFAULT_WINDOW_DURATION = 15 * minute;
+const DEFAULT_WINDOW_DURATION = 15 * MINUTE;
 
 /**
  * factory for a check checking if a param history has a tail of multiple
@@ -76,7 +76,7 @@ const createHasBeenUnstableForAWhile: (
       const timeDifference =
         recentHistoryItem.timestamp - unstableTimeWindowStartItem.timestamp;
 
-      return timeDifference > windowDuration;
+      return timeDifference > windowDuration * 1000;
     },
     getSeverity() {
       return 'warning';

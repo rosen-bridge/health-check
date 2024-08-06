@@ -1,10 +1,10 @@
 import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
-import { day, HistoryItemTag } from '../../constants';
+import { DAY, HistoryItemTag } from '../../constants';
 
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
 
-const DEFAULT_WINDOW_DURATION = 1 * day;
+const DEFAULT_WINDOW_DURATION = 1 * DAY;
 
 /**
  * factory for a check checking if a notification for an unhealthy state is sent
@@ -33,7 +33,7 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck =
       const timeDifference =
         recentHistoryItem.timestamp - lastNotified.timestamp;
 
-      return timeDifference > windowDuration;
+      return timeDifference > windowDuration * 1000;
     },
     getSeverity() {
       const lastNotified = history.findLast(

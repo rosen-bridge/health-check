@@ -1,4 +1,4 @@
-import { day, hour, second } from '../constants';
+import { DAY, HOUR, SECOND } from '../constants';
 
 import {
   HealthHistoryUpdateHandler,
@@ -8,8 +8,8 @@ import {
   ParamHistoryItemTag,
 } from './types';
 
-export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10 * second;
-export const DEFAULT_HISTORY_CLEANUP_THRESHOLD_MS = 1 * day + 1 * hour;
+export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10 * SECOND;
+export const DEFAULT_HISTORY_CLEANUP_THRESHOLD = 1 * DAY + 1 * HOUR;
 
 /**
  * Hold a history of health check param statuses in specific timestamps,
@@ -32,18 +32,18 @@ class HealthHistory {
   constructor({
     updateHandler = async () => {},
     cleanupInterval = DEFAULT_HISTORY_CLEANUP_INTERVAL,
-    cleanupThreshold = DEFAULT_HISTORY_CLEANUP_THRESHOLD_MS,
+    cleanupThreshold = DEFAULT_HISTORY_CLEANUP_THRESHOLD,
   }: {
     updateHandler?: HealthHistoryUpdateHandler;
     cleanupInterval?: number;
     cleanupThreshold?: number;
   } = {}) {
     this.updateHandler = updateHandler;
-    this.startCleanup(cleanupInterval, cleanupThreshold);
+    this.startCleanup(cleanupInterval * 1000, cleanupThreshold * 1000);
   }
 
   /**
-   * cleanup history items older than `threshold` milliseconds
+   * cleanup history items older than `threshold` seconds
    * @param interval
    * @param threshold
    */

@@ -1,8 +1,8 @@
-import { minute, HistoryItemTag } from '../../constants';
+import { MINUTE, HistoryItemTag } from '../../constants';
 
 import { NotificationCheck } from '../types';
 
-const DEFAULT_WINDOW_DURATION = 15 * minute;
+const DEFAULT_WINDOW_DURATION = 15 * MINUTE;
 
 /**
  * factory for a check checking if a param history has a tail of multiple
@@ -58,7 +58,7 @@ const createHasBeenUnknownForAWhile: (
       const timeDifference =
         recentHistoryItem.timestamp - unknownTimeWindowStartItem.timestamp;
 
-      return timeDifference > windowDuration;
+      return timeDifference > windowDuration * 1000;
     },
     getSeverity() {
       return 'error';

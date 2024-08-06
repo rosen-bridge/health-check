@@ -11,7 +11,7 @@ import {
 /**
  * The difference between the timestamp of history items
  */
-export const historyItemsInterval = 1000;
+export const historyItemsInterval = 1;
 
 /**
  * A param serving as the context param for notification check objects
@@ -60,7 +60,7 @@ function* createHistoryItem(): Generator<
 
     status = input.status;
     tag = input.tag;
-    timestamp += historyItemsInterval;
+    timestamp += historyItemsInterval * 1000;
   }
 }
 const it = createHistoryItem();
