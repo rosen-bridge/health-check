@@ -1,4 +1,3 @@
-import { DataSource } from 'typeorm';
 import axios, { AxiosInstance } from 'axios';
 import { randomBytes } from 'crypto';
 
@@ -21,7 +20,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
   protected client: AxiosInstance;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
@@ -29,7 +28,12 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
     username?: string,
     password?: string,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     const auth =
       username && password
         ? { username: username, password: password }

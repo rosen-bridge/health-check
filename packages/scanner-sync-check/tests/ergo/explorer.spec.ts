@@ -1,7 +1,6 @@
 import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { createDataSource } from '../utils';
 import { ErgoExplorerScannerHealthCheck } from '../../lib';
 
 vitest.mock('@rosen-clients/ergo-explorer');
@@ -28,9 +27,8 @@ describe('ErgoScannerHealthCheck', () => {
         },
       } as unknown as ReturnType<typeof ergoExplorerClientFactory>);
 
-      const dataSource = await createDataSource();
       const scannerHealthCheckParam = new ErgoExplorerScannerHealthCheck(
-        dataSource,
+        () => Promise.resolve(1111),
         'scannerName',
         100,
         10,

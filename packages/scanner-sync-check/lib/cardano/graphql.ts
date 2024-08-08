@@ -1,4 +1,3 @@
-import { DataSource } from 'typeorm';
 import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from '@apollo/client/link/http';
 import fetch from 'cross-fetch';
@@ -10,13 +9,18 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
   protected client;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     graphqlUri: string,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     this.client = new ApolloClient({
       cache: new InMemoryCache(),
       link: new HttpLink({ uri: graphqlUri, fetch }),

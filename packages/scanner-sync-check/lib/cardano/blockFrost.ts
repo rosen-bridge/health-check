@@ -1,4 +1,3 @@
-import { DataSource } from 'typeorm';
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
@@ -7,14 +6,19 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
   protected client;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     projectId: string,
     url?: string,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     this.client = new BlockFrostAPI({
       projectId: projectId,
       customBackend: url,

@@ -1,7 +1,6 @@
 import { describe, expect, it, vitest } from 'vitest';
 
 import { TestCardanoBlockFrostScannerHealthCheck } from './testCardano';
-import { createDataSource } from '../utils';
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 
 describe('CardanoBlockFrostScannerHealthCheck.getLastAvailableBlock', () => {
@@ -20,9 +19,8 @@ describe('CardanoBlockFrostScannerHealthCheck.getLastAvailableBlock', () => {
     type blockLatestReturnType = Awaited<
       ReturnType<InstanceType<typeof BlockFrostAPI>['blocksLatest']>
     >;
-    const dataSource = await createDataSource();
     const scannerHealthCheckParam = new TestCardanoBlockFrostScannerHealthCheck(
-      dataSource,
+      () => Promise.resolve(1111),
       'scannerName',
       100,
       10,
