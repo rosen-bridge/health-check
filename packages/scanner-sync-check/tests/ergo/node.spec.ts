@@ -1,7 +1,6 @@
 import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { createDataSource } from '../utils';
 import { ErgoNodeScannerHealthCheck } from '../../lib';
 
 vitest.mock('@rosen-clients/ergo-node');
@@ -25,9 +24,8 @@ describe('ErgoNodeScannerHealthCheck.getLastAvailableBlock', () => {
       }),
     } as unknown as ReturnType<typeof ergoNodeClientFactory>);
 
-    const dataSource = await createDataSource();
     const scannerHealthCheckParam = new ErgoNodeScannerHealthCheck(
-      dataSource,
+      () => Promise.resolve(1111),
       'scannerName',
       100,
       10,

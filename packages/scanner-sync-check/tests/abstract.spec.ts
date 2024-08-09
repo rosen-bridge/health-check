@@ -1,21 +1,16 @@
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
-import { BlockEntity, PROCEED } from '@rosen-bridge/scanner';
-import { DataSource } from 'typeorm';
 import { describe, expect, it, beforeAll } from 'vitest';
 
-import { TestScannerHealthCheckParam } from './testAbstract';
-import { createDataSource } from './utils';
+import { TestScannerHealthCheckParam } from './abstract.mock';
 
 describe('AbstractScannerHealthCheckParam', () => {
   /**
    * Creating a new instance of AbstractScannerHealthCheckParam for all tests
    */
   let scannerHealthCheckParam: TestScannerHealthCheckParam;
-  let dataSource: DataSource;
   beforeAll(async () => {
-    dataSource = await createDataSource();
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
-      dataSource,
+      () => Promise.resolve(1111),
       'scannerName',
       10,
       100,
@@ -81,15 +76,6 @@ describe('AbstractScannerHealthCheckParam', () => {
      * - The difference should set correctly
      */
     it('should update the height difference correctly', async () => {
-      const ergoBlockEntity = new BlockEntity();
-      ergoBlockEntity.scanner = 'scannerName';
-      ergoBlockEntity.id = 1;
-      ergoBlockEntity.hash = 'blockHash';
-      ergoBlockEntity.height = 1111;
-      ergoBlockEntity.parentHash = 'parentHash';
-      ergoBlockEntity.status = PROCEED;
-      ergoBlockEntity.timestamp = 12345;
-      await dataSource.getRepository(BlockEntity).insert([ergoBlockEntity]);
       await scannerHealthCheckParam.update();
       expect(scannerHealthCheckParam.getDifference()).toEqual(4);
     });

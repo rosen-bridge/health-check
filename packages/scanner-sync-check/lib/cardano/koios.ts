@@ -1,19 +1,24 @@
-import { AbstractScannerSyncHealthCheckParam } from '../abstract';
-import { DataSource } from 'typeorm';
 import cardanoKoiosClientFactory from '@rosen-clients/cardano-koios';
+
+import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   private koiosApi;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
     authToken?: string,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     this.koiosApi = cardanoKoiosClientFactory(networkUrl, authToken);
   }
 

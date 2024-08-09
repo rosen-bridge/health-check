@@ -1,4 +1,3 @@
-import { DataSource } from 'typeorm';
 import {
   createInteractionContext,
   InteractionContext,
@@ -13,7 +12,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
   private useTls: boolean;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
@@ -21,7 +20,12 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     ogmiosPort: number,
     useTls = false,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     this.ogmiosHost = ogmiosHost;
     this.ogmiosPort = ogmiosPort;
     this.useTls = useTls;

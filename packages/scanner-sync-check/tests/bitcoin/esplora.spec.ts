@@ -1,7 +1,6 @@
 import { describe, expect, it, vitest } from 'vitest';
 
 import { TestBitcoinEsploraScannerHealthCheck } from './testBitcoin';
-import { createDataSource } from '../utils';
 
 describe('BitcoinEsploraScannerHealthCheck.getLastAvailableBlock', () => {
   /**
@@ -16,9 +15,8 @@ describe('BitcoinEsploraScannerHealthCheck.getLastAvailableBlock', () => {
    * - The block height should be correct
    */
   it('should return the last available block in network', async () => {
-    const dataSource = await createDataSource();
     const scannerHealthCheckParam = new TestBitcoinEsploraScannerHealthCheck(
-      dataSource,
+      () => Promise.resolve(1111),
       'scannerName',
       100,
       10,

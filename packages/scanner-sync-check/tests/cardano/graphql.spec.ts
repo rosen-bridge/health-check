@@ -1,7 +1,6 @@
 import { describe, expect, it, vitest } from 'vitest';
 
 import { TestCardanoGraphQLScannerHealthCheck } from './testCardano';
-import { createDataSource } from '../utils';
 
 describe('CardanoGraphQLScannerHealthCheck.getLastAvailableBlock', () => {
   /**
@@ -27,9 +26,8 @@ describe('CardanoGraphQLScannerHealthCheck.getLastAvailableBlock', () => {
       networkStatus: 7,
     };
 
-    const dataSource = await createDataSource();
     const scannerHealthCheckParam = new TestCardanoGraphQLScannerHealthCheck(
-      dataSource,
+      () => Promise.resolve(1111),
       'scannerName',
       100,
       10,

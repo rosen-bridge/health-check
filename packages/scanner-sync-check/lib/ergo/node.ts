@@ -1,5 +1,4 @@
 import ergoNodeClientFactory from '@rosen-clients/ergo-node';
-import { DataSource } from 'typeorm';
 
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
@@ -7,13 +6,18 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
   private nodeApi;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     this.nodeApi = ergoNodeClientFactory(networkUrl);
   }
 

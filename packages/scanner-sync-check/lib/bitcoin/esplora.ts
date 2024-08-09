@@ -1,4 +1,3 @@
-import { DataSource } from 'typeorm';
 import axios, { AxiosInstance } from 'axios';
 
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
@@ -7,13 +6,18 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
   protected client: AxiosInstance;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     esploraUrl: string,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     this.client = axios.create({
       baseURL: esploraUrl,
     });

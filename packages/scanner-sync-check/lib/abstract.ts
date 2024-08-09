@@ -2,27 +2,17 @@ import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
-import { BlockEntity, PROCEED } from '@rosen-bridge/scanner';
-import { DataSource, Repository } from 'typeorm';
 
 abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
-  private readonly blockRepository: Repository<BlockEntity>;
-  protected scannerName: string;
-  protected warnDifference: number;
-  protected criticalDifference: number;
   protected difference: number;
 
   constructor(
-    dataSource: DataSource,
-    scannerName: string,
-    warnDifference: number,
-    criticalDifference: number,
+    protected getLastSavedBlockHeight: () => Promise<number>,
+    protected scannerName: string,
+    protected warnDifference: number,
+    protected criticalDifference: number,
   ) {
     super();
-    this.blockRepository = dataSource.getRepository(BlockEntity);
-    this.scannerName = scannerName;
-    this.warnDifference = warnDifference;
-    this.criticalDifference = criticalDifference;
   }
 
   /**
@@ -62,23 +52,6 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    * Returns last available block in the network
    */
   abstract getLastAvailableBlock: () => Promise<number>;
-
-  /**
-   * @returns last saved block using the specified scanner
-   */
-  protected getLastSavedBlockHeight = async (): Promise<number> => {
-    const lastBlock = await this.blockRepository.find({
-      where: { status: PROCEED, scanner: this.scannerName },
-      order: { height: 'DESC' },
-      take: 1,
-    });
-    if (lastBlock.length !== 0) {
-      return lastBlock[0].height;
-    }
-    throw new Error(
-      `No processed block found for scanner ${this.scannerName}, or some error occurred in database connection`,
-    );
-  };
 }
 
 export { AbstractScannerSyncHealthCheckParam };

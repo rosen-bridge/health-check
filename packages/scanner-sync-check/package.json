@@ -35,12 +35,10 @@
     "@apollo/client": "^3.9.11",
     "@blockfrost/blockfrost-js": "^5.5.0",
     "@cardano-ogmios/client": "^6.3.0",
-    "@rosen-bridge/scanner": "^4.0.0",
     "@rosen-bridge/health-check": "^5.0.0",
     "@rosen-clients/ergo-explorer": "^1.1.1",
     "@rosen-clients/ergo-node": "^1.1.1",
     "axios": "^1.6.8",
-    "cross-fetch": "^4.0.0",
-    "typeorm": "^0.3.20"
+    "cross-fetch": "^4.0.0"
   }
 }

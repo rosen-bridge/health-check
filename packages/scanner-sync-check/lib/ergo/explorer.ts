@@ -1,4 +1,3 @@
-import { DataSource } from 'typeorm';
 import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
 
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
@@ -7,13 +6,18 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
   private explorerApi;
 
   constructor(
-    dataSource: DataSource,
+    getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
   ) {
-    super(dataSource, scannerName, warnDifference, criticalDifference);
+    super(
+      getLastSavedBlockHeight,
+      scannerName,
+      warnDifference,
+      criticalDifference,
+    );
     this.explorerApi = ergoExplorerClientFactory(networkUrl);
   }
 

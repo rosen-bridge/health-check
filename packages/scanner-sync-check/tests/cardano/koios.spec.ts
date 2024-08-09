@@ -1,7 +1,6 @@
 import { describe, expect, it, vitest } from 'vitest';
 import cardanoKoiosClientFactory from '@rosen-clients/cardano-koios';
 
-import { createDataSource } from '../utils';
 import { CardanoKoiosScannerHealthCheck } from '../../lib';
 
 vitest.mock('@rosen-clients/cardano-koios');
@@ -28,9 +27,8 @@ describe('CardanoKoiosScannerHealthCheck', () => {
         ],
       } as unknown as ReturnType<typeof cardanoKoiosClientFactory>);
 
-      const dataSource = await createDataSource();
       const scannerHealthCheckParam = new CardanoKoiosScannerHealthCheck(
-        dataSource,
+        () => Promise.resolve(1111),
         'scannerName',
         100,
         10,

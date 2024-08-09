@@ -1,7 +1,6 @@
 import { describe, expect, it, vitest } from 'vitest';
 import { createLedgerStateQueryClient } from '@cardano-ogmios/client';
 
-import { createDataSource } from '../utils';
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 
 vitest.mock('@cardano-ogmios/client');
@@ -28,9 +27,8 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
           } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
         });
 
-      const dataSource = await createDataSource();
       const scannerHealthCheckParam = new CardanoOgmiosScannerHealthCheck(
-        dataSource,
+        () => Promise.resolve(1111),
         'scannerName',
         100,
         10,
