@@ -62,7 +62,9 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = async (): Promise<string> => {
-    return `Checks if the ${this.address.slice(0, 6)} address has a sufficient ${this.assetName} balance. The current balance is ${this.tokenAmount}.`;
+    return `Checks if the ${this.address.slice(0, 6)} address has a sufficient ${this.assetName} balance. The current balance is ${this.getTokenDecimalStr(
+      this.tokenAmount,
+    )}.`;
   };
 
   /**
@@ -117,7 +119,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
       .toString()
       .slice(-this.assetDecimal)
       .padStart(this.assetDecimal, '0');
-    return `${roundTokenAmount}.${decimalTokenAmount}`;
+    return `${roundTokenAmount}.${decimalTokenAmount}`.replace(/\.0+$/, '');
   };
 }
 
