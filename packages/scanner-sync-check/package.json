@@ -39,6 +39,7 @@
     "@rosen-clients/ergo-explorer": "^1.1.1",
     "@rosen-clients/ergo-node": "^1.1.1",
     "axios": "^1.6.8",
-    "cross-fetch": "^4.0.0"
+    "cross-fetch": "^4.0.0",
+    "ether": "^0.0.9"
   }
 }
