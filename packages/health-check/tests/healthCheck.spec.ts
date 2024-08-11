@@ -1,7 +1,9 @@
 import { HealthStatusLevel } from '../lib';
 import { TestHealthCheckParam } from './testHealthCheckParam';
 import { TestHealthCheck } from './testHealthCheck';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+import { DEFAULT_HISTORY_CLEANUP_THRESHOLD } from '../lib/history/healthHistory';
 
 describe('HealthCheck', () => {
   describe('register', () => {
@@ -124,6 +126,36 @@ describe('HealthCheck', () => {
       expect(healthCheck['healthHistory'].getHistory().id2[0].result).toEqual(
         HealthStatusLevel.BROKEN,
       );
+    });
+
+    /**
+     * @target `HealthCheck.update` should cleanup old history items
+     * @dependencies
+     * @scenario
+     * - create new instance of HealthCheck
+     * - create a param
+     * - register the param on healthCheck
+     * - call update
+     * - advance time more than cleanup threshold (triggering cleanup of old
+     * history items)
+     * - call update again
+     * @expected
+     * - only one history item should exist
+     */
+    it('should cleanup the history object after some time', async () => {
+      vi.useFakeTimers();
+
+      const healthCheck = new TestHealthCheck();
+      const param1 = new TestHealthCheckParam('id1', HealthStatusLevel.HEALTHY);
+      healthCheck.register(param1);
+      await healthCheck.update();
+
+      vi.advanceTimersByTime(DEFAULT_HISTORY_CLEANUP_THRESHOLD + 1);
+      await healthCheck.update();
+
+      expect(healthCheck['healthHistory'].getHistory().id1.length).toEqual(1);
+
+      vi.useRealTimers();
     });
   });
 

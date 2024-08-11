@@ -26,20 +26,19 @@ class HealthHistory {
    */
   private history: History = {};
   private updateHandler: HealthHistoryUpdateHandler;
+  private cleanupThreshold: number;
 
   [Symbol.toStringTag] = 'HealthHistory';
 
   constructor({
     updateHandler = async () => {},
-    cleanupInterval = DEFAULT_HISTORY_CLEANUP_INTERVAL,
     cleanupThreshold = DEFAULT_HISTORY_CLEANUP_THRESHOLD,
   }: {
     updateHandler?: HealthHistoryUpdateHandler;
-    cleanupInterval?: number;
     cleanupThreshold?: number;
   } = {}) {
     this.updateHandler = updateHandler;
-    this.startCleanup(cleanupInterval * 1000, cleanupThreshold * 1000);
+    this.cleanupThreshold = cleanupThreshold;
   }
 
   /**
@@ -47,20 +46,19 @@ class HealthHistory {
    * @param interval
    * @param threshold
    */
-  startCleanup = (interval: number, threshold: number) => {
+  cleanupHistory = () => {
     /**
      * cleanup history for a param
      * @param param
      */
     const cleanupParamHistory = (param: ParamId) => {
       this.history[param] = this.history[param].filter(
-        (historyItem) => Date.now() - historyItem.timestamp < threshold,
+        (historyItem) =>
+          Date.now() - historyItem.timestamp < this.cleanupThreshold,
       );
     };
 
-    setInterval(() => {
-      Object.keys(this.history).forEach(cleanupParamHistory);
-    }, interval);
+    Object.keys(this.history).forEach(cleanupParamHistory);
   };
 
   /**

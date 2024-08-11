@@ -1,40 +1,10 @@
 import { expect, vi, describe, it } from 'vitest';
 
-import HealthHistory, {
-  DEFAULT_HISTORY_CLEANUP_THRESHOLD,
-} from '../../lib/history/healthHistory';
+import HealthHistory from '../../lib/history/healthHistory';
 
 const param = 'param-xyz';
 
 describe('HealthHistory', () => {
-  describe('constructor', () => {
-    /**
-     * @target instantiation should cleanup the history object after some time
-     * @dependencies
-     * @scenario
-     * - create a health history instance
-     * - update history for a param
-     * - wait for a while
-     * @expected
-     * - param history should be empty
-     */
-    it('should cleanup the history object after some time', () => {
-      vi.useFakeTimers();
-
-      const healthHistory = new HealthHistory();
-
-      healthHistory.updateHistoryForParam(param, {
-        result: 'unknown',
-        timestamp: Date.now(),
-      });
-      vi.advanceTimersByTime(DEFAULT_HISTORY_CLEANUP_THRESHOLD * 1000);
-
-      expect(healthHistory.getHistory()[param]).toEqual([]);
-
-      vi.useRealTimers();
-    });
-  });
-
   describe('updateHistoryForParam', () => {
     /**
      * @target `updateHistoryForParam` should add a new item to the history

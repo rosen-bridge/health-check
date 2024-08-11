@@ -130,9 +130,10 @@ export class HealthCheck {
   };
 
   /**
-   * check all params health status
+   * check all params health status and cleanup history
    */
   update = async (): Promise<void> => {
+    this.healthHistory.cleanupHistory();
     await Promise.all(this.params.map(this.updateParamAndItsHistory));
   };
 
