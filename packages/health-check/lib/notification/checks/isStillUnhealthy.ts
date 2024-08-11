@@ -17,18 +17,26 @@ const createIsStillUnhealthy: (windowDuration?: number) => NotificationCheck =
     [Symbol.toStringTag]: 'IsStillUnhealthy',
     id: 'is-still-unhealthy',
     check() {
-      const lastNotified = history.findLast(
+      const lastNotifiedIndex = history.findLastIndex(
         (historyItem) => historyItem.tag?.id === HistoryItemTag.NOTIFIED,
       );
       const recentHistoryItem = history.at(-1);
 
-      if (!lastNotified || !recentHistoryItem) {
+      if (lastNotifiedIndex === -1 || !recentHistoryItem) {
         return false;
       }
 
-      if (lastNotified?.result === HealthStatusLevel.HEALTHY) {
+      if (
+        history
+          .slice(lastNotifiedIndex)
+          .some(
+            (historyItem) => historyItem.result === HealthStatusLevel.HEALTHY,
+          )
+      ) {
         return false;
       }
+
+      const lastNotified = history[lastNotifiedIndex];
 
       const timeDifference =
         recentHistoryItem.timestamp - lastNotified.timestamp;

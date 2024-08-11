@@ -128,6 +128,14 @@ export const notNotifiedStabilizedHistory: ParamHistory = [
 ];
 
 /**
+ * a combination of tagged unhealthy items and healthy items
+ */
+export const notNotifiedTaggedStabilizedHistory: ParamHistory = [
+  it.next({ status: HealthStatusLevel.BROKEN, tag: true }).value!,
+  it.next({ status: HealthStatusLevel.HEALTHY }).value!,
+];
+
+/**
  * last two items are healthy after being unhealthy without being notified
  */
 export const alreadyStabilizedHistory: ParamHistory = [

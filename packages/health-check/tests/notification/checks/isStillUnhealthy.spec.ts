@@ -11,6 +11,7 @@ import {
   notificationTitle,
   notificationDescription,
   dummyParam,
+  notNotifiedTaggedStabilizedHistory,
 } from './historyTestData';
 
 const smallWindowDuration = historyItemsInterval / 10;
@@ -66,6 +67,25 @@ describe('createIsStillUnhealthy', () => {
       const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
         dummyParam,
         notNotifiedStabilizedHistory,
+      );
+      expect(isStillUnhealthy.check()).toEqual(false);
+    });
+
+    /**
+     * @target `check` should return false if at least one healthy history item
+     * exists after last tagged history item
+     * @dependencies
+     * @scenario
+     * - create the check object
+     * - call `check` with a history containing a healthy history item coming
+     * after last tagged item
+     * @expected
+     * - return value should be false
+     */
+    it('should return false if at least one healthy history item exists after last tagged history item', () => {
+      const isStillUnhealthy = createIsStillUnhealthy(smallWindowDuration)(
+        dummyParam,
+        notNotifiedTaggedStabilizedHistory,
       );
       expect(isStillUnhealthy.check()).toEqual(false);
     });
