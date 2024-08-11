@@ -1,4 +1,4 @@
-import { DAY, HOUR, SECOND } from '../constants';
+import { DAY, HOUR } from '../constants';
 
 import {
   HealthHistoryUpdateHandler,
@@ -8,7 +8,7 @@ import {
   ParamHistoryItemTag,
 } from './types';
 
-export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10 * SECOND;
+export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10;
 export const DEFAULT_HISTORY_CLEANUP_THRESHOLD = 1 * DAY + 1 * HOUR;
 
 /**
