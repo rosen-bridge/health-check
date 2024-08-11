@@ -1,4 +1,4 @@
-import { describe, expect, it, vitest, beforeAll } from 'vitest';
+import { describe, expect, it, vitest, vi, beforeEach } from 'vitest';
 import { createLedgerStateQueryClient } from '@cardano-ogmios/client';
 
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
@@ -11,15 +11,15 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
    * Creating a new instance of for all tests
    */
   let scannerHealthCheckParam: CardanoOgmiosScannerHealthCheck;
-  beforeAll(async () => {
+  beforeEach(async () => {
     scannerHealthCheckParam = new CardanoOgmiosScannerHealthCheck(
-      () => Promise.resolve(1111),
+      async () => Promise.resolve(1111),
       () => true,
-      'scannerName',
       10,
       100,
       'url',
       123,
+      5000,
     );
   });
 
@@ -79,16 +79,25 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - The status should be BROKEN
      */
     it('should return BROKEN when the ogmios client is not connected', async () => {
-      const scannerParam = new CardanoOgmiosScannerHealthCheck(
-        () => Promise.resolve(1111),
-        () => false,
-        'scannerName',
-        100,
-        10,
-        'url',
-        123,
-      );
-      const status = await scannerParam.getHealthStatus();
+      scannerHealthCheckParam['difference'] = 20;
+      scannerHealthCheckParam['disconnectionTime'] = Date.now() - 100;
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
+    });
+
+    /**
+     * @target getHealthStatus should return BROKEN when the ogmios client is not connected
+     * @dependencies
+     * @scenario
+     * - mock difference to less than critical threshold
+     * - get health status
+     * @expected
+     * - The status should be BROKEN
+     */
+    it('should return BROKEN when the ogmios client is not connected', async () => {
+      scannerHealthCheckParam['difference'] = 20;
+      scannerHealthCheckParam['disconnectionTime'] = Date.now() - 10000;
+      const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
   });
@@ -106,15 +115,72 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - The block height should be correct
      */
     it('should return the last available block in network', async () => {
-      vitest
-        .mocked(createLedgerStateQueryClient)
-        .mockImplementation(async () => {
-          return {
-            networkBlockHeight: async () => 1115,
-          } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
-        });
+      vi.mocked(createLedgerStateQueryClient).mockImplementation(async () => {
+        return {
+          networkBlockHeight: async () => 1115,
+        } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
+      });
       const height = await scannerHealthCheckParam.getLastAvailableBlock();
       expect(height).toEqual(1115);
+    });
+  });
+
+  describe('updateStatus', () => {
+    /**
+     * @target updateStatus should update the height difference correctly
+     * @dependencies
+     * @scenario
+     * - mock `getLastAvailableBlock`
+     * - create new instance of CardanoOgmiosScannerHealthCheck
+     * - update the parameter
+     * @expected
+     * - to update the height difference
+     * - to set undefined to disconnectionTime
+     */
+    it('should return the last available block in network', async () => {
+      vi.spyOn(
+        scannerHealthCheckParam,
+        'getLastAvailableBlock',
+      ).mockResolvedValue(1115);
+      await scannerHealthCheckParam.updateStatus();
+      expect(scannerHealthCheckParam['difference']).toEqual(4);
+      expect(scannerHealthCheckParam['disconnectionTime']).toEqual(undefined);
+    });
+
+    /**
+     * @target updateStatus should set the disconnectionTime for the first time
+     * @dependencies
+     * @scenario
+     * - mock `getLastAvailableBlock`
+     * - create new instance of CardanoOgmiosScannerHealthCheck
+     * - update the parameter
+     * @expected
+     * - to set disconnectionTime to current time when it is undefined
+     */
+    it('should set the disconnectionTime for the first time', async () => {
+      scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
+      scannerHealthCheckParam['disconnectionTime'] = Date.now();
+      await scannerHealthCheckParam.updateStatus();
+      expect(scannerHealthCheckParam['disconnectionTime']).toEqual(Date.now());
+    });
+
+    /**
+     * @target updateStatus should not change disconnectionTime when client is still disconnected
+     * @dependencies
+     * @scenario
+     * - mock `getLastAvailableBlock`
+     * - create new instance of CardanoOgmiosScannerHealthCheck
+     * - update the parameter
+     * @expected
+     * - not to change disconnectionTime when still is disconnected
+     */
+    it('should not change disconnectionTime when client is still disconnected', async () => {
+      scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
+      scannerHealthCheckParam['disconnectionTime'] = Date.now() - 1000;
+      await scannerHealthCheckParam.updateStatus();
+      expect(scannerHealthCheckParam['disconnectionTime']).toEqual(
+        Date.now() - 1000,
+      );
     });
   });
 });

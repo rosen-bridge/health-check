@@ -4,30 +4,26 @@ import {
   createLedgerStateQueryClient,
 } from '@cardano-ogmios/client';
 
-import { AbstractScannerSyncHealthCheckParam } from '../abstract';
-import { HealthStatusLevel } from '@rosen-bridge/health-check';
+import {
+  AbstractHealthCheckParam,
+  HealthStatusLevel,
+} from '@rosen-bridge/health-check';
 
-export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
-  private ogmiosPort: number;
-  private ogmiosHost: string;
-  private useTls: boolean;
+export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
+  private disconnectionTime: number | undefined;
+  private difference: number;
 
   constructor(
-    getLastSavedBlockHeight: () => Promise<number>,
+    private getLastSavedBlockHeight: () => Promise<number>,
     private connected: () => boolean,
-    scannerName: string,
-    warnDifference: number,
-    criticalDifference: number,
-    ogmiosHost: string,
-    ogmiosPort: number,
-    useTls = false,
+    private warnDifference: number,
+    private criticalDifference: number,
+    private ogmiosHost: string,
+    private ogmiosPort: number,
+    private connectionRetrialTime: number,
+    private useTls = false,
   ) {
-    super(
-      getLastSavedBlockHeight,
-      scannerName,
-      warnDifference,
-      criticalDifference,
-    );
+    super();
     this.ogmiosHost = ogmiosHost;
     this.ogmiosPort = ogmiosPort;
     this.useTls = useTls;
@@ -58,15 +54,22 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
   };
 
   /**
-   * if the difference between scanned blocks and network blocks is more than the differences returns the required notification
+   * if ogmios client is disconnected return the required details
+   * if the difference between scanned blocks and network blocks is more than
+   *   the threshold returns the required notification
    * @returns parameter health description
    */
   getDetails = async (): Promise<string | undefined> => {
-    if (!this.connected())
+    if (
+      this.disconnectionTime &&
+      this.disconnectionTime + this.connectionRetrialTime < Date.now()
+    )
       return (
         'Service has stopped working since Ogmios client is not connected. ' +
         'Please check the connection and restart your service.'
       );
+    else if (this.disconnectionTime)
+      return 'Ogmios client is disconnected, service is trying to reconnect the ogmios client.';
     const baseMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     if (this.difference >= this.criticalDifference)
       return `Service has stopped working.` + baseMessage;
@@ -79,10 +82,13 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
    * @returns scanner sync health status
    */
   getHealthStatus = async (): Promise<HealthStatusLevel> => {
-    console.log(this.connected());
-    if (this.difference >= this.criticalDifference || !this.connected())
+    if (
+      this.difference >= this.criticalDifference ||
+      (this.disconnectionTime &&
+        this.disconnectionTime + this.connectionRetrialTime < Date.now())
+    )
       return HealthStatusLevel.BROKEN;
-    else if (this.difference >= this.warnDifference)
+    else if (this.difference >= this.warnDifference || this.disconnectionTime)
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
   };
@@ -106,5 +112,17 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     const height = await ogmiosClient.networkBlockHeight();
     if (height == 'origin') return 0;
     else return height;
+  };
+
+  /**
+   * update the height difference and set disconnectionTime when client is disconnected
+   */
+  updateStatus = async () => {
+    if (this.connected()) {
+      this.disconnectionTime = undefined;
+      const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
+      const networkHeight = await this.getLastAvailableBlock();
+      this.difference = networkHeight - lastSavedBlockHeight;
+    } else if (!this.disconnectionTime) this.disconnectionTime = Date.now();
   };
 }
