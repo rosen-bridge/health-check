@@ -5,7 +5,7 @@ import { NotificationCheck } from '../types';
 const DEFAULT_WINDOW_DURATION = 15 * MINUTE;
 
 /**
- * factory for a check checking if a param history has a tail of multiple
+ * factory for a check that detects if a param history has a tail of multiple
  * unknown items
  */
 const createHasBeenUnknownForAWhile: (
@@ -39,7 +39,7 @@ const createHasBeenUnknownForAWhile: (
       const unknownTimeWindowStartItem =
         history[unknownTimeWindowStartItemIndex];
 
-      // this case should never occur occur and is here for unpredicted cases
+      // this case should never occur and is here for unpredicted cases
       if (!unknownTimeWindowStartItem) return false;
 
       /**

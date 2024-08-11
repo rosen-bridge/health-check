@@ -44,7 +44,7 @@ const createHasBeenUnstableForAWhile: (
       const unstableTimeWindowStartItem =
         historyWithoutUnknowns[unstableTimeWindowStartItemIndex];
 
-      // this case should never occur occur and is here for unpredicted cases
+      // this case should never occur and is here for unpredicted cases
       if (!unstableTimeWindowStartItem) return false;
 
       /**
