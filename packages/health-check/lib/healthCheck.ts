@@ -1,8 +1,86 @@
+import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
+
 import { AbstractHealthCheckParam } from './abstractHealthCheckParam';
-import { HealthStatus, HealthStatusLevel } from './interfaces';
+import HealthHistory from './history/healthHistory';
+import NotificationManager from './notification/notificationManager';
+
+import createHasBeenUnknownForAWhile from './notification/checks/hasBeenUnknownForAWhile';
+import createHasBeenUnstableForAWhile from './notification/checks/hasBeenUnstableForAWhile';
+import isBroken from './notification/checks/isBroken';
+import isStabilized from './notification/checks/isStabilized';
+import createIsStillUnhealthy from './notification/checks/isStillUnhealthy';
+
+import { HistoryItemTag } from './constants';
+
+import { ParamId } from './history/types';
+import {
+  HealthStatus,
+  HealthStatusLevel,
+  HealthCheckConfig,
+} from './interfaces';
 
 export class HealthCheck {
   protected params: Array<AbstractHealthCheckParam> = [];
+  private healthHistory: HealthHistory;
+
+  constructor(
+    notify: NotifyWithSeverity,
+    { historyConfig, notificationCheckConfig }: HealthCheckConfig = {},
+  ) {
+    const notificationManager = new NotificationManager(
+      notify,
+      this.getParamById,
+    );
+    const healthHistory = new HealthHistory({
+      updateHandler: notificationManager.sendNotifications,
+      ...historyConfig,
+    });
+
+    this.healthHistory = healthHistory;
+
+    notificationManager.onNotified((param, notifyArgs) =>
+      healthHistory.setTag(param, {
+        id: HistoryItemTag.NOTIFIED,
+        data: notifyArgs,
+      }),
+    );
+    this.registerNotificationManagerChecks(
+      notificationManager,
+      notificationCheckConfig,
+    );
+  }
+
+  /**
+   * register all notification checks to notificationManager
+   * @param notificationManager
+   * @param notificationCheckConfig
+   */
+  private registerNotificationManagerChecks = (
+    notificationManager: NotificationManager,
+    notificationCheckConfig: HealthCheckConfig['notificationCheckConfig'],
+  ) => {
+    const hasBeenUnknownForAWhile = createHasBeenUnknownForAWhile(
+      notificationCheckConfig?.hasBeenUnknownForAWhile?.windowDuration,
+    );
+    notificationManager.registerCheck(hasBeenUnknownForAWhile);
+    const hasBeenUnstableForAWhile = createHasBeenUnstableForAWhile(
+      notificationCheckConfig?.hasBeenUnstableForAWhile?.windowDuration,
+    );
+    notificationManager.registerCheck(hasBeenUnstableForAWhile);
+    notificationManager.registerCheck(isBroken);
+    notificationManager.registerCheck(isStabilized);
+    const isStillUnhealthy = createIsStillUnhealthy(
+      notificationCheckConfig?.isStillUnhealthy?.windowDuration,
+    );
+    notificationManager.registerCheck(isStillUnhealthy);
+  };
+
+  /**
+   * get a param by its id
+   * @param id
+   */
+  private getParamById = (id: ParamId) =>
+    this.params.find((param) => param.getId() === id);
 
   /**
    * register new param on healthCheck
@@ -21,10 +99,42 @@ export class HealthCheck {
   };
 
   /**
-   * check all params health status
+   * update history for a param, based on if the last update call was successful
+   * @param param
+   */
+  private updateHistoryForParam = async (param: AbstractHealthCheckParam) => {
+    const paramId = param.getId();
+    const lastTrialErrorTime = await param.getLastTrialErrorTime();
+    if (lastTrialErrorTime) {
+      this.healthHistory.updateHistoryForParam(paramId, {
+        result: 'unknown',
+        timestamp: lastTrialErrorTime.valueOf(),
+      });
+    } else {
+      this.healthHistory.updateHistoryForParam(paramId, {
+        result: await param.getHealthStatus(),
+        timestamp: param.getLastUpdatedTime()!.valueOf(),
+      });
+    }
+  };
+
+  /**
+   * update a param and its history
+   * @param param
+   */
+  private updateParamAndItsHistory = async (
+    param: AbstractHealthCheckParam,
+  ) => {
+    await param.update();
+    await this.updateHistoryForParam(param);
+  };
+
+  /**
+   * check all params health status and cleanup history
    */
   update = async (): Promise<void> => {
-    await Promise.all(this.params.map((item) => item.update()));
+    this.healthHistory.cleanupHistory();
+    await Promise.all(this.params.map(this.updateParamAndItsHistory));
   };
 
   /**
@@ -35,7 +145,7 @@ export class HealthCheck {
     for (const param of this.params.filter(
       (item) => item.getId() === paramId,
     )) {
-      await param.update();
+      await this.updateParamAndItsHistory(param);
     }
   };
 
