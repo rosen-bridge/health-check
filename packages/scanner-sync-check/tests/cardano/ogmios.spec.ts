@@ -70,15 +70,15 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     });
 
     /**
-     * @target getHealthStatus should return BROKEN when the ogmios client is not connected
+     * @target getHealthStatus should return UNSTABLE when the ogmios client is not connected
      * @dependencies
      * @scenario
      * - mock difference to less than critical threshold
      * - get health status
      * @expected
-     * - The status should be BROKEN
+     * - The status should be UNSTABLE
      */
-    it('should return BROKEN when the ogmios client is not connected', async () => {
+    it('should return UNSTABLE when the ogmios client is not connected', async () => {
       scannerHealthCheckParam['difference'] = 20;
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 100;
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -86,7 +86,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     });
 
     /**
-     * @target getHealthStatus should return BROKEN when the ogmios client is not connected
+     * @target getHealthStatus should return BROKEN when the ogmios client is not connected and the retrial time is passed
      * @dependencies
      * @scenario
      * - mock difference to less than critical threshold
@@ -94,7 +94,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * @expected
      * - The status should be BROKEN
      */
-    it('should return BROKEN when the ogmios client is not connected', async () => {
+    it('should return BROKEN when the ogmios client is not connected and the retrial time is passed', async () => {
       scannerHealthCheckParam['difference'] = 20;
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 10000;
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -158,8 +158,9 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - to set disconnectionTime to current time when it is undefined
      */
     it('should set the disconnectionTime for the first time', async () => {
+      vi.useFakeTimers({ now: 1723451468275 });
       scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
-      scannerHealthCheckParam['disconnectionTime'] = Date.now();
+      scannerHealthCheckParam['disconnectionTime'] = undefined;
       await scannerHealthCheckParam.updateStatus();
       expect(scannerHealthCheckParam['disconnectionTime']).toEqual(Date.now());
     });
@@ -175,6 +176,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - not to change disconnectionTime when still is disconnected
      */
     it('should not change disconnectionTime when client is still disconnected', async () => {
+      vi.useFakeTimers({ now: 1723451468275 });
       scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 1000;
       await scannerHealthCheckParam.updateStatus();
