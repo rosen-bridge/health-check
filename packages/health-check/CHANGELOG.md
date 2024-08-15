@@ -1,5 +1,12 @@
 # @rosen-bridge/health-check
 
+## 6.0.0
+
+### Major Changes
+
+- Update abstract health-check parameter class to include param details and trial error messages
+- Notify about different health events (if any) whenever health status of any param is updated
+
 ## 5.0.0
 
 ### Major Changes

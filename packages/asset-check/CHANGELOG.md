@@ -1,5 +1,21 @@
 # @rosen-bridge/asset-check
 
+## 1.0.0
+
+### Major Changes
+
+- Update parameter structure to be compatible with AbstractHealthParameter
+
+### Minor Changes
+
+- Add Ethereum asset check health parameter
+
+### Patch Changes
+
+- Update messages to be user friendly
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.0
+
 ## 0.2.1
 
 ### Patch Changes
