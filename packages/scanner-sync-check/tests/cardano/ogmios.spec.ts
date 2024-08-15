@@ -1,9 +1,16 @@
-import { describe, expect, it, vitest, vi, beforeEach } from 'vitest';
+import {
+  describe,
+  expect,
+  it,
+  vitest,
+  vi,
+  beforeEach,
+  afterEach,
+} from 'vitest';
 import { createLedgerStateQueryClient } from '@cardano-ogmios/client';
 
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
-import { afterEach } from 'node:test';
 
 vitest.mock('@cardano-ogmios/client');
 
@@ -130,7 +137,9 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     beforeEach(() => {
       vi.useFakeTimers({ now: 1723451468275 });
     });
-    afterEach(vi.useRealTimers);
+    afterEach(() => {
+      vi.useRealTimers();
+    });
     /**
      * @target updateStatus should update the height difference correctly
      * @dependencies
