@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/health-check",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Rosen bridge health-check package",
   "license": "GPL-3.0",
   "author": "Rosen Team",

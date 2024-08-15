@@ -1,4 +1,12 @@
-import { describe, expect, it, vitest, vi, beforeEach } from 'vitest';
+import {
+  describe,
+  expect,
+  it,
+  vitest,
+  vi,
+  beforeEach,
+  afterEach,
+} from 'vitest';
 import { createLedgerStateQueryClient } from '@cardano-ogmios/client';
 
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
@@ -126,6 +134,12 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
   });
 
   describe('updateStatus', () => {
+    beforeEach(() => {
+      vi.useFakeTimers({ now: 1723451468275 });
+    });
+    afterEach(() => {
+      vi.useRealTimers();
+    });
     /**
      * @target updateStatus should update the height difference correctly
      * @dependencies
@@ -158,7 +172,6 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - to set disconnectionTime to current time when it is undefined
      */
     it('should set the disconnectionTime for the first time', async () => {
-      vi.useFakeTimers({ now: 1723451468275 });
       scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
       scannerHealthCheckParam['disconnectionTime'] = undefined;
       await scannerHealthCheckParam.updateStatus();
@@ -176,7 +189,6 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - not to change disconnectionTime when still is disconnected
      */
     it('should not change disconnectionTime when client is still disconnected', async () => {
-      vi.useFakeTimers({ now: 1723451468275 });
       scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 1000;
       await scannerHealthCheckParam.updateStatus();
