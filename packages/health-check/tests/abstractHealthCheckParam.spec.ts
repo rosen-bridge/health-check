@@ -1,9 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
 import { HealthStatusLevel } from '../lib';
 import { TestHealthCheckParam } from './testHealthCheckParam';
+import { afterEach, beforeEach } from 'node:test';
 
 describe('AbstractHealthCheckParam', () => {
   describe('update', () => {
+    beforeEach(() => {
+      vi.useFakeTimers({ now: 1723451468275 });
+    });
+    afterEach(vi.useRealTimers);
     /**
      * @target should update last update time
      * @dependencies
@@ -16,7 +21,6 @@ describe('AbstractHealthCheckParam', () => {
      */
     it('should update last update time', async () => {
       const param = new TestHealthCheckParam('', HealthStatusLevel.HEALTHY);
-      vi.useFakeTimers({ now: 1723451468275 });
       param['lastTrialErrorMessage'] = 'ErrorMessage';
       param['lastTrialErrorTime'] = new Date();
       await param.update();
@@ -37,12 +41,11 @@ describe('AbstractHealthCheckParam', () => {
      * - mock updateStatus to throw Error
      * - run test (call `update`)
      * @expected
-     * - should update the last update time
-     * - should update trial error message and time to undefined
+     * - should not update the last update time
+     * - should update trial error message
      */
     it('should not modify last update time and store error information when an error occurs', async () => {
       const param = new TestHealthCheckParam('', HealthStatusLevel.HEALTHY);
-      vi.useFakeTimers({ now: 1723451468275 });
       param.updateStatus = () => {
         throw new Error('Error');
       };
