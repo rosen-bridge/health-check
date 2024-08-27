@@ -21,33 +21,35 @@ import {
 
 export class HealthCheck {
   protected params: Array<AbstractHealthCheckParam> = [];
-  private healthHistory: HealthHistory;
+  private healthHistory?: HealthHistory;
 
   constructor(
-    notify: NotifyWithSeverity,
+    notify?: NotifyWithSeverity,
     { historyConfig, notificationCheckConfig }: HealthCheckConfig = {},
   ) {
-    const notificationManager = new NotificationManager(
-      notify,
-      this.getParamById,
-    );
-    const healthHistory = new HealthHistory({
-      updateHandler: notificationManager.sendNotifications,
-      ...historyConfig,
-    });
+    if (notify) {
+      const notificationManager = new NotificationManager(
+        notify,
+        this.getParamById,
+      );
+      const healthHistory = new HealthHistory({
+        updateHandler: notificationManager.sendNotifications,
+        ...historyConfig,
+      });
 
-    this.healthHistory = healthHistory;
+      this.healthHistory = healthHistory;
 
-    notificationManager.onNotified((param, notifyArgs) =>
-      healthHistory.setTag(param, {
-        id: HistoryItemTag.NOTIFIED,
-        data: notifyArgs,
-      }),
-    );
-    this.registerNotificationManagerChecks(
-      notificationManager,
-      notificationCheckConfig,
-    );
+      notificationManager.onNotified((param, notifyArgs) =>
+        healthHistory.setTag(param, {
+          id: HistoryItemTag.NOTIFIED,
+          data: notifyArgs,
+        }),
+      );
+      this.registerNotificationManagerChecks(
+        notificationManager,
+        notificationCheckConfig,
+      );
+    }
   }
 
   /**
@@ -105,17 +107,18 @@ export class HealthCheck {
   private updateHistoryForParam = async (param: AbstractHealthCheckParam) => {
     const paramId = param.getId();
     const lastTrialErrorTime = await param.getLastTrialErrorTime();
-    if (lastTrialErrorTime) {
-      this.healthHistory.updateHistoryForParam(paramId, {
-        result: 'unknown',
-        timestamp: lastTrialErrorTime.valueOf(),
-      });
-    } else {
-      this.healthHistory.updateHistoryForParam(paramId, {
-        result: await param.getHealthStatus(),
-        timestamp: param.getLastUpdatedTime()!.valueOf(),
-      });
-    }
+    if (this.healthHistory)
+      if (lastTrialErrorTime) {
+        this.healthHistory.updateHistoryForParam(paramId, {
+          result: 'unknown',
+          timestamp: lastTrialErrorTime.valueOf(),
+        });
+      } else {
+        this.healthHistory.updateHistoryForParam(paramId, {
+          result: await param.getHealthStatus(),
+          timestamp: param.getLastUpdatedTime()!.valueOf(),
+        });
+      }
   };
 
   /**
@@ -133,7 +136,7 @@ export class HealthCheck {
    * check all params health status and cleanup history
    */
   update = async (): Promise<void> => {
-    this.healthHistory.cleanupHistory();
+    if (this.healthHistory) this.healthHistory.cleanupHistory();
     await Promise.all(this.params.map(this.updateParamAndItsHistory));
   };
 

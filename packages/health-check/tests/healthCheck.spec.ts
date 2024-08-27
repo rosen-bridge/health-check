@@ -117,13 +117,13 @@ describe('HealthCheck', () => {
       healthCheck.register(param2);
       await healthCheck.update();
 
-      expect(healthCheck['healthHistory'].getHistory().id1.length).toEqual(1);
-      expect(healthCheck['healthHistory'].getHistory().id1[0].result).toEqual(
+      expect(healthCheck['healthHistory']!.getHistory().id1.length).toEqual(1);
+      expect(healthCheck['healthHistory']!.getHistory().id1[0].result).toEqual(
         HealthStatusLevel.HEALTHY,
       );
 
-      expect(healthCheck['healthHistory'].getHistory().id2.length).toEqual(1);
-      expect(healthCheck['healthHistory'].getHistory().id2[0].result).toEqual(
+      expect(healthCheck['healthHistory']!.getHistory().id2.length).toEqual(1);
+      expect(healthCheck['healthHistory']!.getHistory().id2[0].result).toEqual(
         HealthStatusLevel.BROKEN,
       );
     });
@@ -153,7 +153,7 @@ describe('HealthCheck', () => {
       vi.advanceTimersByTime(DEFAULT_HISTORY_CLEANUP_THRESHOLD + 1);
       await healthCheck.update();
 
-      expect(healthCheck['healthHistory'].getHistory().id1.length).toEqual(1);
+      expect(healthCheck['healthHistory']!.getHistory().id1.length).toEqual(1);
 
       vi.useRealTimers();
     });
@@ -203,12 +203,12 @@ describe('HealthCheck', () => {
       healthCheck.register(param2);
       await healthCheck.updateParam(param1.getId());
 
-      expect(healthCheck['healthHistory'].getHistory().id1.length).toEqual(1);
-      expect(healthCheck['healthHistory'].getHistory().id1[0].result).toEqual(
+      expect(healthCheck['healthHistory']!.getHistory().id1.length).toEqual(1);
+      expect(healthCheck['healthHistory']!.getHistory().id1[0].result).toEqual(
         HealthStatusLevel.HEALTHY,
       );
 
-      expect(healthCheck['healthHistory'].getHistory().id2).toEqual(undefined);
+      expect(healthCheck['healthHistory']!.getHistory().id2).toEqual(undefined);
     });
   });
 
