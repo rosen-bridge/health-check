@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/tx-progress-check",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Rosen bridge tx-progress health-check parameter",
   "repository": "",
   "license": "GPL-3.0",
@@ -33,7 +33,7 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@rosen-bridge/health-check": "^6.0.0",
+    "@rosen-bridge/health-check": "^6.0.1",
     "@types/lodash-es": "^4.17.12",
     "lodash-es": "^4.17.21"
   }

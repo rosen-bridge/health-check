@@ -1,5 +1,11 @@
 # @rosen-bridge/health-check
 
+## 6.0.1
+
+### Patch Changes
+
+- Update notify to be an optional constructor parameter
+
 ## 6.0.0
 
 ### Major Changes
