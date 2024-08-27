@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/scanner-sync-check",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rosen bridge scanner-sync health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",
@@ -35,7 +35,7 @@
     "@apollo/client": "^3.9.11",
     "@blockfrost/blockfrost-js": "^5.5.0",
     "@cardano-ogmios/client": "^6.3.0",
-    "@rosen-bridge/health-check": "^6.0.0",
+    "@rosen-bridge/health-check": "^6.0.1",
     "@rosen-clients/ergo-explorer": "^1.1.1",
     "@rosen-clients/ergo-node": "^1.1.1",
     "axios": "^1.6.8",
