@@ -120,7 +120,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
       .toString()
       .slice(-this.assetDecimal)
       .padStart(this.assetDecimal, '0');
-    return `${roundTokenAmount}.${decimalTokenAmount}`.replace(/\.0+$/, '');
+    return `${roundTokenAmount}.${decimalTokenAmount}`.replace(/\.?0+$/, '');
   };
 }
 
