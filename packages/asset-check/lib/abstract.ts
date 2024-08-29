@@ -39,6 +39,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
     this.warnThreshold = warnThreshold;
     this.criticalThreshold = criticalThreshold;
     this.assetDecimal = assetDecimal;
+    this.tokenAmount = 0n;
   }
 
   /**

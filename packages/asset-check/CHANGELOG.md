@@ -1,5 +1,11 @@
 # @rosen-bridge/asset-check
 
+## 1.0.2
+
+### Patch Changes
+
+- Set tokenAmount initial value to avoid startup errors
+
 ## 1.0.1
 
 ### Patch Changes
