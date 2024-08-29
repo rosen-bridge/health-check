@@ -124,6 +124,20 @@ describe('AbstractAssetHealthCheckParam', () => {
     });
 
     /**
+     * @target AbstractAssetHealthCheckParam.getTokenDecimalStr should trim leading zeros and decimal point when decimal is zero
+     * @dependencies
+     * @scenario
+     * - mock token decimal
+     * - get token decimal str
+     * @expected
+     * - should trim leading zeros and decimal point
+     */
+    it('should trim leading zeros after decimal point', () => {
+      assetHealthCheckParam.setTokenDecimal(3);
+      expect(assetHealthCheckParam.getTokenDecimalStr(909000n)).toEqual('909');
+    });
+
+    /**
      * @target AbstractAssetHealthCheckParam.getTokenDecimalStr should trim leading zeros after decimal point
      * @dependencies
      * @scenario
@@ -134,7 +148,7 @@ describe('AbstractAssetHealthCheckParam', () => {
      */
     it('should trim leading zeros after decimal point', () => {
       assetHealthCheckParam.setTokenDecimal(3);
-      expect(assetHealthCheckParam.getTokenDecimalStr(909000n)).toEqual('909');
+      expect(assetHealthCheckParam.getTokenDecimalStr(90900n)).toEqual('90.9');
     });
   });
 });
