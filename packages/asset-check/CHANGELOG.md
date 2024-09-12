@@ -1,5 +1,13 @@
 # @rosen-bridge/asset-check
 
+## 1.0.3
+
+### Patch Changes
+
+- Trim leading zeros after decimal point in messages
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.2
+
 ## 1.0.2
 
 ### Patch Changes

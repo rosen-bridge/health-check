@@ -1,5 +1,11 @@
 # @rosen-bridge/health-check
 
+## 6.0.2
+
+### Patch Changes
+
+- Use Prmise.allSettled to check all promises and return an aggregated error
+
 ## 6.0.1
 
 ### Patch Changes
