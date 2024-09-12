@@ -74,17 +74,29 @@ class NotificationManager {
       (notificationCheck) => notificationCheck.check(),
     );
 
-    await Promise.all(
+    const notifyResults = await Promise.allSettled(
       eligibleNotificationChecks.map(async (notificationCheck) => {
         const notifyArgs = [
           notificationCheck.getSeverity(),
           await notificationCheck.getTitle(),
           await notificationCheck.getDescription(),
         ] as const;
-        await this.notify(...notifyArgs);
+        try {
+          await this.notify(...notifyArgs);
+        } catch (e) {
+          throw new Error(
+            `sending notification "${await notificationCheck.getTitle()}" failed with error: ${e}`,
+          );
+        }
         await this.notifiedHandler(paramId, notifyArgs);
       }),
     );
+    const rejectedResults = notifyResults.filter(
+      (result) => result.status == 'rejected',
+    ) as PromiseRejectedResult[];
+    if (rejectedResults.length) {
+      throw AggregateError(rejectedResults.map((result) => result.reason));
+    }
   };
 }
 
