@@ -109,12 +109,12 @@ export class HealthCheck {
     const lastTrialErrorTime = await param.getLastTrialErrorTime();
     if (this.healthHistory)
       if (lastTrialErrorTime) {
-        this.healthHistory.updateHistoryForParam(paramId, {
+        await this.healthHistory.updateHistoryForParam(paramId, {
           result: 'unknown',
           timestamp: lastTrialErrorTime.valueOf(),
         });
       } else {
-        this.healthHistory.updateHistoryForParam(paramId, {
+        await this.healthHistory.updateHistoryForParam(paramId, {
           result: await param.getHealthStatus(),
           timestamp: param.getLastUpdatedTime()!.valueOf(),
         });
@@ -137,7 +137,21 @@ export class HealthCheck {
    */
   update = async (): Promise<void> => {
     if (this.healthHistory) this.healthHistory.cleanupHistory();
-    await Promise.all(this.params.map(this.updateParamAndItsHistory));
+    const results = await Promise.allSettled(
+      this.params.map(this.updateParamAndItsHistory),
+    );
+    const rejectedResults = results.filter(
+      (result) => result.status == 'rejected',
+    ) as PromiseRejectedResult[];
+    if (rejectedResults.length) {
+      throw AggregateError(
+        rejectedResults.flatMap((result) => {
+          if (result.reason instanceof AggregateError)
+            return result.reason.errors;
+          return result.reason;
+        }),
+      );
+    }
   };
 
   /**
