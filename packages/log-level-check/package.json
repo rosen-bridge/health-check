@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/log-level-check",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Rosen bridge log-level health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@rosen-bridge/abstract-logger": "^1.0.0",
-    "@rosen-bridge/health-check": "^6.0.1",
+    "@rosen-bridge/health-check": "^6.0.2",
     "lodash-es": "^4.17.21"
   }
 }
