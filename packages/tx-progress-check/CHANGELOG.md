@@ -1,5 +1,11 @@
 # @rosen-bridge/tx-progress-check
 
+## 1.0.0
+
+### Major Changes
+
+- Change `getActiveTxs` to async
+
 ## 0.1.3
 
 ### Patch Changes

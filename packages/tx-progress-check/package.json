@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/tx-progress-check",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "Rosen bridge tx-progress health-check parameter",
   "repository": "",
   "license": "GPL-3.0",

@@ -11,7 +11,7 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
   private txWithMaxSigningFailure: TxInfo | undefined;
 
   constructor(
-    private getActiveTransactions: () => Array<TxInfo>,
+    private getActiveTransactions: () => Promise<Array<TxInfo>>,
     private signFailedWarnThreshold: number,
     private signFailedCriticalThreshold: number,
   ) {
@@ -114,8 +114,8 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
   };
 
   /** Update the stuck transaction list and tx with max singing failure */
-  updateStatus = () => {
-    const activeTransactions = this.getActiveTransactions();
+  updateStatus = async () => {
+    const activeTransactions = await this.getActiveTransactions();
     this.stuckTransactions = activeTransactions.filter(
       (tx) => tx.signFailedCount >= this.signFailedWarnThreshold,
     );

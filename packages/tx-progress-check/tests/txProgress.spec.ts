@@ -9,7 +9,7 @@ describe('TxProgressHealthCheckParam', () => {
     let txProgressHealthCheckParam: TxProgressHealthCheckParam;
     beforeAll(() => {
       txProgressHealthCheckParam = new TxProgressHealthCheckParam(
-        () => [],
+        () => Promise.resolve([]),
         5,
         50,
       );
@@ -80,7 +80,7 @@ describe('TxProgressHealthCheckParam', () => {
      */
     it('should update stuck transaction list to an empty array', () => {
       const txProgressHealthCheckParam = new TxProgressHealthCheckParam(
-        () => healthyTxs,
+        () => Promise.resolve(healthyTxs),
         5,
         50,
       );
@@ -102,13 +102,13 @@ describe('TxProgressHealthCheckParam', () => {
      * - should set stuckTransactions to all signFailed transactions
      * - should set txWithMaxSigningFailure to last signFailedTx
      */
-    it('should update stuck transaction list to contain sign failed transactions', () => {
+    it('should update stuck transaction list to contain sign failed transactions', async () => {
       const txProgressHealthCheckParam = new TxProgressHealthCheckParam(
-        () => [...healthyTxs, ...signFailedTxs],
+        () => Promise.resolve([...healthyTxs, ...signFailedTxs]),
         5,
         50,
       );
-      txProgressHealthCheckParam.updateStatus();
+      await txProgressHealthCheckParam.updateStatus();
       expect(txProgressHealthCheckParam['stuckTransactions']).toEqual(
         signFailedTxs,
       );
@@ -122,7 +122,7 @@ describe('TxProgressHealthCheckParam', () => {
     let txProgressHealthCheckParam: TxProgressHealthCheckParam;
     beforeAll(() => {
       txProgressHealthCheckParam = new TxProgressHealthCheckParam(
-        () => [],
+        () => Promise.resolve([]),
         5,
         50,
       );
