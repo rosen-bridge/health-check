@@ -150,7 +150,7 @@ describe('HealthCheck', () => {
       healthCheck.register(param1);
       await healthCheck.update();
 
-      vi.advanceTimersByTime(DEFAULT_HISTORY_CLEANUP_THRESHOLD + 1);
+      vi.advanceTimersByTime(DEFAULT_HISTORY_CLEANUP_THRESHOLD * 1000 + 1);
       await healthCheck.update();
 
       expect(healthCheck['healthHistory']!.getHistory().id1.length).toEqual(1);

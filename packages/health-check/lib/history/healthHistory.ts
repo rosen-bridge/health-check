@@ -54,7 +54,7 @@ class HealthHistory {
     const cleanupParamHistory = (param: ParamId) => {
       this.history[param] = this.history[param].filter(
         (historyItem) =>
-          Date.now() - historyItem.timestamp < this.cleanupThreshold,
+          Date.now() - historyItem.timestamp < this.cleanupThreshold * 1000,
       );
     };
 
