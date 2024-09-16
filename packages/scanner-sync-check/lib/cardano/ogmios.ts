@@ -20,7 +20,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
     private criticalDifference: number,
     private ogmiosHost: string,
     private ogmiosPort: number,
-    private connectionRetrialTime: number,
+    private unstableTimeWindow: number,
     private useTls = false,
   ) {
     super();
@@ -62,14 +62,14 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
   getDetails = async (): Promise<string | undefined> => {
     if (
       this.disconnectionTime &&
-      this.disconnectionTime + this.connectionRetrialTime < Date.now()
+      this.disconnectionTime + this.unstableTimeWindow < Date.now()
     )
       return (
         'Service has stopped working since Ogmios client is not connected. ' +
         'Please check the connection and restart your service.'
       );
     else if (this.disconnectionTime)
-      return 'Ogmios client is disconnected, service is trying to reconnect the ogmios client.';
+      return 'Ogmios client connection is disrupted. Service may stop working soon.';
     const baseMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     if (this.difference >= this.criticalDifference)
       return `Service has stopped working.` + baseMessage;
@@ -85,7 +85,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
     if (
       this.difference >= this.criticalDifference ||
       (this.disconnectionTime &&
-        this.disconnectionTime + this.connectionRetrialTime < Date.now())
+        this.disconnectionTime + this.unstableTimeWindow < Date.now())
     )
       return HealthStatusLevel.BROKEN;
     else if (this.difference >= this.warnDifference || this.disconnectionTime)
