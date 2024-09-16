@@ -126,6 +126,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       vi.mocked(createLedgerStateQueryClient).mockImplementation(async () => {
         return {
           networkBlockHeight: async () => 1115,
+          shutdown: async () => undefined,
         } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
       });
       const height = await scannerHealthCheckParam.getLastAvailableBlock();

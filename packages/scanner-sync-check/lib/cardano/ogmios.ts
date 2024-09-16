@@ -109,9 +109,17 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
       },
     );
     const ogmiosClient = await createLedgerStateQueryClient(context);
-    const height = await ogmiosClient.networkBlockHeight();
-    if (height == 'origin') return 0;
-    else return height;
+    try {
+      const height = await ogmiosClient.networkBlockHeight();
+      ogmiosClient.shutdown();
+      if (height == 'origin') return 0;
+      else return height;
+    } catch (e) {
+      ogmiosClient.shutdown();
+      throw new Error(
+        `Checking ogmios last network block failed with error: ${e}`,
+      );
+    }
   };
 
   /**
