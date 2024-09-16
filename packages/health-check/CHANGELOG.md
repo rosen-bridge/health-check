@@ -1,5 +1,11 @@
 # @rosen-bridge/health-check
 
+## 6.0.3
+
+### Patch Changes
+
+- Fix issue in health check health history cleanup threshold value
+
 ## 6.0.2
 
 ### Patch Changes

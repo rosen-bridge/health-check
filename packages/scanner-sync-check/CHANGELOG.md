@@ -1,5 +1,13 @@
 # @rosen-bridge/scanner-sync-check
 
+## 1.0.3
+
+### Patch Changes
+
+- Close ogmios connection after usage
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.3
+
 ## 1.0.2
 
 ### Patch Changes

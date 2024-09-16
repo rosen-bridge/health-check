@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/p2p-network-check",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Rosen bridge p2p-network health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",
@@ -32,6 +32,6 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@rosen-bridge/health-check": "^6.0.2"
+    "@rosen-bridge/health-check": "^6.0.3"
   }
 }
