@@ -1,5 +1,12 @@
 # @rosen-bridge/tx-progress-check
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.3
+
 ## 1.0.0
 
 ### Major Changes

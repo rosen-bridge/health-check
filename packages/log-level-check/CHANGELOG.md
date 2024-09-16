@@ -1,5 +1,12 @@
 # @rosen-bridge/log-level-check
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.3
+
 ## 1.0.2
 
 ### Patch Changes
