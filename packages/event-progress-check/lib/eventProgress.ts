@@ -37,7 +37,7 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
    * get param description
    */
   getDescription = async (): Promise<string> => {
-    return `Checks the amount of time passed by the first attempt to process the event.`;
+    return `Checks the elapsed time since the first attempt at processing the event.`;
   };
 
   /**
