@@ -1,4 +1,12 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { EventProgressHealthCheckParam } from '../lib/eventProgress';
@@ -22,7 +30,7 @@ describe('EventProgressHealthCheckParam', () => {
 
   describe('getHealthStatus', () => {
     let eventProgressHealthCheckParam: EventProgressHealthCheckParam;
-    beforeAll(() => {
+    beforeEach(() => {
       eventProgressHealthCheckParam = new EventProgressHealthCheckParam(
         () => Promise.resolve([]),
         warnThreshold,
@@ -129,7 +137,7 @@ describe('EventProgressHealthCheckParam', () => {
 
   describe('getStuckDetails', () => {
     let eventProgressHealthCheckParam: EventProgressHealthCheckParam;
-    beforeAll(() => {
+    beforeEach(() => {
       eventProgressHealthCheckParam = new EventProgressHealthCheckParam(
         () => Promise.resolve([]),
         warnThreshold,

@@ -9,7 +9,6 @@ import { EventInfo } from './interfaces';
 export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
   private stuckEvents: Array<EventInfo> = [];
   private eventWithMaxTry: EventInfo | undefined;
-  private currentTimeStamp = () => Math.round(Date.now() / 1000);
 
   constructor(
     private getActiveEvents: () => Promise<Array<EventInfo>>,
@@ -41,24 +40,26 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
   };
 
   /**
+   * return the elapsed time from a timestamp
+   * @timestamp timestamp in seconds
+   */
+  private getElapsedTime = (timestamp: string): number => {
+    return Math.round(Date.now() / 1000) - Number(timestamp);
+  };
+
+  /**
    * return passed stuck duration threshold and number of events with higher stuck duration
    */
   private getStuckDetails = () => {
     if (!this.eventWithMaxTry) return undefined;
-    const currentTimestamp = this.currentTimeStamp();
+    const elapsedTime = this.getElapsedTime(this.eventWithMaxTry.firstTry);
     let stuckDuration = 0;
-    if (
-      currentTimestamp - Number(this.eventWithMaxTry.firstTry) >=
-      this.durationCriticalThreshold
-    )
+    if (elapsedTime >= this.durationCriticalThreshold)
       stuckDuration = this.durationCriticalThreshold;
-    else if (
-      currentTimestamp - Number(this.eventWithMaxTry.firstTry) >=
-      this.durationWarnThreshold
-    )
+    else if (elapsedTime >= this.durationWarnThreshold)
       stuckDuration = this.durationWarnThreshold;
     const stuckEventCount = this.stuckEvents.filter(
-      (tx) => currentTimestamp - Number(tx.firstTry) >= stuckDuration,
+      (tx) => this.getElapsedTime(tx.firstTry) >= stuckDuration,
     ).length;
     return {
       stuckDuration,
@@ -72,20 +73,19 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
   getDetails = async (): Promise<string | undefined> => {
     if (!this.eventWithMaxTry) return undefined;
     const { stuckDuration, stuckEventCount } = this.getStuckDetails()!;
-    const stuckDurationInMinute = Math.round(stuckDuration / 60);
-    const highestDurationInMinute = Math.round(
-      Math.round(Date.now() / 1000) -
-        Number(this.eventWithMaxTry.firstTry) / 60,
+    const stuckDurationInHour = Math.round(stuckDuration / 3600);
+    const highestDurationInHour = Math.round(
+      this.getElapsedTime(this.eventWithMaxTry.firstTry) / 3600,
     );
     return `Service is not working properly because ${stuckEventCount} ` +
       (stuckEventCount === 1)
       ? 'event is '
       : 'events are ' +
-          `stuck for more than ${stuckDurationInMinute} minutes. ` +
+          `stuck for more than ${stuckDurationInHour} hours. ` +
           `Event with the highest stuck duration is ` +
           `${this.eventWithMaxTry.id} with status ` +
           `${this.eventWithMaxTry.status} which is stuck for ` +
-          `${highestDurationInMinute} minutes.`;
+          `${highestDurationInHour} hours.`;
   };
 
   /**
@@ -93,27 +93,20 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
    */
   getHealthStatus = async (): Promise<HealthStatusLevel> => {
     if (!this.eventWithMaxTry) return HealthStatusLevel.HEALTHY;
-    const currentTimestamp = this.currentTimeStamp();
-    if (
-      currentTimestamp - Number(this.eventWithMaxTry.firstTry) >=
-      this.durationCriticalThreshold
-    )
+    const elapsedTime = this.getElapsedTime(this.eventWithMaxTry.firstTry);
+    if (elapsedTime >= this.durationCriticalThreshold)
       return HealthStatusLevel.BROKEN;
-    if (
-      currentTimestamp - Number(this.eventWithMaxTry.firstTry) >=
-      this.durationWarnThreshold
-    )
+    if (elapsedTime >= this.durationWarnThreshold)
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
   };
 
   /** update the stuck event list and event with max stuck duration */
   updateStatus = async () => {
-    const currentTimestamp = this.currentTimeStamp();
     const activeTransactions = await this.getActiveEvents();
     this.stuckEvents = activeTransactions.filter(
       (event) =>
-        currentTimestamp - Number(event.firstTry) >= this.durationWarnThreshold,
+        this.getElapsedTime(event.firstTry) >= this.durationWarnThreshold,
     );
     this.eventWithMaxTry = minBy(this.stuckEvents, 'firstTry');
   };
