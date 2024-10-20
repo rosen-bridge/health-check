@@ -8,7 +8,6 @@ import {
   ParamHistoryItemTag,
 } from './types';
 
-export const DEFAULT_HISTORY_CLEANUP_INTERVAL = 10;
 export const DEFAULT_HISTORY_CLEANUP_THRESHOLD = 1 * DAY + 1 * HOUR;
 
 /**
