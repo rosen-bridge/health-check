@@ -7,6 +7,7 @@ import {
   notifiedBrokenHistoryWithUnknownTail,
   dummyParam,
   recentlyBrokenHistoryWithUnknownBeforeTail,
+  recentlyBrokenHistoryWithNoneNotified,
 } from './historyTestData';
 
 describe('IsBroken', () => {
@@ -49,6 +50,21 @@ describe('IsBroken', () => {
       expect(isBroken(dummyParam, recentlyBrokenHistory).check()).toEqual(
         false,
       );
+    });
+
+    /**
+     * @target `check` should return true if the param has recently been broken
+     * but none is notified
+     * @dependencies
+     * @scenario
+     * - call `check` with a history whose last two items have a broken status
+     * @expected
+     * - return value should be false
+     */
+    it('should return false if the param has recently been broken but none is notified', () => {
+      expect(
+        isBroken(dummyParam, recentlyBrokenHistoryWithNoneNotified).check(),
+      ).toEqual(true);
     });
 
     /**
