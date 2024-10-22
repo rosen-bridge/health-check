@@ -78,6 +78,16 @@ export const brokenHistory: ParamHistory = [
  * a bunch of last items are broken
  */
 export const recentlyBrokenHistory: ParamHistory = [
+  it.next({ status: HealthStatusLevel.BROKEN, tag: true }).value!,
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
+];
+
+/**
+ * a bunch of last items are broken, none of which is notified
+ */
+export const recentlyBrokenHistoryWithNoneNotified: ParamHistory = [
+  it.next({ status: HealthStatusLevel.BROKEN }).value!,
   it.next({ status: HealthStatusLevel.BROKEN }).value!,
   it.next({ status: HealthStatusLevel.BROKEN }).value!,
 ];

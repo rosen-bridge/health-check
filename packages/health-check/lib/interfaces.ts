@@ -29,8 +29,5 @@ export interface HealthCheckConfig {
     hasBeenUnknownForAWhile?: {
       windowDuration?: number;
     };
-    isStillUnhealthy?: {
-      windowDuration?: number;
-    };
   };
 }

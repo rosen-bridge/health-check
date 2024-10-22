@@ -13,6 +13,23 @@ const isBroken: NotificationCheck = (param, history) => ({
   id: 'is-broken',
   check() {
     const historyWithoutUnknowns = rejectUnknowns(history);
+
+    /**
+     * If we only have broken, not-notified items, it probably indicates a
+     * continuous broken status after a history cleanup, and we should repeat
+     * the notification
+     */
+    if (
+      historyWithoutUnknowns.length &&
+      historyWithoutUnknowns.every(
+        (historyItem) =>
+          historyItem.result === HealthStatusLevel.BROKEN &&
+          historyItem.tag?.id !== HistoryItemTag.NOTIFIED,
+      )
+    ) {
+      return true;
+    }
+
     return (
       historyWithoutUnknowns.at(-1)?.result === HealthStatusLevel.BROKEN &&
       /**

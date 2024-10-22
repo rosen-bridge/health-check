@@ -8,7 +8,6 @@ import createHasBeenUnknownForAWhile from './notification/checks/hasBeenUnknownF
 import createHasBeenUnstableForAWhile from './notification/checks/hasBeenUnstableForAWhile';
 import isBroken from './notification/checks/isBroken';
 import isStabilized from './notification/checks/isStabilized';
-import createIsStillUnhealthy from './notification/checks/isStillUnhealthy';
 
 import { HistoryItemTag } from './constants';
 
@@ -71,10 +70,6 @@ export class HealthCheck {
     notificationManager.registerCheck(hasBeenUnstableForAWhile);
     notificationManager.registerCheck(isBroken);
     notificationManager.registerCheck(isStabilized);
-    const isStillUnhealthy = createIsStillUnhealthy(
-      notificationCheckConfig?.isStillUnhealthy?.windowDuration,
-    );
-    notificationManager.registerCheck(isStillUnhealthy);
   };
 
   /**
