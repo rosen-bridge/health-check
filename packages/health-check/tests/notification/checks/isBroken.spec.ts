@@ -53,16 +53,16 @@ describe('IsBroken', () => {
     });
 
     /**
-     * @target `check` should return false if the param has recently been broken
+     * @target `check` should return true if the param has recently been broken
      * but none is notified
      * @dependencies
      * @scenario
      * - call `check` with a history whose last two items have a broken status
      *  none of which being notified
      * @expected
-     * - return value should be false
+     * - return value should be true
      */
-    it('should return false if the param has recently been broken but none is notified', () => {
+    it('should return true if the param has recently been broken but none is notified', () => {
       expect(
         isBroken(dummyParam, recentlyBrokenHistoryWithNoneNotified).check(),
       ).toEqual(true);
