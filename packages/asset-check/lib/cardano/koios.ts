@@ -18,7 +18,9 @@ export class CardanoKoiosAssetHealthCheckParam extends AbstractAssetHealthCheckP
   ) {
     super(
       assetId,
-      assetName,
+      assetName === CARDANO_NATIVE_ASSET
+        ? assetName.toUpperCase()
+        : CARDANO_NATIVE_ASSET,
       address,
       warnThreshold,
       criticalThreshold,
