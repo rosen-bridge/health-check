@@ -17,9 +17,7 @@ export class ErgoExplorerAssetHealthCheckParam extends AbstractAssetHealthCheckP
   ) {
     super(
       assetId,
-      assetName === ERGO_NATIVE_ASSET
-        ? assetName.toUpperCase()
-        : ERGO_NATIVE_ASSET,
+      assetName === ERGO_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
       address,
       warnThreshold,
       criticalThreshold,

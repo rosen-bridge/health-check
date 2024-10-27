@@ -24,9 +24,7 @@ export class CardanoGraphQLAssetHealthCheckParam extends AbstractAssetHealthChec
   ) {
     super(
       assetId,
-      assetName === CARDANO_NATIVE_ASSET
-        ? assetName.toUpperCase()
-        : CARDANO_NATIVE_ASSET,
+      assetName === CARDANO_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
       address,
       warnThreshold,
       criticalThreshold,
