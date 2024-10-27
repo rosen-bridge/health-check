@@ -44,7 +44,7 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
    * @returns parameter title
    */
   getTitle = async () => {
-    return `${this.chain} RPC Scanner Sync`;
+    return `${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC Scanner Sync`;
   };
 
   /**
@@ -52,7 +52,7 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Checks if the scanner is in sync with the network. The last block saved by the ${this.chain} RPC scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the ${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**
