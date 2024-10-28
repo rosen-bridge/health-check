@@ -16,7 +16,7 @@ export class BitcoinEsploraAssetHealthCheckParam extends AbstractAssetHealthChec
   ) {
     super(
       BITCOIN_NATIVE_ASSET,
-      assetName,
+      assetName === BITCOIN_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
       address,
       warnThreshold,
       criticalThreshold,

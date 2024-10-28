@@ -2,10 +2,12 @@ import { JsonRpcProvider } from 'ethers';
 
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
-export class EthereumRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
+export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   protected readonly provider: JsonRpcProvider;
+  protected chain: string;
 
   constructor(
+    chain: string,
     getLastSavedBlockHeight: () => Promise<number>,
     scannerName: string,
     warnDifference: number,
@@ -20,6 +22,7 @@ export class EthereumRPCScannerHealthCheck extends AbstractScannerSyncHealthChec
       warnDifference,
       criticalDifference,
     );
+    this.chain = chain;
     this.provider = authToken
       ? new JsonRpcProvider(`${url}/${authToken}`)
       : new JsonRpcProvider(`${url}`);
@@ -33,7 +36,7 @@ export class EthereumRPCScannerHealthCheck extends AbstractScannerSyncHealthChec
    * @returns parameter id
    */
   getId = (): string => {
-    return `ethereum_rpc_scanner`;
+    return `${this.chain}_rpc_scanner`;
   };
 
   /**
@@ -41,7 +44,7 @@ export class EthereumRPCScannerHealthCheck extends AbstractScannerSyncHealthChec
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Ethereum RPC Scanner Sync`;
+    return `${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC Scanner Sync`;
   };
 
   /**
@@ -49,7 +52,7 @@ export class EthereumRPCScannerHealthCheck extends AbstractScannerSyncHealthChec
    * @returns parameter description
    */
   getDescription = async () => {
-    return `Checks if the scanner is in sync with the network. The last block saved by the Ethereum RPC scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `Checks if the scanner is in sync with the network. The last block saved by the ${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

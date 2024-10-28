@@ -3,12 +3,6 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 
-import {
-  BITCOIN_NATIVE_ASSET,
-  CARDANO_NATIVE_ASSET,
-  ERGO_NATIVE_ASSET,
-} from './constants';
-
 abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   protected assetName: string;
   protected assetId: string;
@@ -28,13 +22,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   ) {
     super();
     this.assetId = assetId;
-    if (
-      [ERGO_NATIVE_ASSET, CARDANO_NATIVE_ASSET, BITCOIN_NATIVE_ASSET].includes(
-        assetId,
-      )
-    )
-      this.assetName = assetName.toUpperCase();
-    else this.assetName = assetName;
+    this.assetName = assetName;
     this.address = address;
     this.warnThreshold = warnThreshold;
     this.criticalThreshold = criticalThreshold;
