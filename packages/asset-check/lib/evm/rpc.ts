@@ -5,10 +5,10 @@ import { PartialERC20ABI } from './types';
 
 export class EvmRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   protected readonly provider: JsonRpcProvider;
-  protected NATIVE_TOKEN_ID: string;
+  protected nativeTokenId: string;
 
   constructor(
-    NATIVE_TOKEN_ID: string,
+    nativeTokenId: string,
     assetId: string,
     assetName: string,
     address: string,
@@ -21,13 +21,13 @@ export class EvmRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   ) {
     super(
       assetId,
-      assetName === NATIVE_TOKEN_ID ? assetName.toUpperCase() : assetName,
+      assetName === nativeTokenId ? assetName.toUpperCase() : assetName,
       address,
       warnThreshold,
       criticalThreshold,
       assetDecimal,
     );
-    this.NATIVE_TOKEN_ID = NATIVE_TOKEN_ID;
+    this.nativeTokenId = nativeTokenId;
     this.provider = authToken
       ? new JsonRpcProvider(`${url}/${authToken}`)
       : new JsonRpcProvider(`${url}`);
@@ -40,7 +40,7 @@ export class EvmRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
    * update health status for this param
    */
   updateStatus = async () => {
-    if (this.assetId == this.NATIVE_TOKEN_ID) {
+    if (this.assetId == this.nativeTokenId) {
       this.tokenAmount = await this.provider.getBalance(this.address);
     } else {
       const contract = new ethers.Contract(
