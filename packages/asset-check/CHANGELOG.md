@@ -1,5 +1,16 @@
 # @rosen-bridge/asset-check
 
+## 2.0.0
+
+### Major Changes
+
+- Change EthereumRpcAssetHealthCheckParam to EvmRpcAssetHealthCheckParam to be a general health parameter for all evm chains
+
+### Patch Changes
+
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.4
+
 ## 1.0.4
 
 ### Patch Changes
@@ -55,7 +66,7 @@
 ### Minor Changes
 
 - Initialize monorepo for health check service
-- add bitcoin esplora asset health check
+- Add bitcoin esplora asset health check
 
 ### Patch Changes
 
