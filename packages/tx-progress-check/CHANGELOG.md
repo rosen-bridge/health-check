@@ -1,5 +1,12 @@
 # @rosen-bridge/tx-progress-check
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.4
+
 ## 1.0.1
 
 ### Patch Changes
@@ -11,7 +18,7 @@
 
 ### Major Changes
 
-- Change `getActiveTxs` to async
+- Change `getActiveTxs` to be an async function
 
 ## 0.1.3
 

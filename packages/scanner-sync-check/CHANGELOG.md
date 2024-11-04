@@ -1,5 +1,17 @@
 # @rosen-bridge/scanner-sync-check
 
+## 2.0.0
+
+### Major Changes
+
+- Change EthereumRPCScannerHealthCheck to EvmRPCScannerHealthCheck to be a general health parameter for all evm chains
+
+### Patch Changes
+
+- Fix unstable error message and unstable time window variable
+- Updated dependencies
+  - @rosen-bridge/health-check@6.0.4
+
 ## 1.0.3
 
 ### Patch Changes
@@ -51,7 +63,7 @@
 ### Minor Changes
 
 - Add RPC scanner sync check parameter for Bitcoin chain.
-- add bitcoin esplora scanner health check
+- Add bitcoin esplora scanner health check
 
 ### Patch Changes
 

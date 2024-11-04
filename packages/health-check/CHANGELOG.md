@@ -1,5 +1,12 @@
 # @rosen-bridge/health-check
 
+## 6.0.4
+
+### Patch Changes
+
+- Remove isStillUnhealthy check
+- Make `isBroken` check to return true if all history items are non-notified broken items
+
 ## 6.0.3
 
 ### Patch Changes
@@ -47,8 +54,8 @@
 
 ### Patch Changes
 
-- update ergo explorer and node clients
-- update scanner and cardano ogmios client
+- Update ergo explorer and node clients
+- Update scanner and cardano ogmios client
 
 ## 4.0.1
 
