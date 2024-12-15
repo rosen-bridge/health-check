@@ -40,19 +40,31 @@ class NodePermitHealthCheckParam extends AbstractPermitHealthCheckParam {
         limit: this.API_REQUEST_LIMIT,
       });
 
-      boxes.forEach((box) => {
-        const R4 = box.additionalRegisters['R4'];
-        if (
-          R4 &&
-          Buffer.from(
-            wasm.Constant.decode_from_base16(R4).to_byte_array(),
-          ).toString('hex') === this.WID
-        ) {
-          RWTCount +=
-            box.assets?.find((token) => token.tokenId === this.RWT)?.amount ??
-            0n;
-        }
-      });
+      boxes
+        /**
+         * The getBoxesByAddressUnspent node API has issues: it returns not only
+         * unspent boxes for the specified address but also unrelated boxes from
+         * different addresses
+         * This filter is added to ensure such boxes do not interfere with the
+         * results
+         */
+        .filter(
+          (box) =>
+            box.address == this.permitAddress && box.spentTransactionId == null,
+        )
+        .forEach((box) => {
+          const R4 = box.additionalRegisters['R4'];
+          if (
+            R4 &&
+            Buffer.from(
+              wasm.Constant.decode_from_base16(R4).to_byte_array(),
+            ).toString('hex') === this.WID
+          ) {
+            RWTCount +=
+              box.assets?.find((token) => token.tokenId === this.RWT)?.amount ??
+              0n;
+          }
+        });
 
       offset += this.API_REQUEST_LIMIT;
     } while (boxes.length > 0);
