@@ -61,6 +61,7 @@ export const explorerUnspentBoxesByAddress = {
 
 export const nodeUnspentBoxesByAddress = [
   {
+    address: 'permitAddress',
     assets: [
       {
         tokenId:
@@ -74,6 +75,7 @@ export const nodeUnspentBoxesByAddress = [
     },
   },
   {
+    address: 'permitAddress',
     assets: [
       {
         tokenId:
@@ -87,6 +89,7 @@ export const nodeUnspentBoxesByAddress = [
     },
   },
   {
+    address: 'permitAddress',
     assets: [
       {
         tokenId:
@@ -100,6 +103,7 @@ export const nodeUnspentBoxesByAddress = [
     },
   },
   {
+    address: 'permitAddress',
     assets: [
       {
         tokenId:
