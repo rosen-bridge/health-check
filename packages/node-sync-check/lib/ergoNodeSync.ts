@@ -74,9 +74,9 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
     if (this.nodeLastBlockTime > this.maxBlockTime) {
       let time;
       if (this.nodeLastBlockTime >= 60) {
-        time = `${Math.floor(this.nodeLastBlockTime / 60)} hour and ${
-          this.nodeLastBlockTime % 60
-        } minutes`;
+        time = `${Math.floor(this.nodeLastBlockTime / 60)} hour and ${Math.floor(
+          this.nodeLastBlockTime % 60,
+        )} minutes`;
       } else time = `${Math.floor(this.nodeLastBlockTime)} minutes`;
       notification = notification + `The last block is scanned ${time} ago.\n`;
     }
