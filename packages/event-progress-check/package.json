@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/event-progress-check",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Rosen bridge event-progress health-check parameter",
   "repository": "https://github.com/rosen-bridge/health-check",
   "license": "GPL-3.0",
