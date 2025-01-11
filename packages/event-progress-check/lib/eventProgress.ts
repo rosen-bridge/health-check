@@ -77,15 +77,15 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
     const highestDurationInHour = Math.round(
       this.getElapsedTime(this.eventWithMaxTry.firstTry) / 3600,
     );
-    return `Service is not working properly because ${stuckEventCount} ` +
-      (stuckEventCount === 1)
-      ? 'event is '
-      : 'events are ' +
-          `stuck for more than ${stuckDurationInHour} hours. ` +
-          `Event with the highest stuck duration is ` +
-          `${this.eventWithMaxTry.id} with status ` +
-          `${this.eventWithMaxTry.status} which is stuck for ` +
-          `${highestDurationInHour} hours.`;
+    return (
+      `Service is not working properly because ${stuckEventCount} ` +
+      (stuckEventCount === 1 ? 'event is ' : 'events are ') +
+      `stuck for more than ${stuckDurationInHour} hours. ` +
+      `Event with the highest stuck duration is ` +
+      `${this.eventWithMaxTry.id} with status ` +
+      `${this.eventWithMaxTry.status} which is stuck for ` +
+      `${highestDurationInHour} hours.`
+    );
   };
 
   /**
