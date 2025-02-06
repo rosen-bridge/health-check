@@ -14,12 +14,16 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
     warnDifference: number,
     criticalDifference: number,
     graphqlUri: string,
+    warnBlockTimeDelay: number, // in seconds
+    criticalBlockTimeDelay: number, // in seconds
   ) {
     super(
       getLastSavedBlockHeight,
       scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockTimeDelay,
+      criticalBlockTimeDelay,
     );
     this.client = new ApolloClient({
       cache: new InMemoryCache(),

@@ -11,6 +11,8 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
+    warnBlockTimeDelay: number, // in seconds
+    criticalBlockTimeDelay: number, // in seconds
     authToken?: string,
   ) {
     super(
@@ -18,6 +20,8 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
       scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockTimeDelay,
+      criticalBlockTimeDelay,
     );
     this.koiosApi = cardanoKoiosClientFactory(networkUrl, authToken);
   }

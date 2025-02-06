@@ -11,12 +11,16 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
     warnDifference: number,
     criticalDifference: number,
     esploraUrl: string,
+    warnBlockTimeDelay: number, // in seconds
+    criticalBlockTimeDelay: number, // in seconds
   ) {
     super(
       getLastSavedBlockHeight,
       scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockTimeDelay,
+      criticalBlockTimeDelay,
     );
     this.client = axios.create({
       baseURL: esploraUrl,

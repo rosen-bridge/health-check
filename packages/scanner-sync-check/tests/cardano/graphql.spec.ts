@@ -32,6 +32,8 @@ describe('CardanoGraphQLScannerHealthCheck.getLastAvailableBlock', () => {
       100,
       10,
       'url',
+      30,
+      300,
     );
     vitest
       .spyOn(scannerHealthCheckParam.getClient(), 'query')

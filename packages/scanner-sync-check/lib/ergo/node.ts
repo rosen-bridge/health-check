@@ -11,12 +11,16 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
+    warnBlockTimeDelay: number, // in seconds
+    criticalBlockTimeDelay: number, // in seconds
   ) {
     super(
       getLastSavedBlockHeight,
       scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockTimeDelay,
+      criticalBlockTimeDelay,
     );
     this.nodeApi = ergoNodeClientFactory(networkUrl);
   }

@@ -11,6 +11,8 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
     warnDifference: number,
     criticalDifference: number,
     projectId: string,
+    warnBlockTimeDelay: number, // in seconds
+    criticalBlockTimeDelay: number, // in seconds
     url?: string,
   ) {
     super(
@@ -18,6 +20,8 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
       scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockTimeDelay,
+      criticalBlockTimeDelay,
     );
     this.client = new BlockFrostAPI({
       projectId: projectId,

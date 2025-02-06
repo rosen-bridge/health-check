@@ -22,6 +22,8 @@ describe('BitcoinRPCScannerHealthCheck.getLastAvailableBlock', () => {
       100,
       10,
       'url',
+      30,
+      300,
     );
     scannerHealthCheckParam['generateRandomId'] = () =>
       '19774cdc6bc663926590dc2fe7bfe77ba57a5343aaa16db5ffc377e95663fd4e';
