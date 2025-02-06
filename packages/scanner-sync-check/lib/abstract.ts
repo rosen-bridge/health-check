@@ -3,6 +3,8 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 
+import { ConvertTime } from './utils';
+
 abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected difference: number;
   protected lastBlockHeight: number;
@@ -29,7 +31,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   getDetails = async (): Promise<string | undefined> => {
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     let blockDelay = (Date.now() - this.lastBlockTime) / 1000;
-    const time = convertTime(blockDelay);
+    const time = ConvertTime(blockDelay);
     const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
 
     if (this.difference >= this.criticalDifference)
@@ -67,12 +69,12 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    */
   updateStatus = async () => {
     const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
-    const networkHeight = await this.getLastAvailableBlock();
-    this.difference = Number(networkHeight) - lastSavedBlockHeight;
     if (lastSavedBlockHeight != this.lastBlockHeight) {
       this.lastBlockHeight = lastSavedBlockHeight;
       this.lastBlockTime = Date.now();
     }
+    const networkHeight = await this.getLastAvailableBlock();
+    this.difference = Number(networkHeight) - lastSavedBlockHeight;
   };
 
   /**

@@ -9,6 +9,8 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 
+import { ConvertTime } from '../utils';
+
 export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
   private disconnectionTime: number | undefined;
   private difference: number;
@@ -77,7 +79,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
 
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     let blockDelay = (Date.now() - this.lastBlockTime) / 1000;
-    const time = convertTime(blockDelay);
+    const time = ConvertTime(blockDelay);
     const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
 
     if (this.difference >= this.criticalDifference)
@@ -148,12 +150,12 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
     if (this.connected()) {
       this.disconnectionTime = undefined;
       const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
-      const networkHeight = await this.getLastAvailableBlock();
-      this.difference = networkHeight - lastSavedBlockHeight;
       if (lastSavedBlockHeight != this.lastBlockHeight) {
         this.lastBlockHeight = lastSavedBlockHeight;
         this.lastBlockTime = Date.now();
       }
+      const networkHeight = await this.getLastAvailableBlock();
+      this.difference = networkHeight - lastSavedBlockHeight;
     } else if (!this.disconnectionTime) this.disconnectionTime = Date.now();
   };
 }
