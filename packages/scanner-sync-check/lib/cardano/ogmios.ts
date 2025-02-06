@@ -12,6 +12,8 @@ import {
 export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
   private disconnectionTime: number | undefined;
   private difference: number;
+  private lastBlockTime: number;
+  private lastBlockHeight: number;
 
   constructor(
     private getLastSavedBlockHeight: () => Promise<number>,
@@ -21,6 +23,8 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
     private ogmiosHost: string,
     private ogmiosPort: number,
     private unstableTimeWindow: number,
+    private warnBlockTimeDelay: number, // in seconds
+    private criticalBlockTimeDelay: number, // in seconds
     private useTls = false,
   ) {
     super();
@@ -70,11 +74,20 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
       );
     else if (this.disconnectionTime)
       return 'Ogmios client connection is disrupted. Service may stop working soon.';
-    const baseMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
+
+    const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
+    let blockDelay = (Date.now() - this.lastBlockTime) / 1000;
+    const time = convertTime(blockDelay);
+    const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
+
     if (this.difference >= this.criticalDifference)
-      return `Service has stopped working.` + baseMessage;
+      return `Service has stopped working.` + baseHeightDiffMessage;
+    else if (blockDelay >= this.criticalBlockTimeDelay)
+      return `Service has stopped working.` + baseDelayedBlockMessage;
     else if (this.difference >= this.warnDifference)
-      return `Service may stop working soon.` + baseMessage;
+      return `Service may stop working soon.` + baseHeightDiffMessage;
+    else if (blockDelay >= this.warnBlockTimeDelay)
+      return `Service may stop working soon.` + baseDelayedBlockMessage;
     return undefined;
   };
 
@@ -82,13 +95,19 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
    * @returns scanner sync health status
    */
   getHealthStatus = async (): Promise<HealthStatusLevel> => {
+    const blockDelay = (Date.now() - this.lastBlockTime) / 1000;
     if (
       this.difference >= this.criticalDifference ||
       (this.disconnectionTime &&
-        this.disconnectionTime + this.unstableTimeWindow < Date.now())
+        this.disconnectionTime + this.unstableTimeWindow < Date.now()) ||
+      blockDelay >= this.criticalBlockTimeDelay
     )
       return HealthStatusLevel.BROKEN;
-    else if (this.difference >= this.warnDifference || this.disconnectionTime)
+    else if (
+      this.difference >= this.warnDifference ||
+      this.disconnectionTime ||
+      blockDelay > this.warnBlockTimeDelay
+    )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
   };
@@ -131,6 +150,10 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
       const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
       const networkHeight = await this.getLastAvailableBlock();
       this.difference = networkHeight - lastSavedBlockHeight;
+      if (lastSavedBlockHeight != this.lastBlockHeight) {
+        this.lastBlockHeight = lastSavedBlockHeight;
+        this.lastBlockTime = Date.now();
+      }
     } else if (!this.disconnectionTime) this.disconnectionTime = Date.now();
   };
 }

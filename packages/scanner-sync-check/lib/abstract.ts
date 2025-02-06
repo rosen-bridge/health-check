@@ -29,14 +29,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   getDetails = async (): Promise<string | undefined> => {
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     let blockDelay = (Date.now() - this.lastBlockTime) / 1000;
-    let time;
-    if (blockDelay >= 60) {
-      time = `${Math.floor(blockDelay / 60)} hour`;
-      time +=
-        Math.floor(blockDelay % 60) > 0
-          ? ` and ${Math.floor(blockDelay % 60)} minutes`
-          : '';
-    } else time = `${Math.floor(blockDelay)} minutes`;
+    const time = convertTime(blockDelay);
     const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
 
     if (this.difference >= this.criticalDifference)
