@@ -59,7 +59,9 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
    * update parameter and remove old logging times
    */
   updateStatus = () => {
+    console.log(this.times);
     const firstTime = Date.now() - this.timeWindow;
+    console.log(firstTime);
     this.times = this.times.filter((item) => item > firstTime);
   };
 

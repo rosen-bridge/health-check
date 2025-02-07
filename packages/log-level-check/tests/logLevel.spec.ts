@@ -1,53 +1,28 @@
-import { DummyLogger } from '@rosen-bridge/abstract-logger';
+import { AbstractLogger } from '@rosen-bridge/abstract-logger';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
 
-import TestLogLevelHealthCheck from './testLogLevel';
+import { TestLogLevelHealthCheck, TestLoggerFactory } from './LogLevel.mock';
+import { CallbackLoggerFactory } from '@rosen-bridge/callback-logger';
 
 describe('LogLevelHealthCheck', () => {
-  let logger: DummyLogger;
+  let logger: AbstractLogger;
   let logLevelHealthCheck: TestLogLevelHealthCheck;
 
   beforeEach(() => {
-    logger = new DummyLogger();
+    CallbackLoggerFactory.init(new TestLoggerFactory());
+    const factory = CallbackLoggerFactory.getInstance();
+    logger = factory.getDefaultLogger();
     logLevelHealthCheck = new TestLogLevelHealthCheck(
-      logger,
+      factory,
       HealthStatusLevel.UNSTABLE,
       3,
-      1000,
+      1,
       'error',
     );
   });
 
   describe('constructor', () => {
-    /**
-     * @target LogLevelHealthCheck.constructor should wrap all logger functions
-     * @dependencies
-     * @scenario
-     * - create new instance of logger and logLevelHealthCheck
-     * @expected
-     * - all functions must be wrapped
-     */
-    it('should wrap all logger functions', () => {
-      const originalDebug = logger.debug;
-      const originalInfo = logger.info;
-      const originalWarn = logger.warn;
-      const originalError = logger.error;
-
-      logLevelHealthCheck = new TestLogLevelHealthCheck(
-        logger,
-        HealthStatusLevel.UNSTABLE,
-        3,
-        1000,
-        'error',
-      );
-
-      expect(logger.debug).not.toBe(originalDebug);
-      expect(logger.info).not.toBe(originalInfo);
-      expect(logger.warn).not.toBe(originalWarn);
-      expect(logger.error).not.toBe(originalError);
-    });
-
     /**
      * @target LogLevelHealthCheck should add time for expected logging level
      * @dependencies
