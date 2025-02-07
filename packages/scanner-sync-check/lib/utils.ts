@@ -23,7 +23,7 @@ export const ConvertTime = (time: number): string => {
     const hour = Math.floor(minute / 60);
     convertedTime = PluralForm('hour', hour);
     minute = Math.floor(minute % 60);
-    convertedTime += minute > 0 ? ' and' : '';
+    convertedTime += minute > 0 ? ' and ' : '';
   }
   convertedTime += PluralForm('minute', minute);
   return convertedTime;
