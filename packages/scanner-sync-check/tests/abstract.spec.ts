@@ -14,8 +14,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       'scannerName',
       10,
       100,
-      30,
-      300,
+      3,
     );
   });
 
@@ -23,7 +22,7 @@ describe('AbstractScannerHealthCheckParam', () => {
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
      * HEALTHY when difference is less than warning threshold and the block
-     * delay is less than warning block time delay
+     * gap is less than warning block time gap
      * @dependencies
      * @scenario
      * - mock difference is less than warning threshold
@@ -33,7 +32,7 @@ describe('AbstractScannerHealthCheckParam', () => {
      * - The status should be HEALTHY
      */
     it(`should return HEALTHY when difference is less than warning threshold and
-      the block delay is less than warning block time delay`, async () => {
+      the block gap is less than warning block time gap`, async () => {
       scannerHealthCheckParam.setDifference(2);
       scannerHealthCheckParam.setLastBlockTime(Date.now());
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -42,19 +41,19 @@ describe('AbstractScannerHealthCheckParam', () => {
 
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * UNSTABLE when difference is less than warning threshold and block delay
-     * is more than warn block delay and less than critical block delay
+     * UNSTABLE when difference is less than warning threshold and block gap
+     * is more than warn block gap and less than critical block gap
      * @dependencies
      * @scenario
      * - mock difference to less than warning threshold
-     * - mock lastBlockTime so that block delay be more than warn block delay
+     * - mock lastBlockTime so that block gap be more than warn block gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
      */
     it(`should return UNSTABLE when difference is less than warning threshold 
-      but block delay is more than warn block delay and less than critical block
-      delay`, async () => {
+      but block gap is more than warn block gap and less than critical block
+      gap`, async () => {
       scannerHealthCheckParam.setDifference(20);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 40 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -64,18 +63,18 @@ describe('AbstractScannerHealthCheckParam', () => {
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
      * UNSTABLE when difference is more than warning threshold and less than
-     * critical threshold and last block time is less than critical block delay
+     * critical threshold and last block time is less than critical block gap
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
-     * - mock lastBlockTime so that block delay be more than critical block delay
+     * - mock lastBlockTime so that block gap be more than critical block gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
      */
     it(`should return UNSTABLE when difference is more than warning threshold 
-      and less than critical threshold and block delay is less than critical
-      block delay`, async () => {
+      and less than critical threshold and block gap is less than critical
+      block gap`, async () => {
       scannerHealthCheckParam.setDifference(20);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 40 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -84,8 +83,8 @@ describe('AbstractScannerHealthCheckParam', () => {
 
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * BROKEN when difference is less than critical threshold but block delay is
-     * more than critical block delay
+     * BROKEN when difference is less than critical threshold but block gap is
+     * more than critical block gap
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
@@ -95,7 +94,7 @@ describe('AbstractScannerHealthCheckParam', () => {
      * - The status should be UNSTABLE
      */
     it(`should return BROKEN when difference is less than critical threshold but
-      block delay is more than critical block delay`, async () => {
+      block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam.setDifference(2);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 400 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();

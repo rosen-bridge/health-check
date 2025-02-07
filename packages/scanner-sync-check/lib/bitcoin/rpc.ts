@@ -25,8 +25,8 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
     warnDifference: number,
     criticalDifference: number,
     rpcURL: string,
-    warnBlockTimeDelay: number, // in seconds
-    criticalBlockTimeDelay: number, // in seconds
+    blockTime: number,
+
     username?: string,
     password?: string,
   ) {
@@ -35,8 +35,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
       scannerName,
       warnDifference,
       criticalDifference,
-      warnBlockTimeDelay,
-      criticalBlockTimeDelay,
+      blockTime,
     );
     const auth =
       username && password

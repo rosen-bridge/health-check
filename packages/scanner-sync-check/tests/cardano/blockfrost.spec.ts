@@ -25,8 +25,7 @@ describe('CardanoBlockFrostScannerHealthCheck.getLastAvailableBlock', () => {
       100,
       10,
       'projectId',
-      30,
-      300,
+      3,
     );
     vitest
       .spyOn(scannerHealthCheckParam.getClient(), 'blocksLatest')

@@ -13,8 +13,8 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
     warnDifference: number,
     criticalDifference: number,
     url: string,
-    warnBlockTimeDelay: number, // in seconds
-    criticalBlockTimeDelay: number, // in seconds
+    blockTime: number,
+
     authToken?: string,
     timeout?: number,
   ) {
@@ -23,8 +23,7 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
       scannerName,
       warnDifference,
       criticalDifference,
-      warnBlockTimeDelay,
-      criticalBlockTimeDelay,
+      blockTime,
     );
     this.chain = chain;
     this.provider = authToken

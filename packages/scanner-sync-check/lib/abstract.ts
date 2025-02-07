@@ -9,38 +9,41 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   protected difference: number;
   protected lastBlockHeight: number;
   protected lastBlockTime: number;
+  protected warnBlockTimeGap: number;
+  protected criticalBlockTimeGap: number;
 
   constructor(
     protected getLastSavedBlockHeight: () => Promise<number>,
     protected scannerName: string,
     protected warnDifference: number,
     protected criticalDifference: number,
-    protected warnBlockTimeDelay: number, // in seconds
-    protected criticalBlockTimeDelay: number, // in seconds
+    blockTime: number,
   ) {
     super();
+    this.criticalBlockTimeGap = criticalDifference * blockTime;
+    this.warnBlockTimeGap = warnDifference * blockTime;
   }
 
   /**
    * if the difference between scanned blocks and network blocks is more than
    * the differences returns the required notification
    * if the last scanned block is stored a long time ago (more than specified
-   * block time delays) returns the required notification
+   * block time gaps) returns the required notification
    * @returns parameter health description
    */
   getDetails = async (): Promise<string | undefined> => {
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
-    let blockDelay = (Date.now() - this.lastBlockTime) / 1000;
-    const time = ConvertTime(blockDelay);
+    const blockGap = (Date.now() - this.lastBlockTime) / 1000;
+    const time = ConvertTime(blockGap);
     const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
 
     if (this.difference >= this.criticalDifference)
       return `Service has stopped working.` + baseHeightDiffMessage;
-    else if (blockDelay >= this.criticalBlockTimeDelay)
+    else if (blockGap >= this.criticalBlockTimeGap)
       return `Service has stopped working.` + baseDelayedBlockMessage;
     else if (this.difference >= this.warnDifference)
       return `Service may stop working soon.` + baseHeightDiffMessage;
-    else if (blockDelay >= this.warnBlockTimeDelay)
+    else if (blockGap >= this.warnBlockTimeGap)
       return `Service may stop working soon.` + baseDelayedBlockMessage;
 
     return undefined;
@@ -50,15 +53,15 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    * @returns scanner sync health status
    */
   getHealthStatus = async (): Promise<HealthStatusLevel> => {
-    let blockDelay = (Date.now() - this.lastBlockTime) / 1000;
+    const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     if (
       this.difference >= this.criticalDifference ||
-      blockDelay >= this.criticalBlockTimeDelay
+      blockGap >= this.criticalBlockTimeGap
     )
       return HealthStatusLevel.BROKEN;
     else if (
       this.difference >= this.warnDifference ||
-      blockDelay >= this.warnBlockTimeDelay
+      blockGap >= this.warnBlockTimeGap
     )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;

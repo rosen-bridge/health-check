@@ -16,6 +16,8 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
   private difference: number;
   private lastBlockTime: number;
   private lastBlockHeight: number;
+  private warnBlockTimeGap: number;
+  private criticalBlockTimeGap: number;
 
   constructor(
     private getLastSavedBlockHeight: () => Promise<number>,
@@ -25,11 +27,12 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
     private ogmiosHost: string,
     private ogmiosPort: number,
     private unstableTimeWindow: number,
-    private warnBlockTimeDelay: number, // in seconds
-    private criticalBlockTimeDelay: number, // in seconds
+    blockTime: number,
     private useTls = false,
   ) {
     super();
+    this.criticalBlockTimeGap = criticalDifference * blockTime;
+    this.warnBlockTimeGap = warnDifference * blockTime;
     this.ogmiosHost = ogmiosHost;
     this.ogmiosPort = ogmiosPort;
     this.useTls = useTls;
@@ -78,17 +81,17 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
       return 'Ogmios client connection is disrupted. Service may stop working soon.';
 
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
-    let blockDelay = (Date.now() - this.lastBlockTime) / 1000;
+    const blockDelay = (Date.now() - this.lastBlockTime) / 1000;
     const time = ConvertTime(blockDelay);
     const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
 
     if (this.difference >= this.criticalDifference)
       return `Service has stopped working.` + baseHeightDiffMessage;
-    else if (blockDelay >= this.criticalBlockTimeDelay)
+    else if (blockDelay >= this.criticalBlockTimeGap)
       return `Service has stopped working.` + baseDelayedBlockMessage;
     else if (this.difference >= this.warnDifference)
       return `Service may stop working soon.` + baseHeightDiffMessage;
-    else if (blockDelay >= this.warnBlockTimeDelay)
+    else if (blockDelay >= this.warnBlockTimeGap)
       return `Service may stop working soon.` + baseDelayedBlockMessage;
     return undefined;
   };
@@ -102,13 +105,13 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
       this.difference >= this.criticalDifference ||
       (this.disconnectionTime &&
         this.disconnectionTime + this.unstableTimeWindow < Date.now()) ||
-      blockDelay >= this.criticalBlockTimeDelay
+      blockDelay >= this.criticalBlockTimeGap
     )
       return HealthStatusLevel.BROKEN;
     else if (
       this.difference >= this.warnDifference ||
       this.disconnectionTime ||
-      blockDelay > this.warnBlockTimeDelay
+      blockDelay > this.warnBlockTimeGap
     )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;

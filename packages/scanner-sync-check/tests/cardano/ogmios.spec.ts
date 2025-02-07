@@ -28,25 +28,24 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       'url',
       123,
       5000,
-      30,
-      300,
+      3,
     );
   });
 
   describe('getHealthStatus', () => {
     /**
      * @target getHealthStatus should return HEALTHY when difference is less
-     * than warning threshold and block delay is less than warn block delay
+     * than warning threshold and block gap is less than warn block gap
      * @dependencies
      * @scenario
      * - mock difference to less than warning threshold
-     * - mock lastBlockTime so that block delay is less than warn delay
+     * - mock lastBlockTime so that block gap is less than warn gap
      * - get health status
      * @expected
      * - The status should be HEALTHY
      */
     it(`should return HEALTHY when difference is less than warning threshold and
-      and block delay is less than warn block delay`, async () => {
+      and block gap is less than warn block gap`, async () => {
       scannerHealthCheckParam['difference'] = 2;
       scannerHealthCheckParam['lastBlockTime'] = Date.now();
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -55,17 +54,17 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
 
     /**
      * @target getHealthStatus should return UNSTABLE when difference is less
-     * than warning threshold but the block delay is more than warn block delay
+     * than warning threshold but the block gap is more than warn block gap
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
-     * - mock lastBlockTime so that block delay is more than warn delay
+     * - mock lastBlockTime so that block gap is more than warn gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
      */
     it(`should return UNSTABLE when difference is less than warning threshold
-      but the block delay is more than warn block delay`, async () => {
+      but the block gap is more than warn block gap`, async () => {
       scannerHealthCheckParam['difference'] = 2;
       scannerHealthCheckParam['lastBlockTime'] = Date.now() - 40_000;
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -74,19 +73,19 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
 
     /**
      * @target getHealthStatus should return UNSTABLE when difference is more
-     * than warning threshold and less than critical threshold and block delay
-     * is less than critical block delay
+     * than warning threshold and less than critical threshold and block gap
+     * is less than critical block gap
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
-     * - mock lastBlockTime so that block delay is less than warn delay
+     * - mock lastBlockTime so that block gap is less than warn gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
      */
     it(`should return UNSTABLE when difference is more than warning threshold
-      and less than critical threshold and block delay is less than critical
-      block delay`, async () => {
+      and less than critical threshold and block gap is less than critical
+      block gap`, async () => {
       scannerHealthCheckParam['difference'] = 20;
       scannerHealthCheckParam['lastBlockTime'] = Date.now();
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -95,17 +94,17 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
 
     /**
      * @target getHealthStatus should return BROKEN when difference is less than
-     * critical threshold but the block delay is more than critical block delay
+     * critical threshold but the block gap is more than critical block gap
      * @dependencies
      * @scenario
      * - mock difference to less than critical threshold
-     * - mock lastBlockTime so that block delay is more than critical delay
+     * - mock lastBlockTime so that block gap is more than critical gap
      * - get health status
      * @expected
      * - The status should be BROKEN
      */
     it(`should return BROKEN when difference is less than critical threshold but
-      the block delay is more than critical block delay`, async () => {
+      the block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam['difference'] = 20;
       scannerHealthCheckParam['lastBlockTime'] = Date.now() - 400_000;
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -118,7 +117,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * @dependencies
      * @scenario
      * - mock difference to less than critical threshold
-     * - mock lastBlockTime so that block delay is less than warn delay
+     * - mock lastBlockTime so that block gap is less than warn gap
      * - get health status
      * @expected
      * - The status should be BROKEN

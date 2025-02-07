@@ -11,16 +11,14 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
-    warnBlockTimeDelay: number, // in seconds
-    criticalBlockTimeDelay: number, // in seconds
+    blockTime: number,
   ) {
     super(
       getLastSavedBlockHeight,
       scannerName,
       warnDifference,
       criticalDifference,
-      warnBlockTimeDelay,
-      criticalBlockTimeDelay,
+      blockTime,
     );
     this.explorerApi = ergoExplorerClientFactory(networkUrl);
   }

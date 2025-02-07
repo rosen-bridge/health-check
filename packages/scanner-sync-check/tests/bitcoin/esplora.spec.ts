@@ -21,8 +21,7 @@ describe('BitcoinEsploraScannerHealthCheck.getLastAvailableBlock', () => {
       100,
       10,
       'url',
-      30,
-      300,
+      3,
     );
     const mockedHeight = 1115;
     vitest
