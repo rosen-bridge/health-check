@@ -24,6 +24,20 @@ describe('LogLevelHealthCheck', () => {
 
   describe('constructor', () => {
     /**
+     * @target LogLevelHealthCheck should add callback for expected logging level
+     * @dependencies
+     * @scenario
+     * - create new instance of logger and logLevelHealthCheck
+     * @expected
+     * - should add error level callback to the logger
+     */
+    it('should add time for expected logging level', () => {
+      expect(
+        CallbackLoggerFactory.getInstance()['callbacks'].get('error')?.length,
+      ).toEqual(1);
+    });
+
+    /**
      * @target LogLevelHealthCheck should add time for expected logging level
      * @dependencies
      * @scenario
