@@ -4,6 +4,7 @@ import {
 } from '@rosen-bridge/health-check';
 import { AbstractLogger } from '@rosen-bridge/abstract-logger';
 import { upperFirst } from 'lodash-es';
+import { CallbackLoggerFactory } from '@rosen-bridge/callback-logger';
 
 type LogLevel = keyof AbstractLogger;
 
@@ -28,33 +29,18 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
    * @param level: selected logs level
    * @param oldFn: old logging function
    */
-  protected wrapLoggingFn = (
-    level: LogLevel,
-    oldFn: (message: string) => unknown,
-  ) => {
+  protected callbackGenerator = (level: LogLevel) => {
     return (message: string) => {
       if (level === this.level) {
         this.times.push(Date.now());
         this.lastMessage = message;
         this.update();
       }
-      oldFn(message);
     };
   };
 
-  /**
-   * wrap all logging functions in a logger
-   * @param logger
-   */
-  protected wrapLogger = (logger: AbstractLogger) => {
-    logger.debug = this.wrapLoggingFn('debug', logger.debug);
-    logger.info = this.wrapLoggingFn('info', logger.info);
-    logger.warn = this.wrapLoggingFn('warn', logger.warn);
-    logger.error = this.wrapLoggingFn('error', logger.error);
-  };
-
   constructor(
-    logger: AbstractLogger,
+    loggerFactory: CallbackLoggerFactory,
     unhealthyStatus: HealthStatusLevel,
     maxAllowedLog: number,
     durationSeconds: number,
@@ -65,8 +51,8 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
     this.level = level;
     this.unhealthyStatus = unhealthyStatus;
     this.maxAllowedCount = maxAllowedLog;
-    this.timeWindow = durationSeconds;
-    this.wrapLogger(logger);
+    this.timeWindow = durationSeconds * 1000;
+    loggerFactory.registerCallback(level, this.callbackGenerator(level));
   }
 
   /**
