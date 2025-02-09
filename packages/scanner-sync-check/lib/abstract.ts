@@ -2,8 +2,7 @@ import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
-
-import { ConvertTime } from './utils';
+import { formatDistance } from 'date-fns';
 
 abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected difference: number;
@@ -23,17 +22,10 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     this.warnBlockTimeGap = warnDifference * blockTime;
   }
 
-  /**
-   * if the difference between scanned blocks and network blocks is more than
-   * the differences returns the required notification
-   * if the last scanned block is stored a long time ago (more than specified
-   * block time gaps) returns the required notification
-   * @returns parameter health description
-   */
-  getDetails = async (): Promise<string | undefined> => {
+  protected rawDetails = async (): Promise<string | undefined> => {
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
-    const time = ConvertTime(blockGap);
+    const time = formatDistance(Date.now(), this.lastBlockTime);
     const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
 
     if (this.difference >= this.criticalDifference)
@@ -46,6 +38,17 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
       return `Service may stop working soon.` + baseDelayedBlockMessage;
 
     return undefined;
+  };
+
+  /**
+   * if the difference between scanned blocks and network blocks is more than
+   * the differences returns the required notification
+   * if the last scanned block is stored a long time ago (more than specified
+   * block time gaps) returns the required notification
+   * @returns parameter health description
+   */
+  getDetails = async (): Promise<string | undefined> => {
+    return this.rawDetails();
   };
 
   /**
@@ -66,10 +69,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     return HealthStatusLevel.HEALTHY;
   };
 
-  /**
-   * Update the health status
-   */
-  updateStatus = async () => {
+  protected rawUpdate = async () => {
     const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
     if (lastSavedBlockHeight != this.lastBlockHeight) {
       this.lastBlockHeight = lastSavedBlockHeight;
@@ -77,6 +77,13 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     }
     const networkHeight = await this.getLastAvailableBlock();
     this.difference = Number(networkHeight) - lastSavedBlockHeight;
+  };
+
+  /**
+   * Update the health status
+   */
+  updateStatus = async () => {
+    this.rawUpdate();
   };
 
   /**
