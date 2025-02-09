@@ -83,7 +83,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    * Update the health status
    */
   updateStatus = async () => {
-    this.rawUpdate();
+    await this.rawUpdate();
   };
 
   /**

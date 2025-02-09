@@ -3,39 +3,30 @@ import {
   InteractionContext,
   createLedgerStateQueryClient,
 } from '@cardano-ogmios/client';
+import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
-import {
-  AbstractHealthCheckParam,
-  HealthStatusLevel,
-} from '@rosen-bridge/health-check';
+import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
-import { ConvertTime } from '../utils';
-
-export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
+export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
-  private difference: number;
-  private lastBlockTime: number;
-  private lastBlockHeight: number;
-  private warnBlockTimeGap: number;
-  private criticalBlockTimeGap: number;
 
   constructor(
-    private getLastSavedBlockHeight: () => Promise<number>,
+    getLastSavedBlockHeight: () => Promise<number>,
     private connected: () => boolean,
-    private warnDifference: number,
-    private criticalDifference: number,
+    warnDifference: number,
+    criticalDifference: number,
     private ogmiosHost: string,
     private ogmiosPort: number,
     private unstableTimeWindow: number,
     blockTime = 20,
     private useTls = false,
   ) {
-    super();
-    this.criticalBlockTimeGap = criticalDifference * blockTime;
-    this.warnBlockTimeGap = warnDifference * blockTime;
-    this.ogmiosHost = ogmiosHost;
-    this.ogmiosPort = ogmiosPort;
-    this.useTls = useTls;
+    super(
+      getLastSavedBlockHeight,
+      warnDifference,
+      criticalDifference,
+      blockTime,
+    );
   }
 
   /**
@@ -80,20 +71,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
     else if (this.disconnectionTime)
       return 'Ogmios client connection is disrupted. Service may stop working soon.';
 
-    const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
-    const blockDelay = (Date.now() - this.lastBlockTime) / 1000;
-    const time = ConvertTime(blockDelay);
-    const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
-
-    if (this.difference >= this.criticalDifference)
-      return `Service has stopped working.` + baseHeightDiffMessage;
-    else if (blockDelay >= this.criticalBlockTimeGap)
-      return `Service has stopped working.` + baseDelayedBlockMessage;
-    else if (this.difference >= this.warnDifference)
-      return `Service may stop working soon.` + baseHeightDiffMessage;
-    else if (blockDelay >= this.warnBlockTimeGap)
-      return `Service may stop working soon.` + baseDelayedBlockMessage;
-    return undefined;
+    return this.rawDetails();
   };
 
   /**
@@ -152,13 +130,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
   updateStatus = async () => {
     if (this.connected()) {
       this.disconnectionTime = undefined;
-      const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
-      if (lastSavedBlockHeight != this.lastBlockHeight) {
-        this.lastBlockHeight = lastSavedBlockHeight;
-        this.lastBlockTime = Date.now();
-      }
-      const networkHeight = await this.getLastAvailableBlock();
-      this.difference = networkHeight - lastSavedBlockHeight;
+      await this.rawUpdate();
     } else if (!this.disconnectionTime) this.disconnectionTime = Date.now();
   };
 }
