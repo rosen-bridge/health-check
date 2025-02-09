@@ -7,7 +7,6 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
@@ -15,7 +14,6 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
       blockTime,

@@ -7,7 +7,6 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     projectId: string,
@@ -16,7 +15,6 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
       blockTime,

@@ -29,7 +29,6 @@ describe('ErgoScannerHealthCheck', () => {
 
       const scannerHealthCheckParam = new ErgoExplorerScannerHealthCheck(
         () => Promise.resolve(1111),
-        'scannerName',
         100,
         10,
         'url',

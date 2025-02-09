@@ -7,7 +7,6 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     esploraUrl: string,
@@ -15,7 +14,6 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
       blockTime,

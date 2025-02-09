@@ -11,7 +11,6 @@ describe('AbstractScannerHealthCheckParam', () => {
   beforeAll(async () => {
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
       () => Promise.resolve(1111),
-      'scannerName',
       10,
       100,
       3,

@@ -7,7 +7,6 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
@@ -16,7 +15,6 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
       blockTime,

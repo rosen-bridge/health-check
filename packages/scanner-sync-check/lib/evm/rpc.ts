@@ -9,7 +9,6 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
   constructor(
     chain: string,
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     url: string,
@@ -19,7 +18,6 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
       blockTime,

@@ -10,7 +10,6 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     graphqlUri: string,
@@ -18,7 +17,6 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
       blockTime,
