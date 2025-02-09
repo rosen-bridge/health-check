@@ -24,14 +24,18 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
     warnDifference: number,
     criticalDifference: number,
     rpcURL: string,
-    blockTime = 600,
     username?: string,
     password?: string,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
+    blockTime = 600,
   ) {
     super(
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
       blockTime,
     );
     const auth =

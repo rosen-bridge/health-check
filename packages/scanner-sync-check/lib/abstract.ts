@@ -15,11 +15,13 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     protected getLastSavedBlockHeight: () => Promise<number>,
     protected warnDifference: number,
     protected criticalDifference: number,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
     blockTime: number,
   ) {
     super();
-    this.criticalBlockTimeGap = criticalDifference * blockTime;
-    this.warnBlockTimeGap = warnDifference * blockTime;
+    this.criticalBlockTimeGap = criticalBlockGap * blockTime;
+    this.warnBlockTimeGap = warnBlockGap * blockTime;
   }
 
   protected rawDetails = async (): Promise<string | undefined> => {

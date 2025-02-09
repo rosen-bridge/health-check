@@ -13,6 +13,8 @@ describe('AbstractScannerHealthCheckParam', () => {
       () => Promise.resolve(1111),
       10,
       100,
+      10,
+      100,
       3,
     );
   });

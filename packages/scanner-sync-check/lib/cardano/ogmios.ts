@@ -18,13 +18,17 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     private ogmiosHost: string,
     private ogmiosPort: number,
     private unstableTimeWindow: number,
-    blockTime = 20,
     private useTls = false,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
+    blockTime = 20,
   ) {
     super(
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
       blockTime,
     );
   }

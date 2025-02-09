@@ -14,12 +14,16 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
     url: string,
     blockTime: number,
     authToken?: string,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
     timeout?: number,
   ) {
     super(
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
       blockTime,
     );
     this.chain = chain;

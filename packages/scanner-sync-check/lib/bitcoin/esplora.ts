@@ -10,12 +10,16 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
     warnDifference: number,
     criticalDifference: number,
     esploraUrl: string,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
     blockTime = 600,
   ) {
     super(
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
       blockTime,
     );
     this.client = axios.create({
