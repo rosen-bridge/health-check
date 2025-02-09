@@ -11,8 +11,7 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
-    blockTime: number,
-
+    blockTime = 20,
     authToken?: string,
   ) {
     super(

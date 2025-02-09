@@ -27,7 +27,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
     private ogmiosHost: string,
     private ogmiosPort: number,
     private unstableTimeWindow: number,
-    blockTime: number,
+    blockTime = 20,
     private useTls = false,
   ) {
     super();

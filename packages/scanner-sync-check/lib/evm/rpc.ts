@@ -14,7 +14,6 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
     criticalDifference: number,
     url: string,
     blockTime: number,
-
     authToken?: string,
     timeout?: number,
   ) {

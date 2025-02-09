@@ -14,7 +14,7 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
     warnDifference: number,
     criticalDifference: number,
     graphqlUri: string,
-    blockTime: number,
+    blockTime = 20,
   ) {
     super(
       getLastSavedBlockHeight,

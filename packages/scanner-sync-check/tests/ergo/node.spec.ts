@@ -30,7 +30,6 @@ describe('ErgoNodeScannerHealthCheck.getLastAvailableBlock', () => {
       100,
       10,
       'url',
-      3,
     );
     const height = await scannerHealthCheckParam.getLastAvailableBlock();
     expect(height).toEqual(1115);

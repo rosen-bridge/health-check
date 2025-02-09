@@ -25,8 +25,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
     warnDifference: number,
     criticalDifference: number,
     rpcURL: string,
-    blockTime: number,
-
+    blockTime = 600,
     username?: string,
     password?: string,
   ) {

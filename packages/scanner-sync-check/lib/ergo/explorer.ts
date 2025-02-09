@@ -11,7 +11,7 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
     warnDifference: number,
     criticalDifference: number,
     networkUrl: string,
-    blockTime: number,
+    blockTime = 120,
   ) {
     super(
       getLastSavedBlockHeight,

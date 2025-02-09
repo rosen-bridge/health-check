@@ -11,8 +11,7 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
     warnDifference: number,
     criticalDifference: number,
     projectId: string,
-    blockTime: number,
-
+    blockTime = 20,
     url?: string,
   ) {
     super(

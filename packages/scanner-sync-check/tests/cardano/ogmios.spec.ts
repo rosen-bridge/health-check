@@ -28,7 +28,6 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       'url',
       123,
       5000,
-      3,
     );
   });
 
@@ -66,7 +65,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     it(`should return UNSTABLE when difference is less than warning threshold
       but the block gap is more than warn block gap`, async () => {
       scannerHealthCheckParam['difference'] = 2;
-      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 40_000;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 300_000;
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
@@ -106,7 +105,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     it(`should return BROKEN when difference is less than critical threshold but
       the block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam['difference'] = 20;
-      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 400_000;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 3_000_000;
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
