@@ -24,10 +24,16 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     this.warnBlockTimeGap = warnBlockGap * blockTime;
   }
 
+  /**
+   * The common logic of parameter details in all scanner sync checks
+   * @returns
+   */
   protected rawDetails = async (): Promise<string | undefined> => {
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
-    const time = formatDistance(Date.now(), this.lastBlockTime);
+    let time = '';
+    if (this.lastBlockTime)
+      time = formatDistance(Date.now(), this.lastBlockTime);
     const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
 
     if (this.difference >= this.criticalDifference)
@@ -71,6 +77,9 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     return HealthStatusLevel.HEALTHY;
   };
 
+  /**
+   * The common logic of status update in all scanner sync checks
+   */
   protected rawUpdate = async () => {
     const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
     if (lastSavedBlockHeight != this.lastBlockHeight) {
