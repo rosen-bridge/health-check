@@ -21,18 +21,22 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     rpcURL: string,
     username?: string,
     password?: string,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
+    blockTime = 600,
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
+      blockTime,
     );
     const auth =
       username && password

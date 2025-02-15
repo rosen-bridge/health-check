@@ -3,30 +3,34 @@ import {
   InteractionContext,
   createLedgerStateQueryClient,
 } from '@cardano-ogmios/client';
+import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
-import {
-  AbstractHealthCheckParam,
-  HealthStatusLevel,
-} from '@rosen-bridge/health-check';
+import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
-export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
+export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
-  private difference: number;
 
   constructor(
-    private getLastSavedBlockHeight: () => Promise<number>,
+    getLastSavedBlockHeight: () => Promise<number>,
     private connected: () => boolean,
-    private warnDifference: number,
-    private criticalDifference: number,
+    warnDifference: number,
+    criticalDifference: number,
     private ogmiosHost: string,
     private ogmiosPort: number,
     private unstableTimeWindow: number,
     private useTls = false,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
+    blockTime = 20,
   ) {
-    super();
-    this.ogmiosHost = ogmiosHost;
-    this.ogmiosPort = ogmiosPort;
-    this.useTls = useTls;
+    super(
+      getLastSavedBlockHeight,
+      warnDifference,
+      criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
+      blockTime,
+    );
   }
 
   /**
@@ -70,25 +74,27 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
       );
     else if (this.disconnectionTime)
       return 'Ogmios client connection is disrupted. Service may stop working soon.';
-    const baseMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
-    if (this.difference >= this.criticalDifference)
-      return `Service has stopped working.` + baseMessage;
-    else if (this.difference >= this.warnDifference)
-      return `Service may stop working soon.` + baseMessage;
-    return undefined;
+
+    return this.rawDetails();
   };
 
   /**
    * @returns scanner sync health status
    */
   getHealthStatus = async (): Promise<HealthStatusLevel> => {
+    const blockDelay = (Date.now() - this.lastBlockTime) / 1000;
     if (
       this.difference >= this.criticalDifference ||
       (this.disconnectionTime &&
-        this.disconnectionTime + this.unstableTimeWindow < Date.now())
+        this.disconnectionTime + this.unstableTimeWindow < Date.now()) ||
+      blockDelay >= this.criticalBlockTimeGap
     )
       return HealthStatusLevel.BROKEN;
-    else if (this.difference >= this.warnDifference || this.disconnectionTime)
+    else if (
+      this.difference >= this.warnDifference ||
+      this.disconnectionTime ||
+      blockDelay > this.warnBlockTimeGap
+    )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
   };
@@ -128,9 +134,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractHealthCheckParam {
   updateStatus = async () => {
     if (this.connected()) {
       this.disconnectionTime = undefined;
-      const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
-      const networkHeight = await this.getLastAvailableBlock();
-      this.difference = networkHeight - lastSavedBlockHeight;
+      await this.rawUpdate();
     } else if (!this.disconnectionTime) this.disconnectionTime = Date.now();
   };
 }

@@ -10,16 +10,20 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     graphqlUri: string,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
+    blockTime = 20,
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
+      blockTime,
     );
     this.client = new ApolloClient({
       cache: new InMemoryCache(),

@@ -28,7 +28,6 @@ describe('CardanoGraphQLScannerHealthCheck.getLastAvailableBlock', () => {
 
     const scannerHealthCheckParam = new TestCardanoGraphQLScannerHealthCheck(
       () => Promise.resolve(1111),
-      'scannerName',
       100,
       10,
       'url',

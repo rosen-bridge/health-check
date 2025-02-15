@@ -9,18 +9,22 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
   constructor(
     chain: string,
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     url: string,
+    blockTime: number,
     authToken?: string,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
     timeout?: number,
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
+      blockTime,
     );
     this.chain = chain;
     this.provider = authToken

@@ -7,17 +7,21 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
-    scannerName: string,
     warnDifference: number,
     criticalDifference: number,
     projectId: string,
     url?: string,
+    warnBlockGap = warnDifference,
+    criticalBlockGap = criticalDifference,
+    blockTime = 20,
   ) {
     super(
       getLastSavedBlockHeight,
-      scannerName,
       warnDifference,
       criticalDifference,
+      warnBlockGap,
+      criticalBlockGap,
+      blockTime,
     );
     this.client = new BlockFrostAPI({
       projectId: projectId,

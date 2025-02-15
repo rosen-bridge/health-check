@@ -33,46 +33,97 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
 
   describe('getHealthStatus', () => {
     /**
-     * @target getHealthStatus should return HEALTHY when difference is less than warning threshold
+     * @target getHealthStatus should return HEALTHY when difference is less
+     * than warning threshold and block gap is less than warn block gap
      * @dependencies
      * @scenario
-     * - mock difference is less than warning threshold
+     * - mock difference to less than warning threshold
+     * - mock lastBlockTime so that block gap is less than warn gap
      * - get health status
      * @expected
      * - The status should be HEALTHY
      */
-    it('should return HEALTHY when difference is less than warning threshold', async () => {
+    it(`should return HEALTHY when difference is less than warning threshold and
+      and block gap is less than warn block gap`, async () => {
       scannerHealthCheckParam['difference'] = 2;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now();
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
 
     /**
-     * @target getHealthStatus should return UNSTABLE when difference is more than warning threshold and less than critical threshold
+     * @target getHealthStatus should return UNSTABLE when difference is less
+     * than warning threshold but the block gap is more than warn block gap
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
+     * - mock lastBlockTime so that block gap is more than warn gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
      */
-    it('should return UNSTABLE when difference is more than warning threshold and less than critical threshold', async () => {
-      scannerHealthCheckParam['difference'] = 20;
+    it(`should return UNSTABLE when difference is less than warning threshold
+      but the block gap is more than warn block gap`, async () => {
+      scannerHealthCheckParam['difference'] = 2;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 300_000;
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
 
     /**
-     * @target getHealthStatus should return BROKEN when difference is more than critical threshold
+     * @target getHealthStatus should return UNSTABLE when difference is more
+     * than warning threshold and less than critical threshold and block gap
+     * is less than critical block gap
+     * @dependencies
+     * @scenario
+     * - mock difference to more than warning threshold
+     * - mock lastBlockTime so that block gap is less than warn gap
+     * - get health status
+     * @expected
+     * - The status should be UNSTABLE
+     */
+    it(`should return UNSTABLE when difference is more than warning threshold
+      and less than critical threshold and block gap is less than critical
+      block gap`, async () => {
+      scannerHealthCheckParam['difference'] = 20;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now();
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
+    });
+
+    /**
+     * @target getHealthStatus should return BROKEN when difference is less than
+     * critical threshold but the block gap is more than critical block gap
      * @dependencies
      * @scenario
      * - mock difference to less than critical threshold
+     * - mock lastBlockTime so that block gap is more than critical gap
+     * - get health status
+     * @expected
+     * - The status should be BROKEN
+     */
+    it(`should return BROKEN when difference is less than critical threshold but
+      the block gap is more than critical block gap`, async () => {
+      scannerHealthCheckParam['difference'] = 20;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 3_000_000;
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.BROKEN);
+    });
+
+    /**
+     * @target getHealthStatus should return BROKEN when difference is more than
+     * critical threshold
+     * @dependencies
+     * @scenario
+     * - mock difference to less than critical threshold
+     * - mock lastBlockTime so that block gap is less than warn gap
      * - get health status
      * @expected
      * - The status should be BROKEN
      */
     it('should return BROKEN when difference is more than critical threshold', async () => {
       scannerHealthCheckParam['difference'] = 200;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now();
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });

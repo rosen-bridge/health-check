@@ -17,7 +17,6 @@ describe('BitcoinEsploraScannerHealthCheck.getLastAvailableBlock', () => {
   it('should return the last available block in network', async () => {
     const scannerHealthCheckParam = new TestBitcoinEsploraScannerHealthCheck(
       () => Promise.resolve(1111),
-      'scannerName',
       100,
       10,
       'url',

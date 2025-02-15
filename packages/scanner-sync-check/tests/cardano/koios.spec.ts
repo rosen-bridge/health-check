@@ -29,7 +29,6 @@ describe('CardanoKoiosScannerHealthCheck', () => {
 
       const scannerHealthCheckParam = new CardanoKoiosScannerHealthCheck(
         () => Promise.resolve(1111),
-        'scannerName',
         100,
         10,
         'url',
