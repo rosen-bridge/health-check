@@ -15,8 +15,8 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     protected getLastSavedBlockHeight: () => Promise<number>,
     protected warnDifference: number,
     protected criticalDifference: number,
-    warnBlockGap = warnDifference,
-    criticalBlockGap = criticalDifference,
+    warnBlockGap: number,
+    criticalBlockGap: number,
     blockTime: number,
   ) {
     super();

@@ -64,11 +64,11 @@ describe('AbstractScannerHealthCheckParam', () => {
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
      * UNSTABLE when difference is more than warning threshold and less than
-     * critical threshold and last block time is less than critical block gap
+     * critical threshold and last block gap is less than critical block gap
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
-     * - mock lastBlockTime so that block gap be more than critical block gap
+     * - mock lastBlockTime so that block gap be less than critical block gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
@@ -89,10 +89,10 @@ describe('AbstractScannerHealthCheckParam', () => {
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
-     * - mock lastBlockTime to be now
+     * - mock lastBlockTime so that block gap be more than critical block gap
      * - get health status
      * @expected
-     * - The status should be UNSTABLE
+     * - The status should be BROKEN
      */
     it(`should return BROKEN when difference is less than critical threshold but
       block gap is more than critical block gap`, async () => {
