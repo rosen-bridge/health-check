@@ -25,6 +25,24 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   }
 
   /**
+   * @returns a message showing the last stored block by the scanner
+   */
+  abstract getLastSavedBlockMessage: () => Promise<string>;
+
+  /**
+   * generate parameter description
+   * @returns parameter description
+   */
+  getDescription = async () => {
+    const baseMessage = 'Checks if the scanner is in sync with the network. ';
+    try {
+      return baseMessage + (await this.getLastSavedBlockMessage());
+    } catch {
+      return baseMessage + `There is no available block in database.`;
+    }
+  };
+
+  /**
    * The common logic of parameter details in all scanner sync checks
    * @returns
    */

@@ -47,8 +47,8 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * generate parameter description
    * @returns parameter description
    */
-  getDescription = async () => {
-    return `Checks if the scanner is in sync with the network. The last block saved by the Bitcoin Esplora scanner is ${await this.getLastSavedBlockHeight()}.`;
+  getLastSavedBlockMessage = async () => {
+    return `The last block saved by the Bitcoin Esplora scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**

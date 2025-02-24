@@ -55,8 +55,8 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
    * generate parameter description
    * @returns parameter description
    */
-  getDescription = async () => {
-    return `Checks if the scanner is in sync with the network. The last block saved by the ${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC scanner is ${await this.getLastSavedBlockHeight()}.`;
+  getLastSavedBlockMessage = async () => {
+    return `The last block saved by the ${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC scanner is ${await this.getLastSavedBlockHeight()}.`;
   };
 
   /**
