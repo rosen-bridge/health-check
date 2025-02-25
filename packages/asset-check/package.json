@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.11",
-    "@blockfrost/blockfrost-js": "^5.5.0",
+    "@blockfrost/blockfrost-js": "^6.0.0",
     "@rosen-bridge/health-check": "^6.0.4",
     "@rosen-clients/cardano-koios": "^2.0.1",
     "@rosen-clients/ergo-explorer": "^1.1.1",
