@@ -56,7 +56,7 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
    * generate parameter description
    * @returns parameter description
    */
-  getLastSavedBlockMessage = async () => {
+  getLastSavedBlockMessage = () => {
     return `The last block saved by the ${upperFirst(this.chain.toLowerCase())} RPC scanner is ${this.lastBlockHeight}.`;
   };
 

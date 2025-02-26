@@ -32,7 +32,7 @@ class TestScannerHealthCheckParam extends AbstractScannerSyncHealthCheckParam {
   /**
    * mocked getLastSavedBlockMessage method
    */
-  getLastSavedBlockMessage = async () => {
+  getLastSavedBlockMessage = () => {
     return 'message';
   };
 

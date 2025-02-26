@@ -51,7 +51,7 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
    * generate parameter description
    * @returns parameter description
    */
-  getLastSavedBlockMessage = async () => {
+  getLastSavedBlockMessage = () => {
     return `The last block saved by the Cardano Graphql scanner is ${this.lastBlockHeight}.`;
   };
 

@@ -46,7 +46,7 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
    * generate parameter description
    * @returns parameter description
    */
-  getLastSavedBlockMessage = async () => {
+  getLastSavedBlockMessage = () => {
     return `The last block saved by the Cardano Koios scanner is ${this.lastBlockHeight}.`;
   };
 
