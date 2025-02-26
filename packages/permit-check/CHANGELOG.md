@@ -1,5 +1,11 @@
 # @rosen-bridge/permit-check
 
+## 1.0.5
+
+### Patch Changes
+
+- Add filter to ensure node api issue do not interefere with the permit check results
+
 ## 1.0.4
 
 ### Patch Changes

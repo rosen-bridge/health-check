@@ -1,5 +1,11 @@
 # @rosen-bridge/asset-check
 
+## 2.0.1
+
+### Patch Changes
+
+- Update `blockfrost-js` package version
+
 ## 2.0.0
 
 ### Major Changes

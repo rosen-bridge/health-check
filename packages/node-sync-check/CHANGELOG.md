@@ -1,5 +1,11 @@
 # @rosen-bridge/node-sync-check
 
+## 1.0.5
+
+### Patch Changes
+
+- Fix warn notification to show correct time
+
 ## 1.0.4
 
 ### Patch Changes

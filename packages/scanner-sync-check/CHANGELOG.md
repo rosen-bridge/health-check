@@ -1,5 +1,16 @@
 # @rosen-bridge/scanner-sync-check
 
+## 3.0.0
+
+### Major Changes
+
+- Add block delay check to scanner sync health parameters
+
+### Patch Changes
+
+- Update `blockfrost-js` package version
+- Fix scanner sync description not to throw error in scanner startup
+
 ## 2.0.0
 
 ### Major Changes
