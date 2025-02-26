@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/permit-check",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Rosen bridge permit health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",

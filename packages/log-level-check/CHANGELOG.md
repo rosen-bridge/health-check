@@ -1,5 +1,11 @@
 # @rosen-bridge/log-level-check
 
+## 1.1.0
+
+### Minor Changes
+
+- Use callbacks to track logs (new package callback-logger)
+
 ## 1.0.4
 
 ### Patch Changes

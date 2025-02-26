@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/log-level-check",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Rosen bridge log-level health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",
