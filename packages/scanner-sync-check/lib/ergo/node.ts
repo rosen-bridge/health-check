@@ -46,7 +46,7 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
    * @returns parameter description
    */
   getLastSavedBlockMessage = async () => {
-    return `The last block saved by the Ergo Node scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `The last block saved by the Ergo Node scanner is ${this.lastBlockHeight}.`;
   };
 
   /**

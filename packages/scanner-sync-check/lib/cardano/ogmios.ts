@@ -54,7 +54,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
    * @returns parameter description
    */
   getLastSavedBlockMessage = async () => {
-    return `The last block saved by the Cardano Ogmios scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `The last block saved by the Cardano Ogmios scanner is ${this.lastBlockHeight}.`;
   };
 
   /**

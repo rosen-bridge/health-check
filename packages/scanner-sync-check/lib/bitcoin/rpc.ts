@@ -72,7 +72,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter description
    */
   getLastSavedBlockMessage = async () => {
-    return `The last block saved by the Bitcoin RPC scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `The last block saved by the Bitcoin RPC scanner is ${this.lastBlockHeight}.`;
   };
 
   /**

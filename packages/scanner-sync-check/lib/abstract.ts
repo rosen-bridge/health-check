@@ -35,9 +35,9 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    */
   getDescription = async () => {
     const baseMessage = 'Checks if the scanner is in sync with the network. ';
-    try {
+    if (this.lastBlockHeight != undefined) {
       return baseMessage + (await this.getLastSavedBlockMessage());
-    } catch {
+    } else {
       return baseMessage + `There is no available block in database.`;
     }
   };

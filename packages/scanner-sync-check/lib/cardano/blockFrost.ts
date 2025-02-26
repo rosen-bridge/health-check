@@ -51,7 +51,7 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
    * @returns parameter description
    */
   getLastSavedBlockMessage = async () => {
-    return `The last block saved by the Cardano BlockFrost scanner is ${await this.getLastSavedBlockHeight()}.`;
+    return `The last block saved by the Cardano BlockFrost scanner is ${this.lastBlockHeight}.`;
   };
 
   /**
