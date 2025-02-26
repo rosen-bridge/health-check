@@ -83,6 +83,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   getHealthStatus = async (): Promise<HealthStatusLevel> => {
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     if (
+      this.lastBlockHeight == undefined ||
       this.difference >= this.criticalDifference ||
       blockGap >= this.criticalBlockTimeGap
     )

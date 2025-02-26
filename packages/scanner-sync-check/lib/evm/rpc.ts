@@ -1,4 +1,5 @@
 import { JsonRpcProvider } from 'ethers';
+import { upperFirst } from 'lodash-es';
 
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
@@ -48,7 +49,7 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
    * @returns parameter title
    */
   getTitle = async () => {
-    return `${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC Scanner Sync`;
+    return `${upperFirst(this.chain)} RPC Scanner Sync`;
   };
 
   /**
@@ -56,7 +57,7 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
    * @returns parameter description
    */
   getLastSavedBlockMessage = async () => {
-    return `The last block saved by the ${this.chain.charAt(0).toUpperCase() + this.chain.slice(1)} RPC scanner is ${this.lastBlockHeight}.`;
+    return `The last block saved by the ${upperFirst(this.chain.toLowerCase())} RPC scanner is ${this.lastBlockHeight}.`;
   };
 
   /**
