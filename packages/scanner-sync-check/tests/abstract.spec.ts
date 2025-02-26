@@ -27,7 +27,7 @@ describe('AbstractScannerHealthCheckParam', () => {
      * @dependencies
      * @scenario
      * - mock difference is less than warning threshold
-     * - mock lastBlockTime to be now
+     * - mock lastBlockHeight and lastBlockTime to be now
      * - get health status
      * @expected
      * - The status should be HEALTHY
@@ -36,6 +36,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       the block gap is less than warning block time gap`, async () => {
       scannerHealthCheckParam.setDifference(2);
       scannerHealthCheckParam.setLastBlockTime(Date.now());
+      scannerHealthCheckParam.setLastBlockHeight(100);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
@@ -47,7 +48,8 @@ describe('AbstractScannerHealthCheckParam', () => {
      * @dependencies
      * @scenario
      * - mock difference to less than warning threshold
-     * - mock lastBlockTime so that block gap be more than warn block gap
+     * - mock lastBlockHeight and lastBlockTime so that block gap be more than
+     * warn block gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
@@ -56,6 +58,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       but block gap is more than warn block gap and less than critical block
       gap`, async () => {
       scannerHealthCheckParam.setDifference(20);
+      scannerHealthCheckParam.setLastBlockHeight(100);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 40 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
@@ -68,7 +71,8 @@ describe('AbstractScannerHealthCheckParam', () => {
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
-     * - mock lastBlockTime so that block gap be less than critical block gap
+     * - mock lastBlockHeight and lastBlockTime so that block gap be less than
+     * critical block gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
@@ -77,6 +81,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       and less than critical threshold and block gap is less than critical
       block gap`, async () => {
       scannerHealthCheckParam.setDifference(20);
+      scannerHealthCheckParam.setLastBlockHeight(100);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 40 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
@@ -89,7 +94,8 @@ describe('AbstractScannerHealthCheckParam', () => {
      * @dependencies
      * @scenario
      * - mock difference to more than warning threshold
-     * - mock lastBlockTime so that block gap be more than critical block gap
+     * - mock lastBlockHeight and lastBlockTime so that block gap be more than
+     * critical block gap
      * - get health status
      * @expected
      * - The status should be BROKEN
@@ -97,6 +103,7 @@ describe('AbstractScannerHealthCheckParam', () => {
     it(`should return BROKEN when difference is less than critical threshold but
       block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam.setDifference(2);
+      scannerHealthCheckParam.setLastBlockHeight(100);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 400 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
@@ -108,12 +115,30 @@ describe('AbstractScannerHealthCheckParam', () => {
      * @dependencies
      * @scenario
      * - mock difference to less than critical threshold
+     * - mock lastBlockHeight
      * - get health status
      * @expected
      * - The status should be BROKEN
      */
     it('should return BROKEN when difference is more than critical threshold', async () => {
       scannerHealthCheckParam.setDifference(200);
+      scannerHealthCheckParam.setLastBlockHeight(100);
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.BROKEN);
+    });
+
+    /**
+     * @target AbstractScannerHealthCheckParam.getHealthStatus should return
+     * BROKEN when last block height is undefined
+     * @dependencies
+     * @scenario
+     * - mock difference to less than critical threshold
+     * - get health status
+     * @expected
+     * - The status should be BROKEN
+     */
+    it('should return BROKEN when last block height is undefined', async () => {
+      scannerHealthCheckParam.setDifference(0);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });

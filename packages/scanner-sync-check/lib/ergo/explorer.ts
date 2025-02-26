@@ -45,8 +45,8 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
    * generate parameter description
    * @returns parameter description
    */
-  getDescription = async () => {
-    return `Checks if the scanner is in sync with the network. The last block saved by the Ergo Explorer is ${await this.getLastSavedBlockHeight()}.`;
+  getLastSavedBlockMessage = () => {
+    return `The last block saved by the Ergo Explorer is ${this.lastBlockHeight}.`;
   };
 
   /**
