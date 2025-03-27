@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { BITCOIN_NATIVE_ASSET } from '../../lib/constants';
+import { BITCOIN_NATIVE_ASSET, DOGE_NATIVE_ASSET } from '../../lib/constants';
 import { TestBitcoinEsploraAssetHealthCheck } from './testBitcoin';
 
 describe('BitcoinEsploraAssetHealthCheck', () => {
@@ -49,6 +49,47 @@ describe('BitcoinEsploraAssetHealthCheck', () => {
       await assetHealthCheckParam.update();
 
       expect(assetHealthCheckParam.getTokenAmount()).toBe(1040534357n);
+    });
+
+    /**
+     * @target BitcoinEsploraAssetHealthCheck.update Should update DOGE amount using esplora api
+     * @dependencies
+     * - axios
+     * @scenario
+     * - mock return value of esplora address api
+     * - create new instance of BitcoinEsploraAssetHealthCheck with DOGE asset
+     * - update the parameter
+     * @expected
+     * - The native dogecoin asset amount should update successfully using esplora api
+     */
+    it('Should update DOGE amount using esplora api', async () => {
+      const assetHealthCheckParam = new TestBitcoinEsploraAssetHealthCheck(
+        DOGE_NATIVE_ASSET,
+        'address',
+        100n,
+        10n,
+        'url',
+      );
+      mockGet(assetHealthCheckParam.getClient(), {
+        address: 'D8j6K9ZQmYPg55sQzLEUKHxpVQcpv8SwxN',
+        chain_stats: {
+          funded_txo_count: 10,
+          funded_txo_sum: 1000000000,
+          spent_txo_count: 5,
+          spent_txo_sum: 300000000,
+          tx_count: 10,
+        },
+        mempool_stats: {
+          funded_txo_count: 0,
+          funded_txo_sum: 0,
+          spent_txo_count: 0,
+          spent_txo_sum: 0,
+          tx_count: 0,
+        },
+      });
+      await assetHealthCheckParam.update();
+
+      expect(assetHealthCheckParam.getTokenAmount()).toBe(700000000n);
     });
   });
 });

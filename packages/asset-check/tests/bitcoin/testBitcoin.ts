@@ -1,6 +1,6 @@
-import { BitcoinEsploraAssetHealthCheckParam } from '../../lib/bitcoin/esplora';
+import { EsploraAssetHealthCheckParam } from '../../lib/bitcoin/esplora';
 
-export class TestBitcoinEsploraAssetHealthCheck extends BitcoinEsploraAssetHealthCheckParam {
+export class TestBitcoinEsploraAssetHealthCheck extends EsploraAssetHealthCheckParam {
   /**
    * @returns protected token amount
    */
