@@ -1,9 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
-import { BITCOIN_NATIVE_ASSET } from '../constants';
 import { AbstractAssetHealthCheckParam } from '../abstract';
 import { EsploraAddress } from './types';
 
-export class BitcoinEsploraAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
+export class EsploraAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   protected client: AxiosInstance;
 
   constructor(
@@ -15,8 +14,8 @@ export class BitcoinEsploraAssetHealthCheckParam extends AbstractAssetHealthChec
     assetDecimal = 0,
   ) {
     super(
-      BITCOIN_NATIVE_ASSET,
-      assetName === BITCOIN_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
+      assetName,
+      assetName.toUpperCase(),
       address,
       warnThreshold,
       criticalThreshold,
