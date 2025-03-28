@@ -1,12 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { BITCOIN_NATIVE_ASSET, DOGE_NATIVE_ASSET } from '../constants';
 import { AbstractAssetHealthCheckParam } from '../abstract';
 import { EsploraAddress } from './types';
-
-const ESPLORA_ASSET_MAP: Record<string, string> = {
-  [DOGE_NATIVE_ASSET]: DOGE_NATIVE_ASSET,
-  [BITCOIN_NATIVE_ASSET]: BITCOIN_NATIVE_ASSET,
-};
 
 export class EsploraAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   protected client: AxiosInstance;
@@ -19,9 +13,8 @@ export class EsploraAssetHealthCheckParam extends AbstractAssetHealthCheckParam 
     esploraUrl: string,
     assetDecimal = 0,
   ) {
-    const asset = ESPLORA_ASSET_MAP[assetName] || BITCOIN_NATIVE_ASSET;
     super(
-      asset,
+      assetName,
       assetName.toUpperCase(),
       address,
       warnThreshold,
