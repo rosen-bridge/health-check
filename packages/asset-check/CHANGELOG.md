@@ -1,5 +1,11 @@
 # @rosen-bridge/asset-check
 
+## 3.0.0
+
+### Major Changes
+
+- Add support for Doge in the EsploraAssetHealthCheckParam class
+
 ## 2.0.1
 
 ### Patch Changes
