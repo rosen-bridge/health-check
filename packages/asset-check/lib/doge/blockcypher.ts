@@ -32,7 +32,9 @@ export class DogeBlockCypherAssetHealthCheckParam extends AbstractAssetHealthChe
    */
   updateStatus = async () => {
     const addressStats = (
-      await this.client.get<BlockCypherAddress>(`/api/address/${this.address}`)
+      await this.client.get<BlockCypherAddress>(
+        `/v1/doge/main/addrs/${this.address}/balance`,
+      )
     ).data;
     this.tokenAmount = BigInt(addressStats.balance);
   };
