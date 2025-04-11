@@ -30,7 +30,7 @@ describe('DogeBlockCypherAssetHealthCheck', () => {
         'url',
       );
       mockGet(assetHealthCheckParam.getClient(), {
-        address: 'D8j6K9ZQmYPg55sQzLEUKHxpVQcpv8SwxN',
+        address: 'DLPaeuaJi2JLUcvYHD4ddLxadwnGaVSt4p',
         total_received: 1000000000,
         total_sent: 300000000,
         balance: 700000000,
