@@ -1,5 +1,11 @@
 # @rosen-bridge/asset-check
 
+## 3.1.0
+
+### Minor Changes
+
+- Add support for BlockCypher
+
 ## 3.0.0
 
 ### Major Changes
