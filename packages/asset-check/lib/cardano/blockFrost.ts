@@ -17,6 +17,7 @@ export class CardanoBlockFrostAssetHealthCheckParam extends AbstractAssetHealthC
     blockFrostUrl?: string,
   ) {
     super(
+      'cardano',
       assetId,
       assetName === CARDANO_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
       address,
