@@ -23,7 +23,7 @@ export class CardanoGraphQLAssetHealthCheckParam extends AbstractAssetHealthChec
     assetDecimal = 0,
   ) {
     super(
-      'cardano',
+      'Cardano',
       assetId,
       assetName === CARDANO_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
       address,
