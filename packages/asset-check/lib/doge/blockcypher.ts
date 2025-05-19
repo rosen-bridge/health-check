@@ -15,7 +15,7 @@ export class DogeBlockCypherAssetHealthCheckParam extends AbstractAssetHealthChe
     assetDecimal = 0,
   ) {
     super(
-      'cardano',
+      'doge',
       DOGE_NATIVE_ASSET,
       assetName.toUpperCase(),
       address,

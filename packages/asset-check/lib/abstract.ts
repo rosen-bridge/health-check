@@ -54,7 +54,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = async (): Promise<string> => {
-    return `[${this.chain}] Checks if the ${this.address.slice(0, 6)} address has a sufficient ${this.assetName} balance. The current balance is ${this.getTokenDecimalStr(
+    return `Checks if the ${this.address.slice(0, 6)} address has a sufficient ${this.assetName} balance. The current balance is ${this.getTokenDecimalStr(
       this.tokenAmount,
     )}.`;
   };
@@ -66,7 +66,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   getDetails = async (): Promise<string | undefined> => {
     if (this.tokenAmount < this.criticalThreshold)
       return (
-        `[${this.chain}] Service has stopped working due to insufficient ${this.assetName} balance` +
+        `Service has stopped working due to insufficient ${this.assetName} balance` +
         ` (${this.getTokenDecimalStr(this.criticalThreshold)} ${
           this.assetName
         } is required, but ${this.getTokenDecimalStr(
@@ -76,7 +76,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
       );
     else if (this.tokenAmount < this.warnThreshold)
       return (
-        `[${this.chain}] Service is in an unstable situation due to a low ${this.assetName} balance` +
+        `Service is in an unstable situation due to a low ${this.assetName} balance` +
         ` (${this.getTokenDecimalStr(this.warnThreshold)} ${
           this.assetName
         } is recommended, but ${this.getTokenDecimalStr(
