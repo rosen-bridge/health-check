@@ -6,6 +6,7 @@ export class EsploraAssetHealthCheckParam extends AbstractAssetHealthCheckParam 
   protected client: AxiosInstance;
 
   constructor(
+    chain: string,
     assetName: string,
     address: string,
     warnThreshold: bigint,
@@ -14,6 +15,7 @@ export class EsploraAssetHealthCheckParam extends AbstractAssetHealthCheckParam 
     assetDecimal = 0,
   ) {
     super(
+      chain,
       assetName,
       assetName.toUpperCase(),
       address,

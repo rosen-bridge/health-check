@@ -4,6 +4,7 @@ import {
 } from '@rosen-bridge/health-check';
 
 abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
+  protected chain: string;
   protected assetName: string;
   protected assetId: string;
   protected address: string;
@@ -13,6 +14,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
   protected assetDecimal: number;
 
   constructor(
+    chain: string,
     assetId: string,
     assetName: string,
     address: string,
@@ -21,6 +23,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
     assetDecimal: number,
   ) {
     super();
+    this.chain = chain;
     this.assetId = assetId;
     this.assetName = assetName;
     this.address = address;
@@ -35,7 +38,7 @@ abstract class AbstractAssetHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter title
    */
   getTitle = async (): Promise<string> => {
-    return `Available ${this.assetName} Balance`;
+    return `[${this.chain}] Available ${this.assetName} Balance`;
   };
 
   /**

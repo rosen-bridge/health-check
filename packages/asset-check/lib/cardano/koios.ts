@@ -17,6 +17,7 @@ export class CardanoKoiosAssetHealthCheckParam extends AbstractAssetHealthCheckP
     authToken?: string,
   ) {
     super(
+      'Cardano',
       assetId,
       assetName === CARDANO_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
       address,

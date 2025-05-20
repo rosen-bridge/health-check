@@ -10,6 +10,7 @@ describe('AbstractAssetHealthCheckParam', () => {
   let assetHealthCheckParam: TestAssetHealthCheckParam;
   beforeAll(() => {
     assetHealthCheckParam = new TestAssetHealthCheckParam(
+      'chain',
       'assetId',
       'assetName',
       'address',
