@@ -28,10 +28,10 @@ describe('CardanoKoiosScannerHealthCheck', () => {
       } as unknown as ReturnType<typeof cardanoKoiosClientFactory>);
 
       const scannerHealthCheckParam = new CardanoKoiosScannerHealthCheck(
+        async () => Promise.resolve(1115),
         () => Promise.resolve(1111),
         100,
         10,
-        'url',
       );
       const height = await scannerHealthCheckParam.getLastAvailableBlock();
       expect(height).toEqual(1115);

@@ -21,11 +21,11 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
   let scannerHealthCheckParam: CardanoOgmiosScannerHealthCheck;
   beforeEach(async () => {
     scannerHealthCheckParam = new CardanoOgmiosScannerHealthCheck(
+      async () => Promise.resolve(1115),
       async () => Promise.resolve(1111),
       () => true,
       10,
       100,
-      'url',
       123,
       5000,
     );
@@ -64,7 +64,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      */
     it(`should return UNSTABLE when difference is less than warning threshold
       but the block gap is more than warn block gap`, async () => {
-      scannerHealthCheckParam['difference'] = 2;
+      scannerHealthCheckParam['difference'] = 20;
       scannerHealthCheckParam['lastBlockTime'] = Date.now() - 300_000;
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);

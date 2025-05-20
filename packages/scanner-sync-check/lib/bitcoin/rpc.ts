@@ -31,6 +31,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
     blockTime = 600,
   ) {
     super(
+      async () => 0,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,

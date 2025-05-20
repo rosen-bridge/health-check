@@ -1,4 +1,3 @@
-import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 import { describe, expect, it, vitest } from 'vitest';
 
 import { ErgoNodeScannerHealthCheck } from '../../lib';
@@ -18,17 +17,11 @@ describe('ErgoNodeScannerHealthCheck.getLastAvailableBlock', () => {
    * - The block height should be correct
    */
   it('Should return the last available block in network', async () => {
-    vitest.mocked(ergoNodeClientFactory).mockReturnValue({
-      getNodeInfo: async () => ({
-        fullHeight: 1115,
-      }),
-    } as unknown as ReturnType<typeof ergoNodeClientFactory>);
-
     const scannerHealthCheckParam = new ErgoNodeScannerHealthCheck(
+      () => Promise.resolve(1115),
       () => Promise.resolve(1111),
       100,
       10,
-      'url',
     );
     const height = await scannerHealthCheckParam.getLastAvailableBlock();
     expect(height).toEqual(1115);

@@ -3,10 +3,6 @@ import {
   CardanoBlockFrostScannerHealthCheck,
 } from '../../lib';
 
-export class TestCardanoGraphQLScannerHealthCheck extends CardanoGraphQLScannerHealthCheck {
-  getClient = () => this.client;
-}
+export class TestCardanoGraphQLScannerHealthCheck extends CardanoGraphQLScannerHealthCheck {}
 
-export class TestCardanoBlockFrostScannerHealthCheck extends CardanoBlockFrostScannerHealthCheck {
-  getClient = () => this.client;
-}
+export class TestCardanoBlockFrostScannerHealthCheck extends CardanoBlockFrostScannerHealthCheck {}

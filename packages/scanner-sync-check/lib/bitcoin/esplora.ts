@@ -15,6 +15,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
     blockTime = 600,
   ) {
     super(
+      async () => 0,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
