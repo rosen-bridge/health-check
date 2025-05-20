@@ -1,8 +1,6 @@
-import { describe, expect, it, vitest } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { ErgoNodeScannerHealthCheck } from '../../lib';
-
-vitest.mock('@rosen-clients/ergo-node');
 
 describe('ErgoNodeScannerHealthCheck.getLastAvailableBlock', () => {
   /**

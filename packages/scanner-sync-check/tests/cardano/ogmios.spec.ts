@@ -1,18 +1,7 @@
-import {
-  describe,
-  expect,
-  it,
-  vitest,
-  vi,
-  beforeEach,
-  afterEach,
-} from 'vitest';
-import { createLedgerStateQueryClient } from '@cardano-ogmios/client';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
-
-vitest.mock('@cardano-ogmios/client');
 
 describe('CardanoOgmiosScannerHealthCheck', () => {
   /**
@@ -174,12 +163,12 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - The block height should be correct
      */
     it('should return the last available block in network', async () => {
-      vi.mocked(createLedgerStateQueryClient).mockImplementation(async () => {
-        return {
-          networkBlockHeight: async () => 1115,
-          shutdown: async () => undefined,
-        } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
-      });
+      // vi.mocked(createLedgerStateQueryClient).mockImplementation(async () => {
+      //   return {
+      //     networkBlockHeight: async () => 1115,
+      //     shutdown: async () => undefined,
+      //   } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
+      // });
       const height = await scannerHealthCheckParam.getLastAvailableBlock();
       expect(height).toEqual(1115);
     });
