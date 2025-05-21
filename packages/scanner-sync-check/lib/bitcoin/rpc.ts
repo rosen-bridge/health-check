@@ -18,8 +18,9 @@ type PartialGetChainTipsResult = {
 
 export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   protected client: AxiosInstance;
-
+  protected chain: string;
   constructor(
+    chain: string,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
@@ -38,6 +39,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
       criticalBlockGap,
       blockTime,
     );
+    this.chain = chain;
     const auth =
       username && password
         ? { username: username, password: password }
@@ -56,7 +58,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter id
    */
   getId = (): string => {
-    return `bitcoin_rpc_scanner`;
+    return `${this.chain}_rpc_scanner`;
   };
 
   /**
@@ -64,7 +66,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Bitcoin RPC Scanner Sync`;
+    return `${this.chain} RPC Scanner Sync`;
   };
 
   /**
