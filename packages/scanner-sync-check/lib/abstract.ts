@@ -10,10 +10,9 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   protected lastBlockTime: number;
   protected warnBlockTimeGap: number;
   protected criticalBlockTimeGap: number;
-  protected getLastNetworkHeight: () => Promise<number | undefined>;
 
   constructor(
-    getLastNetworkHeight: () => Promise<number | undefined>,
+    protected getLastNetworkHeight: () => Promise<number | undefined>,
     protected getLastSavedBlockHeight: () => Promise<number>,
     protected warnDifference: number,
     protected criticalDifference: number,
