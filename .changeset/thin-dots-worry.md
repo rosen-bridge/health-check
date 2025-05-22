@@ -2,4 +2,4 @@
 '@rosen-bridge/scanner-sync-check': minor
 ---
 
-delegate latest height fetching to subclasses of the AbstractScannerSyncHealthCheckParam
+Network height is now obtained through a function provided to subclasses of AbstractScannerSyncHealthCheckParam. The only exception to this approach is the CardanoOgmiosScannerHealthCheck class, which handles it differently.

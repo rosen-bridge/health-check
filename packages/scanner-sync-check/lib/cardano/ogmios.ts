@@ -1,3 +1,8 @@
+import {
+  createInteractionContext,
+  InteractionContext,
+  createLedgerStateQueryClient,
+} from '@cardano-ogmios/client';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
@@ -6,18 +11,20 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
   private disconnectionTime: number | undefined;
 
   constructor(
-    getLastNetworkHeight: () => Promise<number>,
     getLastSavedBlockHeight: () => Promise<number>,
     private connected: () => boolean,
     warnDifference: number,
     criticalDifference: number,
+    private ogmiosHost: string,
+    private ogmiosPort: number,
     private unstableTimeWindow: number,
+    private useTls = false,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 20,
   ) {
     super(
-      getLastNetworkHeight,
+      () => this.getLastNetworkHeight(),
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
@@ -91,6 +98,35 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
+  };
+
+  /**
+   * @returns last available block in network
+   */
+  getLastAvailableBlock = async () => {
+    const context: InteractionContext = await createInteractionContext(
+      (err) => console.error(err),
+      () => undefined,
+      {
+        connection: {
+          port: this.ogmiosPort,
+          host: this.ogmiosHost,
+          tls: this.useTls,
+        },
+      },
+    );
+    const ogmiosClient = await createLedgerStateQueryClient(context);
+    try {
+      const height = await ogmiosClient.networkBlockHeight();
+      ogmiosClient.shutdown();
+      if (height == 'origin') return 0;
+      else return height;
+    } catch (e) {
+      ogmiosClient.shutdown();
+      throw new Error(
+        `Checking ogmios last network block failed with error: ${e}`,
+      );
+    }
   };
 
   /**
