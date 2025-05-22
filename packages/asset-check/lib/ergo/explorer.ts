@@ -16,6 +16,7 @@ export class ErgoExplorerAssetHealthCheckParam extends AbstractAssetHealthCheckP
     assetDecimal = 0,
   ) {
     super(
+      'Ergo',
       assetId,
       assetName === ERGO_NATIVE_ASSET ? assetName.toUpperCase() : assetName,
       address,

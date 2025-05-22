@@ -23,6 +23,7 @@ describe('BitcoinEsploraAssetHealthCheck', () => {
      */
     it('Should update BTC amount using esplora api', async () => {
       const assetHealthCheckParam = new TestBitcoinEsploraAssetHealthCheck(
+        'bitcoin',
         BITCOIN_NATIVE_ASSET,
         'address',
         100n,
@@ -64,6 +65,7 @@ describe('BitcoinEsploraAssetHealthCheck', () => {
      */
     it('Should update DOGE amount using esplora api', async () => {
       const assetHealthCheckParam = new TestBitcoinEsploraAssetHealthCheck(
+        'doge',
         DOGE_NATIVE_ASSET,
         'address',
         100n,

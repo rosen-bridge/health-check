@@ -8,6 +8,7 @@ export class EvmRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   protected nativeTokenId: string;
 
   constructor(
+    chain: string,
     nativeTokenId: string,
     assetId: string,
     assetName: string,
@@ -20,6 +21,7 @@ export class EvmRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
     assetDecimal = 0,
   ) {
     super(
+      chain,
       assetId,
       assetName === nativeTokenId ? assetName.toUpperCase() : assetName,
       address,
