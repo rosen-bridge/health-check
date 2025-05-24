@@ -3,7 +3,10 @@ import { randomBytes } from 'crypto';
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
+  protected chain: string;
+
   constructor(
+    chain: string,
     getLastNetworkHeight: () => Promise<number | undefined>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
@@ -21,6 +24,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
       criticalBlockGap,
       blockTime,
     );
+    this.chain = chain;
   }
 
   private generateRandomId = () => randomBytes(32).toString('hex');
@@ -30,7 +34,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter id
    */
   getId = (): string => {
-    return `bitcoin_rpc_scanner`;
+    return `${this.chain}_rpc_scanner`;
   };
 
   /**
@@ -38,7 +42,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Bitcoin RPC Scanner Sync`;
+    return `${this.chain} RPC Scanner Sync`;
   };
 
   /**

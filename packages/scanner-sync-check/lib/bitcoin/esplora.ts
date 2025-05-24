@@ -1,7 +1,10 @@
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
+  protected chain: string;
+
   constructor(
+    chain: string,
     getLastNetworkHeight: () => Promise<number | undefined>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
@@ -19,6 +22,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
       criticalBlockGap,
       blockTime,
     );
+    this.chain = chain;
   }
 
   /**
@@ -26,7 +30,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter id
    */
   getId = (): string => {
-    return `bitcoin_esplora_scanner`;
+    return `${this.chain}_esplora_scanner`;
   };
 
   /**
@@ -34,7 +38,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Bitcoin Esplora Scanner Sync`;
+    return `${this.chain} Esplora Scanner Sync`;
   };
 
   /**
