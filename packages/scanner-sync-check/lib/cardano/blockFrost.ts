@@ -1,21 +1,17 @@
-import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
-
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
-  protected client;
-
   constructor(
+    getLastNetworkHeight: () => Promise<number>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
-    projectId: string,
-    url?: string,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 20,
   ) {
     super(
+      getLastNetworkHeight,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
@@ -23,11 +19,6 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
       criticalBlockGap,
       blockTime,
     );
-    this.client = new BlockFrostAPI({
-      projectId: projectId,
-      customBackend: url,
-      network: 'mainnet',
-    });
   }
 
   /**
@@ -52,15 +43,5 @@ export class CardanoBlockFrostScannerHealthCheck extends AbstractScannerSyncHeal
    */
   getLastSavedBlockMessage = () => {
     return `The last block saved by the Cardano BlockFrost scanner is ${this.lastBlockHeight}.`;
-  };
-
-  /**
-   * @returns last available block in network
-   */
-  getLastAvailableBlock = () => {
-    return this.client.blocksLatest().then((block) => {
-      const height = block.height;
-      return height ?? 0;
-    });
   };
 }

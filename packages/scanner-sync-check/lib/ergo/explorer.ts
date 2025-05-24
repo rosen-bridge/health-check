@@ -1,20 +1,17 @@
-import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
-
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
-  private explorerApi;
-
   constructor(
+    getLastNetworkHeight: () => Promise<number>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
-    networkUrl: string,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 120,
   ) {
     super(
+      getLastNetworkHeight,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
@@ -22,7 +19,6 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
       criticalBlockGap,
       blockTime,
     );
-    this.explorerApi = ergoExplorerClientFactory(networkUrl);
   }
 
   /**
@@ -47,12 +43,5 @@ export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthChe
    */
   getLastSavedBlockMessage = () => {
     return `The last block saved by the Ergo Explorer is ${this.lastBlockHeight}.`;
-  };
-
-  /**
-   * @returns last available block in network
-   */
-  getLastAvailableBlock = async () => {
-    return Number((await this.explorerApi.v1.getApiV1Networkstate()).height);
   };
 }

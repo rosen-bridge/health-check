@@ -1,21 +1,17 @@
-import cardanoKoiosClientFactory from '@rosen-clients/cardano-koios';
-
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
-  private koiosApi;
-
   constructor(
+    getLastNetworkHeight: () => Promise<number>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
-    networkUrl: string,
-    authToken?: string,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 20,
   ) {
     super(
+      getLastNetworkHeight,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
@@ -23,7 +19,6 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
       criticalBlockGap,
       blockTime,
     );
-    this.koiosApi = cardanoKoiosClientFactory(networkUrl, authToken);
   }
 
   /**
@@ -48,12 +43,5 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
    */
   getLastSavedBlockMessage = () => {
     return `The last block saved by the Cardano Koios scanner is ${this.lastBlockHeight}.`;
-  };
-
-  /**
-   * @returns last available block in network
-   */
-  getLastAvailableBlock = async () => {
-    return Number((await this.koiosApi.getTip())[0].block_no);
   };
 }
