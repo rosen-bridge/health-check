@@ -34,12 +34,12 @@ export class CardanoKoiosAssetHealthCheckParam extends AbstractAssetHealthCheckP
   updateStatus = async () => {
     let tokenAmount = 0n;
     if (this.assetId == CARDANO_NATIVE_ASSET) {
-      const infos = await this.koiosApi.postAddressInfo({
+      const infos = await this.koiosApi.addressInfo({
         _addresses: [this.address],
       });
       if (infos[0].balance) tokenAmount = BigInt(infos[0].balance);
     } else {
-      const assets = await this.koiosApi.postAddressAssets({
+      const assets = await this.koiosApi.addressAssets({
         _addresses: [this.address],
       });
       const token = assets.find(

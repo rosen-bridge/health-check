@@ -21,7 +21,7 @@ describe('CardanoKoiosAssetHealthCheck', () => {
      */
     it('Should update the token amount using koios api', async () => {
       vitest.mocked(cardanoKoiosClientFactory).mockReturnValue({
-        postAddressAssets: async () => [
+        addressAssets: async () => [
           {
             address: 'address',
             policy_id: 'policy_id',
@@ -56,7 +56,7 @@ describe('CardanoKoiosAssetHealthCheck', () => {
      */
     it('Should update the ada amount using koios api', async () => {
       vitest.mocked(cardanoKoiosClientFactory).mockReturnValue({
-        postAddressInfo: async () => [
+        addressInfo: async () => [
           {
             balance: 120000n,
           },
