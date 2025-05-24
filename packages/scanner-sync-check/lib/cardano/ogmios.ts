@@ -24,6 +24,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     blockTime = 20,
   ) {
     super(
+      () => this.getLastNetworkHeight(),
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,

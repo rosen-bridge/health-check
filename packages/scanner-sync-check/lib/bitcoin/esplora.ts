@@ -1,22 +1,20 @@
-import axios, { AxiosInstance } from 'axios';
-
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
-  protected client: AxiosInstance;
   protected chain: string;
 
   constructor(
     chain: string,
+    getLastNetworkHeight: () => Promise<number | undefined>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
-    esploraUrl: string,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 600,
   ) {
     super(
+      getLastNetworkHeight,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
@@ -25,9 +23,6 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
       blockTime,
     );
     this.chain = chain;
-    this.client = axios.create({
-      baseURL: esploraUrl,
-    });
   }
 
   /**
@@ -52,14 +47,5 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    */
   getLastSavedBlockMessage = () => {
     return `The last block saved by the Bitcoin Esplora scanner is ${this.lastBlockHeight}.`;
-  };
-
-  /**
-   * @returns last available block in network
-   */
-  getLastAvailableBlock = () => {
-    return this.client
-      .get<number>(`/api/blocks/tip/height`)
-      .then((res) => Number(res.data));
   };
 }

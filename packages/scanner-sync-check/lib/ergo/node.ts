@@ -1,20 +1,17 @@
-import ergoNodeClientFactory from '@rosen-clients/ergo-node';
-
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
-  private nodeApi;
-
   constructor(
+    getLastNetworkHeight: () => Promise<number>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
-    networkUrl: string,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 120,
   ) {
     super(
+      getLastNetworkHeight,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
@@ -22,7 +19,6 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
       criticalBlockGap,
       blockTime,
     );
-    this.nodeApi = ergoNodeClientFactory(networkUrl);
   }
 
   /**
@@ -47,12 +43,5 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
    */
   getLastSavedBlockMessage = () => {
     return `The last block saved by the Ergo Node scanner is ${this.lastBlockHeight}.`;
-  };
-
-  /**
-   * @returns last available block in network
-   */
-  getLastAvailableBlock = async () => {
-    return Number((await this.nodeApi.getNodeInfo()).fullHeight);
   };
 }

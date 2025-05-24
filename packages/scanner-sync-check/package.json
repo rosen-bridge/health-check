@@ -33,14 +33,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.11",
-    "@blockfrost/blockfrost-js": "^6.0.0",
     "@cardano-ogmios/client": "^6.3.0",
     "@rosen-bridge/health-check": "^6.0.4",
-    "@rosen-clients/ergo-explorer": "^1.1.1",
-    "@rosen-clients/ergo-node": "^1.1.1",
-    "axios": "^1.6.8",
-    "cross-fetch": "^4.0.0",
-    "date-fns": "^4.1.0",
-    "ether": "^0.0.9"
+    "date-fns": "^4.1.0"
   }
 }

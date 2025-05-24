@@ -1,23 +1,17 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client/core';
-import { HttpLink } from '@apollo/client/link/http';
-import fetch from 'cross-fetch';
-
 import { AbstractScannerSyncHealthCheckParam } from '../abstract';
-import { CurrentHeightQuery, currentHeightQuery } from './types/graphqlTypes';
 
 export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
-  protected client;
-
   constructor(
+    getLastNetworkHeight: () => Promise<number>,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
-    graphqlUri: string,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 20,
   ) {
     super(
+      getLastNetworkHeight,
       getLastSavedBlockHeight,
       warnDifference,
       criticalDifference,
@@ -25,10 +19,6 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
       criticalBlockGap,
       blockTime,
     );
-    this.client = new ApolloClient({
-      cache: new InMemoryCache(),
-      link: new HttpLink({ uri: graphqlUri, fetch }),
-    });
   }
 
   /**
@@ -53,19 +43,5 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
    */
   getLastSavedBlockMessage = () => {
     return `The last block saved by the Cardano Graphql scanner is ${this.lastBlockHeight}.`;
-  };
-
-  /**
-   * @returns last available block in network
-   */
-  getLastAvailableBlock = () => {
-    return this.client
-      .query<CurrentHeightQuery>({
-        query: currentHeightQuery,
-      })
-      .then((res) => {
-        const height = res.data.cardano.tip.number;
-        return height ?? 0;
-      });
   };
 }
