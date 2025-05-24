@@ -17,6 +17,7 @@ describe('BitcoinRPCScannerHealthCheck.getLastAvailableBlock', () => {
    */
   it('should return the last available block in network', async () => {
     const scannerHealthCheckParam = new TestBitcoinRPCScannerHealthCheck(
+      'bitcoin',
       () => Promise.resolve(1111),
       100,
       10,

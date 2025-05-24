@@ -4,8 +4,10 @@ import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   protected client: AxiosInstance;
+  protected chain: string;
 
   constructor(
+    chain: string,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
@@ -22,6 +24,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
       criticalBlockGap,
       blockTime,
     );
+    this.chain = chain;
     this.client = axios.create({
       baseURL: esploraUrl,
     });
@@ -32,7 +35,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter id
    */
   getId = (): string => {
-    return `bitcoin_esplora_scanner`;
+    return `${this.chain}_esplora_scanner`;
   };
 
   /**
@@ -40,7 +43,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter title
    */
   getTitle = async () => {
-    return `Bitcoin Esplora Scanner Sync`;
+    return `${this.chain} Esplora Scanner Sync`;
   };
 
   /**
