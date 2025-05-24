@@ -2,4 +2,4 @@
 '@rosen-bridge/scanner-sync-check': major
 ---
 
-Fix dynamic chain name to bitcoin health-check parameter
+Use dynamic chain name for bitcoin health-check parameter
