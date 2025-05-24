@@ -18,11 +18,11 @@ export const historyItemsInterval = 1;
  */
 class DummyParam extends AbstractHealthCheckParam {
   getId = () => 'dummy-param';
-  getTitle = async () => 'Dummy Param';
-  getDescription = async () => 'This is a dummy param';
+  getTitle = () => 'Dummy Param';
+  getDescription = () => 'This is a dummy param';
   updateStatus = () => {};
-  getHealthStatus = async () => HealthStatusLevel.HEALTHY;
-  getDetails = async () => undefined;
+  getHealthStatus = () => HealthStatusLevel.HEALTHY;
+  getDetails = () => undefined;
 }
 export const dummyParam = new DummyParam();
 

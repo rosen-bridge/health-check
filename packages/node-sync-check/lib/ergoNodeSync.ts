@@ -42,7 +42,7 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
    * generate a unique title
    * @returns parameter title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `Ergo Node Sync`;
   };
 
@@ -50,7 +50,7 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
    * generate description
    * @returns parameter description
    */
-  getDescription = async () => {
+  getDescription = () => {
     return `Checks if the specified Ergo Node is synced by comparing the scanned headers vs full blocks, the last scanned block time, and the connected peers.`;
   };
 
@@ -58,9 +58,9 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
    * adds required notifications based on each condition
    * @returns parameter health description
    */
-  getDetails = async (): Promise<string | undefined> => {
+  getDetails = (): string | undefined => {
     let notification;
-    const healthStatus = await this.getHealthStatus();
+    const healthStatus = this.getHealthStatus();
     if (healthStatus === HealthStatusLevel.UNSTABLE) {
       notification = `Service is unstable since the Ergo node has some issues.\n`;
     } else if (healthStatus === HealthStatusLevel.BROKEN) {
@@ -125,7 +125,7 @@ class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
    * and is out of sync (Broken) if at least 3 conditions happened
    * @returns node sync health status
    */
-  getHealthStatus = async (): Promise<HealthStatusLevel> => {
+  getHealthStatus = (): HealthStatusLevel => {
     const nodeCondition =
       Number(this.nodeHeightDifference > this.maxHeightDifference) +
       Number(this.nodeLastBlockTime > this.maxBlockTime) +

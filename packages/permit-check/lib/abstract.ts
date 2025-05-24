@@ -41,7 +41,7 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
    * generates a unique title
    * @returns parameter title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `Available Reporting Permits`;
   };
 
@@ -49,7 +49,7 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
    * generate description
    * @returns parameter description
    */
-  getDescription = async () => {
+  getDescription = () => {
     return `Checks if the watcher has sufficient permits for reporting. Currently has ${this.reportsCount} available report permit.`;
   };
 
@@ -57,7 +57,7 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
    * if RWT count in permits is less than the thresholds returns the required notification
    * @returns parameter health description
    */
-  getDetails = async (): Promise<string | undefined> => {
+  getDetails = (): string | undefined => {
     if (this.reportsCount <= this.criticalThreshold)
       return (
         `Insufficient or critical amount of permit tokens.\n` +
@@ -75,7 +75,7 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
   /**
    * @returns asset health status
    */
-  getHealthStatus = async (): Promise<HealthStatusLevel> => {
+  getHealthStatus = (): HealthStatusLevel => {
     if (this.reportsCount <= this.criticalThreshold)
       return HealthStatusLevel.BROKEN;
     else if (this.reportsCount <= this.warnThreshold)

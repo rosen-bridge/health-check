@@ -38,7 +38,7 @@ export class CardanoKoiosScannerHealthCheck extends AbstractScannerSyncHealthChe
    * generate a unique title with network name and type
    * @returns parameter title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `Cardano Koios Scanner Sync`;
   };
 

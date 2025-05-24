@@ -23,7 +23,7 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
    *
    * @returns Parameter title
    */
-  getTitle = async (): Promise<string> => {
+  getTitle = (): string => {
     return `Transaction Signing Progress`;
   };
 
@@ -41,7 +41,7 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
    *
    * @returns Parameter description
    */
-  getDescription = async (): Promise<string> => {
+  getDescription = (): string => {
     return `Checks the failure rates of transactions' signings.`;
   };
 
@@ -76,7 +76,7 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
    *
    * @returns Parameter health description
    */
-  getDetails = async (): Promise<string | undefined> => {
+  getDetails = (): string | undefined => {
     if (!this.txWithMaxSigningFailure) return undefined;
     const { failureAttempts, signFailedTxCount } = this.getFailureAttempts()!;
     const eventInfo =
@@ -98,7 +98,7 @@ export class TxProgressHealthCheckParam extends AbstractHealthCheckParam {
   };
 
   /** @returns Tx progress health status */
-  getHealthStatus = async (): Promise<HealthStatusLevel> => {
+  getHealthStatus = (): HealthStatusLevel => {
     if (!this.txWithMaxSigningFailure) return HealthStatusLevel.HEALTHY;
     if (
       this.txWithMaxSigningFailure.signFailedCount >=

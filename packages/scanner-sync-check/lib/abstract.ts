@@ -33,7 +33,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    * generate parameter description
    * @returns parameter description
    */
-  getDescription = async () => {
+  getDescription = () => {
     const baseMessage = 'Checks if the scanner is in sync with the network. ';
     if (this.lastBlockHeight != undefined) {
       return baseMessage + this.getLastSavedBlockMessage();
@@ -46,7 +46,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    * The common logic of parameter details in all scanner sync checks
    * @returns
    */
-  protected rawDetails = async (): Promise<string | undefined> => {
+  protected rawDetails = (): string | undefined => {
     const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     let time = '';
@@ -73,14 +73,14 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    * block time gaps) returns the required notification
    * @returns parameter health description
    */
-  getDetails = async (): Promise<string | undefined> => {
+  getDetails = (): string | undefined => {
     return this.rawDetails();
   };
 
   /**
    * @returns scanner sync health status
    */
-  getHealthStatus = async (): Promise<HealthStatusLevel> => {
+  getHealthStatus = (): HealthStatusLevel => {
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     if (
       this.lastBlockHeight == undefined ||

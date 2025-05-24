@@ -133,3 +133,6 @@ dist
 *.sqlite
 
 .idea
+
+.vscode
+

@@ -29,7 +29,7 @@ abstract class AbstractWidHealthCheckParam extends AbstractHealthCheckParam {
    * generates a unique title
    * @returns parameter title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `WID Token`;
   };
 
@@ -37,7 +37,7 @@ abstract class AbstractWidHealthCheckParam extends AbstractHealthCheckParam {
    * generates description
    * @returns parameter description
    */
-  getDescription = async () => {
+  getDescription = () => {
     return `Checks for the existence of the WID token in the watcher address.`;
   };
 
@@ -45,7 +45,7 @@ abstract class AbstractWidHealthCheckParam extends AbstractHealthCheckParam {
    * if WID doesn't exist fot this address, returns the required notification.
    * @returns parameter health details
    */
-  getDetails = async (): Promise<string | undefined> => {
+  getDetails = (): string | undefined => {
     if (!this.widExists)
       return (
         `Service has stopped working since there is no available WID for this address ${this.address}.\n` +
@@ -57,7 +57,7 @@ abstract class AbstractWidHealthCheckParam extends AbstractHealthCheckParam {
   /**
    * @returns wid health status
    */
-  getHealthStatus = async (): Promise<HealthStatusLevel> => {
+  getHealthStatus = (): HealthStatusLevel => {
     if (!this.widExists) return HealthStatusLevel.BROKEN;
     return HealthStatusLevel.HEALTHY;
   };
