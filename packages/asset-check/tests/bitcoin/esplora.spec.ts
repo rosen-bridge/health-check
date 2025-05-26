@@ -1,11 +1,18 @@
-import { AxiosInstance } from 'axios';
-import { describe, expect, it, vitest } from 'vitest';
+import axios, { Axios } from '@rosen-bridge/rate-limited-axios';
+import { beforeAll, describe, expect, it, vitest } from 'vitest';
 
 import { BITCOIN_NATIVE_ASSET, DOGE_NATIVE_ASSET } from '../../lib/constants';
 import { TestBitcoinEsploraAssetHealthCheck } from './testBitcoin';
 
 describe('BitcoinEsploraAssetHealthCheck', () => {
-  const mockGet = (client: AxiosInstance, result: unknown) => {
+  beforeAll(() => {
+    axios.initConfigs({
+      apiLimitRateRangeAsSeconds: 10,
+      apiLimitRules: [],
+    });
+  });
+
+  const mockGet = (client: Axios, result: unknown) => {
     vitest.spyOn(client, 'get').mockResolvedValue({ data: result });
   };
 

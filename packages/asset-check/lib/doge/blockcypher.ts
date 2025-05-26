@@ -1,10 +1,10 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { Axios } from '@rosen-bridge/rate-limited-axios';
 import { DOGE_NATIVE_ASSET } from '../constants';
 import { AbstractAssetHealthCheckParam } from '../abstract';
 import { BlockCypherAddress } from './types';
 
 export class DogeBlockCypherAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
-  protected client: AxiosInstance;
+  protected client: Axios;
 
   constructor(
     assetName: string,
