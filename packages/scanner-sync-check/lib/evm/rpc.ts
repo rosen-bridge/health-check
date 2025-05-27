@@ -7,7 +7,7 @@ export class EvmRPCScannerHealthCheck extends AbstractScannerSyncHealthCheckPara
 
   constructor(
     chain: string,
-    getLastNetworkHeight: () => Promise<number>,
+    getLastNetworkHeight: () => number | undefined,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,
