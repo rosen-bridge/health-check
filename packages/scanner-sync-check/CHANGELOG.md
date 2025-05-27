@@ -1,5 +1,12 @@
 # @rosen-bridge/scanner-sync-check
 
+## 4.0.0
+
+### Major Changes
+
+- Use dynamic chain name for bitcoin health-check parameter
+- Network height is now obtained through a function provided to subclasses of AbstractScannerSyncHealthCheckParam. The only exception to this approach is the CardanoOgmiosScannerHealthCheck class, which handles it differently.
+
 ## 3.0.0
 
 ### Major Changes

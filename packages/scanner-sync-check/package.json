@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/scanner-sync-check",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Rosen bridge scanner-sync health-check parameter",
   "license": "GPL-3.0",
   "author": "Rosen Team",
