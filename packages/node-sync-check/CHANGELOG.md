@@ -1,5 +1,11 @@
 # @rosen-bridge/node-sync-check
 
+## 1.0.6
+
+### Patch Changes
+
+- Use rate limiting methods using @rosen-bridge/rate-limited-axios to prevent overwhelming the endpoints
+
 ## 1.0.5
 
 ### Patch Changes

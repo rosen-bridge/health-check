@@ -1,5 +1,16 @@
 # @rosen-bridge/asset-check
 
+## 4.0.0
+
+### Major Changes
+
+- Add `chain` argument to AbstractAssetHealthCheckParam, EsploraAssetHealthCheckParam, and EvmRpcAssetHealthCheckParam
+
+### Patch Changes
+
+- Update koios client to latest available version
+- Use rate limiting methods using @rosen-bridge/rate-limited-axios to prevent overwhelming the endpoints
+
 ## 3.1.0
 
 ### Minor Changes
