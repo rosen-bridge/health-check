@@ -38,7 +38,7 @@ export class BitcoinEsploraScannerHealthCheck extends AbstractScannerSyncHealthC
    * @returns parameter title
    */
   getTitle = () => {
-    return `Bitcoin Esplora Scanner Sync`;
+    return `${this.chain} Esplora Scanner Sync`;
   };
 
   /**

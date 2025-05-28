@@ -42,7 +42,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
    * @returns parameter title
    */
   getTitle = () => {
-    return `Bitcoin RPC Scanner Sync`;
+    return `${this.chain} RPC Scanner Sync`;
   };
 
   /**
