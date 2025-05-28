@@ -1,5 +1,11 @@
 # @rosen-bridge/scanner-sync-check
 
+## 4.0.1
+
+### Patch Changes
+
+- Fix `getLastNetworkHeight` interface to be compatible with scanner
+
 ## 4.0.0
 
 ### Major Changes
