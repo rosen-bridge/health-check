@@ -7,7 +7,7 @@ export class BitcoinRPCScannerHealthCheck extends AbstractScannerSyncHealthCheck
 
   constructor(
     chain: string,
-    getLastNetworkHeight: () => Promise<number | undefined>,
+    getLastNetworkHeight: () => number | undefined,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,

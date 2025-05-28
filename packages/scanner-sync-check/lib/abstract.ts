@@ -12,7 +12,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   protected criticalBlockTimeGap: number;
 
   constructor(
-    protected getLastNetworkHeight: () => Promise<number | undefined>,
+    protected getLastNetworkHeight: () => number | undefined,
     protected getLastSavedBlockHeight: () => Promise<number>,
     protected warnDifference: number,
     protected criticalDifference: number,
@@ -106,7 +106,9 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
       this.lastBlockHeight = lastSavedBlockHeight;
       this.lastBlockTime = Date.now();
     }
-    const networkHeight = await this.getLastAvailableBlock();
+    const networkHeight = this.getLastNetworkHeight();
+    if (networkHeight == undefined)
+      throw new Error('The last network height is undefined.');
     this.difference = Number(networkHeight) - lastSavedBlockHeight;
   };
 
@@ -115,17 +117,6 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
    */
   updateStatus = async () => {
     await this.rawUpdate();
-  };
-
-  /**
-   * @returns last available block in network
-   */
-  getLastAvailableBlock = () => {
-    return this.getLastNetworkHeight().then((height) => {
-      if (height == undefined)
-        throw new Error('The last network height is undefined.');
-      return height;
-    });
   };
 }
 

@@ -2,7 +2,7 @@ import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class ErgoExplorerScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   constructor(
-    getLastNetworkHeight: () => Promise<number>,
+    getLastNetworkHeight: () => number | undefined,
     getLastSavedBlockHeight: () => Promise<number>,
     warnDifference: number,
     criticalDifference: number,

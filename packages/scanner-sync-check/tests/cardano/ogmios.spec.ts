@@ -180,7 +180,8 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
           shutdown: async () => undefined,
         } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
       });
-      const height = await scannerHealthCheckParam.getLastAvailableBlock();
+      await scannerHealthCheckParam.updateLastNetworkBlock();
+      const height = scannerHealthCheckParam.getLastNetworkHeight();
       expect(height).toEqual(1115);
     });
   });
@@ -204,10 +205,9 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - to set undefined to disconnectionTime
      */
     it('should return the last available block in network', async () => {
-      vi.spyOn(
-        scannerHealthCheckParam,
-        'getLastAvailableBlock',
-      ).mockResolvedValue(1115);
+      vi.spyOn(scannerHealthCheckParam, 'getLastNetworkHeight').mockReturnValue(
+        1115,
+      );
       await scannerHealthCheckParam.updateStatus();
       expect(scannerHealthCheckParam['difference']).toEqual(4);
       expect(scannerHealthCheckParam['disconnectionTime']).toEqual(undefined);

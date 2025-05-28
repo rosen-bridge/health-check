@@ -9,6 +9,7 @@ import { AbstractScannerSyncHealthCheckParam } from '../abstract';
 
 export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
+  private lastNetworkBlock: number | undefined;
 
   constructor(
     getLastSavedBlockHeight: () => Promise<number>,
@@ -101,9 +102,9 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
   };
 
   /**
-   * @returns last available block in network
+   * update last available block in network
    */
-  getLastAvailableBlock = async () => {
+  updateLastNetworkBlock = async () => {
     const context: InteractionContext = await createInteractionContext(
       (err) => console.error(err),
       () => undefined,
@@ -119,8 +120,8 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     try {
       const height = await ogmiosClient.networkBlockHeight();
       ogmiosClient.shutdown();
-      if (height == 'origin') return 0;
-      else return height;
+      if (height == 'origin') this.lastNetworkBlock = 0;
+      else this.lastNetworkBlock = height;
     } catch (e) {
       ogmiosClient.shutdown();
       throw new Error(
@@ -130,9 +131,17 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
   };
 
   /**
+   * @returns last network height
+   */
+  getLastNetworkHeight = (): number | undefined => {
+    return this.lastNetworkBlock;
+  };
+
+  /**
    * update the height difference and set disconnectionTime when client is disconnected
    */
   updateStatus = async () => {
+    await this.updateLastNetworkBlock();
     if (this.connected()) {
       this.disconnectionTime = undefined;
       await this.rawUpdate();

@@ -1,9 +1,9 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { Axios } from '@rosen-bridge/rate-limited-axios';
 import { AbstractAssetHealthCheckParam } from '../abstract';
 import { EsploraAddress } from './types';
 
 export class EsploraAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
-  protected client: AxiosInstance;
+  protected client: Axios;
 
   constructor(
     chain: string,
