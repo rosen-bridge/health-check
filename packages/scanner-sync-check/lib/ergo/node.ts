@@ -33,7 +33,7 @@ export class ErgoNodeScannerHealthCheck extends AbstractScannerSyncHealthCheckPa
    * generate a unique title with network name and type
    * @returns parameter title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `Ergo Node Scanner Sync`;
   };
 

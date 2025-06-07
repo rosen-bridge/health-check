@@ -45,12 +45,12 @@ export class P2PNetworkHealthCheck extends AbstractHealthCheckParam {
   /**
    * get health check parameter title
    */
-  getTitle = async () => 'P2P Network';
+  getTitle = () => 'P2P Network';
 
   /**
    * get health check parameter description
    */
-  getDescription = async () =>
+  getDescription = () =>
     `Checks if the guard is connected to other guards in the P2P network. Currently connected to ${this.connectedGuards} guards.`;
 
   /**
@@ -96,14 +96,14 @@ export class P2PNetworkHealthCheck extends AbstractHealthCheckParam {
   /**
    * get health status for this param
    */
-  getHealthStatus = async () => {
+  getHealthStatus = () => {
     return this.status;
   };
 
   /**
    * get health details for this param or undefined if status is healthy
    */
-  getDetails = async () => {
+  getDetails = () => {
     if (this.status === HealthStatusLevel.HEALTHY) {
       return undefined;
     }

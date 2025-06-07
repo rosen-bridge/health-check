@@ -11,20 +11,20 @@ export class TestHealthCheckParam extends AbstractHealthCheckParam {
     this.lastTrialErrorMessage = errorMessage;
   }
 
-  getDescription = (): Promise<string> => {
-    return Promise.resolve('description');
+  getDescription = (): string => {
+    return 'description';
   };
 
-  getHealthStatus = (): Promise<HealthStatusLevel> => {
-    return Promise.resolve(this.status);
+  getHealthStatus = (): HealthStatusLevel => {
+    return this.status;
   };
 
   getId = (): string => {
     return this.id;
   };
 
-  getTitle = (): Promise<string> => {
-    return Promise.resolve(this.id);
+  getTitle = (): string => {
+    return this.id;
   };
 
   updateStatus = (): unknown => {
@@ -33,6 +33,6 @@ export class TestHealthCheckParam extends AbstractHealthCheckParam {
   };
 
   getDetails = () => {
-    return Promise.resolve('');
+    return '';
   };
 }

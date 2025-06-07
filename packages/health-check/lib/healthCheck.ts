@@ -195,16 +195,16 @@ export class HealthCheck {
    * @param param
    * @returns
    */
-  getHealthStatusForParam = async (param: AbstractHealthCheckParam) => {
+  getHealthStatusForParam = (param: AbstractHealthCheckParam) => {
     return {
       id: param.getId(),
-      title: await param.getTitle(),
-      status: await param.getHealthStatus(),
-      description: await param.getDescription(),
+      title: param.getTitle(),
+      status: param.getHealthStatus(),
+      description: param.getDescription(),
       lastCheck: param.getLastUpdatedTime(),
       lastTrialErrorMessage: param.getLastTrialErrorMessage(),
       lastTrialErrorTime: param.getLastTrialErrorTime(),
-      details: await param.getDetails(),
+      details: param.getDetails(),
     };
   };
 
@@ -226,10 +226,10 @@ export class HealthCheck {
   /**
    * get detailed health status for system
    */
-  getHealthStatus = async (): Promise<Array<HealthStatus>> => {
+  getHealthStatus = (): Array<HealthStatus> => {
     const res: Array<HealthStatus> = [];
     for (const param of this.params) {
-      res.push(await this.getHealthStatusForParam(param));
+      res.push(this.getHealthStatusForParam(param));
     }
     return res;
   };

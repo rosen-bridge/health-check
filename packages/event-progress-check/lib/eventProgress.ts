@@ -21,7 +21,7 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
   /**
    * get param title
    */
-  getTitle = async (): Promise<string> => {
+  getTitle = (): string => {
     return `Event Progress`;
   };
 
@@ -35,7 +35,7 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
   /**
    * get param description
    */
-  getDescription = async (): Promise<string> => {
+  getDescription = (): string => {
     return `Checks the elapsed time since the first attempt at processing the event.`;
   };
 
@@ -70,7 +70,7 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
   /**
    * generate description based on the stuck duration of the events
    */
-  getDetails = async (): Promise<string | undefined> => {
+  getDetails = (): string | undefined => {
     if (!this.eventWithMaxTry) return undefined;
     const { stuckDuration, stuckEventCount } = this.getStuckDetails()!;
     const stuckDurationInHour = Math.round(stuckDuration / 3600);
@@ -91,7 +91,7 @@ export class EventProgressHealthCheckParam extends AbstractHealthCheckParam {
   /**
    * return event progress health status
    */
-  getHealthStatus = async (): Promise<HealthStatusLevel> => {
+  getHealthStatus = (): HealthStatusLevel => {
     if (!this.eventWithMaxTry) return HealthStatusLevel.HEALTHY;
     const elapsedTime = this.getElapsedTime(this.eventWithMaxTry.firstTry);
     if (elapsedTime >= this.durationCriticalThreshold)

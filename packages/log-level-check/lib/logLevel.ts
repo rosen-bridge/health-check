@@ -66,7 +66,7 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
   /**
    * get logging description. if status is not HEALTHY return last occurred error
    */
-  getDetails = async () => {
+  getDetails = () => {
     if (this.times.length > this.maxAllowedCount) {
       return `There are ${this.times.length} ${this.level}s in logs. The last one is "${this.lastMessage}".`;
     }
@@ -78,7 +78,7 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
    * if logs in time window more than expected count return selected unhealthy status
    * otherwise return HEALTHY
    */
-  getHealthStatus = async () => {
+  getHealthStatus = () => {
     if (this.times.length > this.maxAllowedCount) {
       return this.unhealthyStatus;
     }
@@ -95,14 +95,14 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
   /**
    * get logger health param title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `${upperFirst(this.level)} in Logs`;
   };
 
   /**
    * get logger health param description
    */
-  getDescription = async () => {
+  getDescription = () => {
     return `Counts number of ${upperFirst(this.level)}s in log.`;
   };
 }

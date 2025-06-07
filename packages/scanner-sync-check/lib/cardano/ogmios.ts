@@ -47,7 +47,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
    * generate a unique title with network name and type
    * @returns parameter title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `Cardano Ogmios Scanner Sync`;
   };
 
@@ -65,7 +65,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
    *   the threshold returns the required notification
    * @returns parameter health description
    */
-  getDetails = async (): Promise<string | undefined> => {
+  getDetails = (): string | undefined => {
     if (
       this.disconnectionTime &&
       this.disconnectionTime + this.unstableTimeWindow < Date.now()
@@ -83,7 +83,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
   /**
    * @returns scanner sync health status
    */
-  getHealthStatus = async (): Promise<HealthStatusLevel> => {
+  getHealthStatus = (): HealthStatusLevel => {
     const blockDelay = (Date.now() - this.lastBlockTime) / 1000;
     if (
       this.difference >= this.criticalDifference ||

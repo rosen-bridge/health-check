@@ -33,7 +33,7 @@ export class CardanoGraphQLScannerHealthCheck extends AbstractScannerSyncHealthC
    * generate a unique title with network name and type
    * @returns parameter title
    */
-  getTitle = async () => {
+  getTitle = () => {
     return `Cardano Graphql Scanner Sync`;
   };
 

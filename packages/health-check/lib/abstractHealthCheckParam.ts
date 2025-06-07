@@ -13,12 +13,12 @@ export abstract class AbstractHealthCheckParam {
   /**
    * get param title
    */
-  abstract getTitle: () => Promise<string>;
+  abstract getTitle: () => string;
 
   /**
    * get param description
    */
-  abstract getDescription: () => Promise<string>;
+  abstract getDescription: () => string;
 
   /**
    * update health status for this param
@@ -46,13 +46,13 @@ export abstract class AbstractHealthCheckParam {
   /**
    * get health status for this param
    */
-  abstract getHealthStatus: () => Promise<HealthStatusLevel>;
+  abstract getHealthStatus: () => HealthStatusLevel;
 
   /**
    * get health status details for this param.
    * if status is HEALTHY return undefined otherwise return detail string
    */
-  abstract getDetails: () => Promise<string | undefined>;
+  abstract getDetails: () => string | undefined;
 
   /**
    * get last updated time
