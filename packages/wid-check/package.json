@@ -34,8 +34,8 @@
   },
   "dependencies": {
     "@rosen-bridge/health-check": "^6.0.4",
-    "@rosen-clients/ergo-explorer": "^1.1.1",
-    "@rosen-clients/ergo-node": "^1.1.1",
+    "@rosen-clients/ergo-explorer": "^1.1.5",
+    "@rosen-clients/ergo-node": "^1.2.3",
     "ergo-lib-wasm-nodejs": "^0.24.1",
     "lodash-es": "^4.17.21"
   }
