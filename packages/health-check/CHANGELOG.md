@@ -1,5 +1,11 @@
 # @rosen-bridge/health-check
 
+## 7.0.0
+
+### Major Changes
+
+- All interfaces like getTitle, getDescription, getDetails and hetHealthStatus were made synchronous
+
 ## 6.0.4
 
 ### Patch Changes
