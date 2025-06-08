@@ -1,5 +1,17 @@
 # @rosen-bridge/scanner-sync-check
 
+## 5.0.0
+
+### Major Changes
+
+- All interfaces like getTitle, getDescription, getDetails and hetHealthStatus were made synchronous
+
+### Patch Changes
+
+- Fix `getLastSavedBlockMessage` to use `this.chain`
+- Update dependencies
+  - @rosen-bridge/health-check@7.0.0
+
 ## 4.0.1
 
 ### Patch Changes
