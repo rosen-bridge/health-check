@@ -1,6 +1,6 @@
-import { AbstractScannerSyncHealthCheckParam } from '../lib';
+import { ScannerSyncHealthCheckParam } from '../lib';
 
-class TestScannerHealthCheckParam extends AbstractScannerSyncHealthCheckParam {
+class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
   /**
    * mocked getId method
    */

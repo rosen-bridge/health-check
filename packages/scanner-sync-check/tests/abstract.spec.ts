@@ -10,6 +10,7 @@ describe('AbstractScannerHealthCheckParam', () => {
   let scannerHealthCheckParam: TestScannerHealthCheckParam;
   beforeAll(async () => {
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
+      'test-chain',
       () => 1115,
       () => Promise.resolve(1111),
       10,

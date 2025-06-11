@@ -5,9 +5,9 @@ import {
 } from '@cardano-ogmios/client';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
-import { AbstractScannerSyncHealthCheckParam } from '../abstract';
+import { ScannerSyncHealthCheckParam } from '../GeneralScanner';
 
-export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
+export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
   private lastNetworkBlock: number | undefined;
 
@@ -25,6 +25,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     blockTime = 20,
   ) {
     super(
+      'cardano',
       () => this.getLastNetworkHeight(),
       getLastSavedBlockHeight,
       warnDifference,
