@@ -3,6 +3,7 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 import { formatDistance } from 'date-fns';
+import { upperFirst } from 'lodash-es';
 
 class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected chain: string;
@@ -33,7 +34,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter id
    */
   getId = (): string => {
-    return `${this.chain}_scanner`;
+    return `${this.chain.toLowerCase()}_scanner`;
   };
 
   /**
@@ -41,14 +42,14 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter title
    */
   getTitle = () => {
-    return `${this.chain} Scanner Sync`;
+    return `${upperFirst(this.chain)} Scanner Sync`;
   };
 
   /**
    * @returns a message showing the last stored block by the scanner
    */
   getLastSavedBlockMessage: () => string = () => {
-    return `The last block saved by the ${this.chain} is ${this.lastBlockHeight}.`;
+    return `The last block saved by the ${upperFirst(this.chain)} scanner is ${this.lastBlockHeight}.`;
   };
 
   /**
@@ -56,7 +57,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = () => {
-    const baseMessage = `Checks if the scanner is in sync with the ${this.chain} network. `;
+    const baseMessage = `Checks if the scanner is in sync with the ${upperFirst(this.chain)} network. `;
     if (this.lastBlockHeight != undefined) {
       return baseMessage + this.getLastSavedBlockMessage();
     } else {
@@ -69,7 +70,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns
    */
   protected rawDetails = (): string | undefined => {
-    const baseHeightDiffMessage = `The ${this.chain} scanner is out of sync by ${this.difference} blocks.`;
+    const baseHeightDiffMessage = `The ${upperFirst(this.chain)} scanner is out of sync by ${this.difference} blocks.`;
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     let time = '';
     if (this.lastBlockTime)
@@ -129,7 +130,9 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     }
     const networkHeight = this.getLastNetworkHeight();
     if (networkHeight == undefined)
-      throw new Error(`The last ${this.chain} network height is undefined.`);
+      throw new Error(
+        `The last ${upperFirst(this.chain)} network height is undefined.`,
+      );
     this.difference = Number(networkHeight) - lastSavedBlockHeight;
   };
 
