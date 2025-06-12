@@ -1,7 +1,7 @@
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 import { describe, expect, it, beforeAll, vitest } from 'vitest';
 
-import { TestScannerHealthCheckParam } from './abstract.mock';
+import { TestScannerHealthCheckParam } from './GeneralScanner.mock';
 
 describe('AbstractScannerHealthCheckParam', () => {
   /**
