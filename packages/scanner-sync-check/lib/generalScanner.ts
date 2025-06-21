@@ -57,7 +57,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = () => {
-    const baseMessage = `Checks if the scanner is in sync with the ${upperFirst(this.chain)} network. `;
+    const baseMessage = 'Checks if the scanner is in sync with the network. ';
     if (this.lastBlockHeight != undefined) {
       return baseMessage + this.getLastSavedBlockMessage();
     } else {
@@ -70,7 +70,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns
    */
   protected rawDetails = (): string | undefined => {
-    const baseHeightDiffMessage = `The ${upperFirst(this.chain)} scanner is out of sync by ${this.difference} blocks.`;
+    const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     let time = '';
     if (this.lastBlockTime)

@@ -1,2 +1,2 @@
 export * from './cardano';
-export * from './GeneralScanner';
+export * from './generalScanner';
