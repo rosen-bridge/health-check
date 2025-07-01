@@ -1,5 +1,11 @@
 # @rosen-bridge/asset-check
 
+## 5.0.1
+
+### Patch Changes
+
+- Downgrade ethers version
+
 ## 5.0.0
 
 ### Major Changes
