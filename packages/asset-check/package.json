@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/asset-check",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Rosen bridge health check service",
   "license": "GPL-3.0",
   "author": "Rosen Team",
@@ -41,6 +41,6 @@
     "@rosen-clients/ergo-explorer": "^1.1.5",
     "@rosen-clients/ergo-node": "^1.2.3",
     "cross-fetch": "^4.0.0",
-    "ethers": "^6.14.3"
+    "ethers": "6.13.2"
   }
 }

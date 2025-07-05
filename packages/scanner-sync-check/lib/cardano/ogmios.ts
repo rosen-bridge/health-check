@@ -5,7 +5,7 @@ import {
 } from '@cardano-ogmios/client';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
-import { ScannerSyncHealthCheckParam } from '../generalScanner';
+import { ScannerSyncHealthCheckParam } from '../scannerSyncHealthCheckParam';
 
 export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
