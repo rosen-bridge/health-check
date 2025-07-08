@@ -5,9 +5,9 @@ import {
 } from '@cardano-ogmios/client';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
-import { AbstractScannerSyncHealthCheckParam } from '../abstract';
+import { ScannerSyncHealthCheckParam } from '../scannerSyncHealthCheckParam';
 
-export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCheckParam {
+export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
   private lastNetworkBlock: number | undefined;
 
@@ -25,6 +25,7 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
     blockTime = 20,
   ) {
     super(
+      'cardano',
       () => this.getLastNetworkHeight(),
       getLastSavedBlockHeight,
       warnDifference,
@@ -34,30 +35,6 @@ export class CardanoOgmiosScannerHealthCheck extends AbstractScannerSyncHealthCh
       blockTime,
     );
   }
-
-  /**
-   * generate a unique id with network name and type
-   * @returns parameter id
-   */
-  getId = (): string => {
-    return `cardano_ogmios_scanner`;
-  };
-
-  /**
-   * generate a unique title with network name and type
-   * @returns parameter title
-   */
-  getTitle = () => {
-    return `Cardano Ogmios Scanner Sync`;
-  };
-
-  /**
-   * generate parameter description
-   * @returns parameter description
-   */
-  getLastSavedBlockMessage = () => {
-    return `The last block saved by the Cardano Ogmios scanner is ${this.lastBlockHeight}.`;
-  };
 
   /**
    * if ogmios client is disconnected return the required details

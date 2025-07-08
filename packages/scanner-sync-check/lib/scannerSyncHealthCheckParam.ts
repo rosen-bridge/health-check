@@ -3,8 +3,10 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 import { formatDistance } from 'date-fns';
+import { upperFirst } from 'lodash-es';
 
-abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
+class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
+  protected chain: string;
   protected difference: number;
   protected lastBlockHeight: number;
   protected lastBlockTime: number;
@@ -12,6 +14,7 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   protected criticalBlockTimeGap: number;
 
   constructor(
+    chain: string,
     protected getLastNetworkHeight: () => number | undefined,
     protected getLastSavedBlockHeight: () => Promise<number>,
     protected warnDifference: number,
@@ -21,14 +24,33 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     blockTime: number,
   ) {
     super();
+    this.chain = chain;
     this.criticalBlockTimeGap = criticalBlockGap * blockTime;
     this.warnBlockTimeGap = warnBlockGap * blockTime;
   }
 
   /**
+   * generate a unique id with network name and type
+   * @returns parameter id
+   */
+  getId = (): string => {
+    return `${this.chain.toLowerCase()}_scanner`;
+  };
+
+  /**
+   * generate a unique title with network name and type
+   * @returns parameter title
+   */
+  getTitle = () => {
+    return `${upperFirst(this.chain)} Scanner Sync`;
+  };
+
+  /**
    * @returns a message showing the last stored block by the scanner
    */
-  abstract getLastSavedBlockMessage: () => string;
+  getLastSavedBlockMessage: () => string = () => {
+    return `The last block saved by the ${upperFirst(this.chain)} scanner is ${this.lastBlockHeight}.`;
+  };
 
   /**
    * generate parameter description
@@ -108,7 +130,9 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
     }
     const networkHeight = this.getLastNetworkHeight();
     if (networkHeight == undefined)
-      throw new Error('The last network height is undefined.');
+      throw new Error(
+        `The last ${upperFirst(this.chain)} network height is undefined.`,
+      );
     this.difference = Number(networkHeight) - lastSavedBlockHeight;
   };
 
@@ -120,4 +144,4 @@ abstract class AbstractScannerSyncHealthCheckParam extends AbstractHealthCheckPa
   };
 }
 
-export { AbstractScannerSyncHealthCheckParam };
+export { ScannerSyncHealthCheckParam };

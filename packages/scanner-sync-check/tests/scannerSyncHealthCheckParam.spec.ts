@@ -1,7 +1,7 @@
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 import { describe, expect, it, beforeAll, vitest } from 'vitest';
 
-import { TestScannerHealthCheckParam } from './abstract.mock';
+import { TestScannerHealthCheckParam } from './scannerSyncHealthCheckParam.mock';
 
 describe('AbstractScannerHealthCheckParam', () => {
   /**
@@ -10,6 +10,7 @@ describe('AbstractScannerHealthCheckParam', () => {
   let scannerHealthCheckParam: TestScannerHealthCheckParam;
   beforeAll(async () => {
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
+      'test-chain',
       () => 1115,
       () => Promise.resolve(1111),
       10,
