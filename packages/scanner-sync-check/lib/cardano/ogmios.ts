@@ -37,30 +37,6 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
   }
 
   /**
-   * generate a unique id with network name and type
-   * @returns parameter id
-   */
-  getId = (): string => {
-    return `cardano_ogmios_scanner`;
-  };
-
-  /**
-   * generate a unique title with network name and type
-   * @returns parameter title
-   */
-  getTitle = () => {
-    return `Cardano Ogmios Scanner Sync`;
-  };
-
-  /**
-   * generate parameter description
-   * @returns parameter description
-   */
-  getLastSavedBlockMessage = () => {
-    return `The last block saved by the Cardano Ogmios scanner is ${this.lastBlockHeight}.`;
-  };
-
-  /**
    * if ogmios client is disconnected return the required details
    * if the difference between scanned blocks and network blocks is more than
    *   the threshold returns the required notification

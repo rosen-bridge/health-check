@@ -1,1 +1,1 @@
-export { CardanoOgmiosScannerHealthCheck } from './ogmios';
+export * from './ogmios';
