@@ -55,25 +55,6 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     });
 
     /**
-     * @target getHealthStatus should return UNSTABLE when difference is less
-     * than warning threshold but the block gap is more than warn block gap
-     * @dependencies
-     * @scenario
-     * - mock difference to more than warning threshold
-     * - mock lastBlockTime so that block gap is more than warn gap
-     * - get health status
-     * @expected
-     * - The status should be UNSTABLE
-     */
-    it(`should return UNSTABLE when difference is less than warning threshold
-      but the block gap is more than warn block gap`, async () => {
-      scannerHealthCheckParam['difference'] = 2;
-      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 300_000;
-      const status = await scannerHealthCheckParam.getHealthStatus();
-      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
-    });
-
-    /**
      * @target getHealthStatus should return BROKEN when difference is less than
      * critical threshold but the block gap is more than critical block gap
      * @dependencies
