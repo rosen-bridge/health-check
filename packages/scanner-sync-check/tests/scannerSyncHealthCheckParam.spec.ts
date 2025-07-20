@@ -8,11 +8,14 @@ describe('AbstractScannerHealthCheckParam', () => {
    * Creating a new instance of AbstractScannerHealthCheckParam for all tests
    */
   let scannerHealthCheckParam: TestScannerHealthCheckParam;
+  const fakeGetLastSavedBlock = async () => ({
+    height: 1111,
+    timestamp: Math.floor(Date.now() / 1000),
+  });
   beforeAll(async () => {
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
       'test-chain',
-      () => 1115,
-      () => Promise.resolve(1111),
+      fakeGetLastSavedBlock,
       10,
       100,
       10,

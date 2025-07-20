@@ -7,7 +7,6 @@ import {
   beforeEach,
   afterEach,
 } from 'vitest';
-import { createLedgerStateQueryClient } from '@cardano-ogmios/client';
 
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
@@ -19,9 +18,14 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
    * Creating a new instance of for all tests
    */
   let scannerHealthCheckParam: CardanoOgmiosScannerHealthCheck;
+  const fakeGetLastSavedBlock = async () => ({
+    height: 1111,
+    timestamp: Math.floor(Date.now() / 1000),
+  });
+
   beforeEach(async () => {
     scannerHealthCheckParam = new CardanoOgmiosScannerHealthCheck(
-      async () => Promise.resolve(1111),
+      fakeGetLastSavedBlock,
       () => true,
       10,
       100,
@@ -161,56 +165,12 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     });
   });
 
-  describe('getLastAvailableBlock', () => {
-    /**
-     * @target getLastAvailableBlock should return the last available block in network
-     * @dependencies
-     * - cardanoKoiosClientFactory
-     * @scenario
-     * - mock return value of ogmios api
-     * - create new instance of CardanoOgmiosScannerHealthCheck
-     * - update the parameter
-     * @expected
-     * - The block height should be correct
-     */
-    it('should return the last available block in network', async () => {
-      vi.mocked(createLedgerStateQueryClient).mockImplementation(async () => {
-        return {
-          networkBlockHeight: async () => 1115,
-          shutdown: async () => undefined,
-        } as unknown as ReturnType<typeof createLedgerStateQueryClient>;
-      });
-      await scannerHealthCheckParam.updateLastNetworkBlock();
-      const height = scannerHealthCheckParam.getLastNetworkHeight();
-      expect(height).toEqual(1115);
-    });
-  });
-
   describe('updateStatus', () => {
     beforeEach(() => {
       vi.useFakeTimers({ now: 1723451468275 });
     });
     afterEach(() => {
       vi.useRealTimers();
-    });
-    /**
-     * @target updateStatus should update the height difference correctly
-     * @dependencies
-     * @scenario
-     * - mock `getLastAvailableBlock`
-     * - create new instance of CardanoOgmiosScannerHealthCheck
-     * - update the parameter
-     * @expected
-     * - to update the height difference
-     * - to set undefined to disconnectionTime
-     */
-    it('should return the last available block in network', async () => {
-      vi.spyOn(scannerHealthCheckParam, 'getLastNetworkHeight').mockReturnValue(
-        1115,
-      );
-      await scannerHealthCheckParam.updateStatus();
-      expect(scannerHealthCheckParam['difference']).toEqual(4);
-      expect(scannerHealthCheckParam['disconnectionTime']).toEqual(undefined);
     });
 
     /**

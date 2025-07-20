@@ -15,8 +15,10 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
 
   constructor(
     chain: string,
-    protected getLastNetworkHeight: () => number | undefined,
-    protected getLastSavedBlockHeight: () => Promise<number>,
+    protected getLastSavedBlock: () => Promise<{
+      height: number;
+      timestamp: number;
+    }>,
     protected warnDifference: number,
     protected criticalDifference: number,
     warnBlockGap: number,
@@ -49,7 +51,10 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns a message showing the last stored block by the scanner
    */
   getLastSavedBlockMessage: () => string = () => {
-    return `The last block saved by the ${upperFirst(this.chain)} scanner is ${this.lastBlockHeight}.`;
+    const formattedTime = this.lastBlockTime
+      ? formatDistance(Date.now(), this.lastBlockTime)
+      : 'an unknown time';
+    return `The last block saved by the ${upperFirst(this.chain)} scanner is ${this.lastBlockHeight}, saved ${formattedTime} ago.`;
   };
 
   /**
@@ -57,11 +62,14 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = () => {
-    const baseMessage = 'Checks if the scanner is in sync with the network. ';
-    if (this.lastBlockHeight != undefined) {
+    const baseMessage = 'Checks if the scanner has saved any recent block. ';
+    if (
+      this.lastBlockHeight !== undefined &&
+      this.lastBlockTime !== undefined
+    ) {
       return baseMessage + this.getLastSavedBlockMessage();
     } else {
-      return baseMessage + `There is no available block in database.`;
+      return baseMessage + `There is no available block in the database.`;
     }
   };
 
@@ -70,21 +78,16 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns
    */
   protected rawDetails = (): string | undefined => {
-    const baseHeightDiffMessage = ` Scanner is out of sync by ${this.difference} blocks.`;
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
-    let time = '';
-    if (this.lastBlockTime)
-      time = formatDistance(Date.now(), this.lastBlockTime);
-    const baseDelayedBlockMessage = ` Last block is stored ${time} ago.`;
+    const time = this.lastBlockTime
+      ? formatDistance(Date.now(), this.lastBlockTime)
+      : 'unknown time';
+    const message = `Last block (height: ${this.lastBlockHeight}) saved ${time} ago.`;
 
-    if (this.difference >= this.criticalDifference)
-      return `Service has stopped working.` + baseHeightDiffMessage;
-    else if (blockGap >= this.criticalBlockTimeGap)
-      return `Service has stopped working.` + baseDelayedBlockMessage;
-    else if (this.difference >= this.warnDifference)
-      return `Service may stop working soon.` + baseHeightDiffMessage;
+    if (blockGap >= this.criticalBlockTimeGap)
+      return `Service has stopped working. ` + message;
     else if (blockGap >= this.warnBlockTimeGap)
-      return `Service may stop working soon.` + baseDelayedBlockMessage;
+      return `Service may stop working soon. ` + message;
 
     return undefined;
   };
@@ -107,14 +110,11 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     if (
       this.lastBlockHeight == undefined ||
-      this.difference >= this.criticalDifference ||
+      this.lastBlockTime == undefined ||
       blockGap >= this.criticalBlockTimeGap
     )
       return HealthStatusLevel.BROKEN;
-    else if (
-      this.difference >= this.warnDifference ||
-      blockGap >= this.warnBlockTimeGap
-    )
+    else if (blockGap >= this.warnBlockTimeGap)
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
   };
@@ -123,17 +123,11 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * The common logic of status update in all scanner sync checks
    */
   protected rawUpdate = async () => {
-    const lastSavedBlockHeight = await this.getLastSavedBlockHeight();
-    if (lastSavedBlockHeight != this.lastBlockHeight) {
-      this.lastBlockHeight = lastSavedBlockHeight;
-      this.lastBlockTime = Date.now();
+    const { height, timestamp } = await this.getLastSavedBlock();
+    if (height !== this.lastBlockHeight) {
+      this.lastBlockHeight = height;
+      this.lastBlockTime = timestamp * 1000; // تبدیل به میلی‌ثانیه
     }
-    const networkHeight = this.getLastNetworkHeight();
-    if (networkHeight == undefined)
-      throw new Error(
-        `The last ${upperFirst(this.chain)} network height is undefined.`,
-      );
-    this.difference = Number(networkHeight) - lastSavedBlockHeight;
   };
 
   /**
