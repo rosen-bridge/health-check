@@ -4,17 +4,13 @@ import { ScannerSyncHealthCheckParam } from '../scannerSyncHealthCheckParam';
 
 export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
-  private lastNetworkBlock: number | undefined;
 
   constructor(
     getLastSavedBlock: () => Promise<{ height: number; timestamp: number }>,
     private connected: () => boolean,
     warnDifference: number,
     criticalDifference: number,
-    private ogmiosHost: string,
-    private ogmiosPort: number,
     private unstableTimeWindow: number,
-    private useTls = false,
     warnBlockGap = warnDifference,
     criticalBlockGap = criticalDifference,
     blockTime = 20,

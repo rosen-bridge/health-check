@@ -29,7 +29,6 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       () => true,
       10,
       100,
-      'url',
       123,
       5000,
     );

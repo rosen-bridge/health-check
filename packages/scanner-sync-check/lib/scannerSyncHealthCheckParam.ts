@@ -126,7 +126,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     const { height, timestamp } = await this.getLastSavedBlock();
     if (height !== this.lastBlockHeight) {
       this.lastBlockHeight = height;
-      this.lastBlockTime = timestamp * 1000; // تبدیل به میلی‌ثانیه
+      this.lastBlockTime = timestamp * 1000;
     }
   };
 
