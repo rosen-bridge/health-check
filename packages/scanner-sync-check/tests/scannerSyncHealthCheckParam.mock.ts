@@ -25,8 +25,8 @@ class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
   /**
    * mocked update method
    */
-  getLastAvailableBlock = async () => {
-    return 1115;
+  getLastSavedBlock = async () => {
+    return { height: 1115, timestamp: 4323489754 };
   };
 
   /**

@@ -8,14 +8,10 @@ describe('AbstractScannerHealthCheckParam', () => {
    * Creating a new instance of AbstractScannerHealthCheckParam for all tests
    */
   let scannerHealthCheckParam: TestScannerHealthCheckParam;
-  const fakeGetLastSavedBlock = async () => ({
-    height: 1111,
-    timestamp: Math.floor(Date.now() / 1000),
-  });
   beforeAll(async () => {
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
       'test-chain',
-      fakeGetLastSavedBlock,
+      () => Promise.resolve({ height: 555, timestamp: 289497 }),
       10,
       100,
       10,
@@ -150,6 +146,27 @@ describe('AbstractScannerHealthCheckParam', () => {
   });
 
   describe('update', () => {
+    /**
+     * @target AbstractScannerHealthCheckParam.update should update the height
+     * difference and last block time and height correctly
+     * @dependencies
+     * @scenario
+     * - mock current time (Date.now())
+     * - run test (call `update`)
+     * @expected
+     * - The difference should set correctly
+     * - The last block time should be updated to now
+     * - The last block height should be updated to last stored block
+     */
+    it('should update the height difference correctly', async () => {
+      const currentTime = 1621411200000; // May 19, 2021 12:00:00 AM UTC
+      vitest.spyOn(Date, 'now').mockReturnValue(currentTime);
+      await scannerHealthCheckParam.update();
+      expect(scannerHealthCheckParam.getDifference()).toEqual(4);
+      expect(scannerHealthCheckParam['lastBlockTime']).toEqual(Date.now());
+      expect(scannerHealthCheckParam['lastBlockHeight']).toEqual(1111);
+    });
+
     /**
      * @target AbstractScannerHealthCheckParam.update should not change last
      * block time when the last block height is not changed

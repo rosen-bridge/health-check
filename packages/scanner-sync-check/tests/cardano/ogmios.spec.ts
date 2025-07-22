@@ -1,12 +1,4 @@
-import {
-  describe,
-  expect,
-  it,
-  vitest,
-  vi,
-  beforeEach,
-  afterEach,
-} from 'vitest';
+import { describe, expect, it, vitest, beforeEach } from 'vitest';
 
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
@@ -18,14 +10,9 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
    * Creating a new instance of for all tests
    */
   let scannerHealthCheckParam: CardanoOgmiosScannerHealthCheck;
-  const fakeGetLastSavedBlock = async () => ({
-    height: 1111,
-    timestamp: Math.floor(Date.now() / 1000),
-  });
-
   beforeEach(async () => {
     scannerHealthCheckParam = new CardanoOgmiosScannerHealthCheck(
-      fakeGetLastSavedBlock,
+      async () => Promise.resolve({ height: 1111, timestamp: 289497 }),
       () => true,
       10,
       100,
@@ -55,6 +42,46 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     });
 
     /**
+     * @target getHealthStatus should return UNSTABLE when difference is less
+     * than warning threshold but the block gap is more than warn block gap
+     * @dependencies
+     * @scenario
+     * - mock difference to more than warning threshold
+     * - mock lastBlockTime so that block gap is more than warn gap
+     * - get health status
+     * @expected
+     * - The status should be UNSTABLE
+     */
+    it(`should return UNSTABLE when difference is less than warning threshold
+      but the block gap is more than warn block gap`, async () => {
+      scannerHealthCheckParam['difference'] = 2;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 300_000;
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
+    });
+
+    /**
+     * @target getHealthStatus should return UNSTABLE when difference is more
+     * than warning threshold and less than critical threshold and block gap
+     * is less than critical block gap
+     * @dependencies
+     * @scenario
+     * - mock difference to more than warning threshold
+     * - mock lastBlockTime so that block gap is less than warn gap
+     * - get health status
+     * @expected
+     * - The status should be UNSTABLE
+     */
+    it(`should return UNSTABLE when difference is more than warning threshold
+      and less than critical threshold and block gap is less than critical
+      block gap`, async () => {
+      scannerHealthCheckParam['difference'] = 20;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now();
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
+    });
+
+    /**
      * @target getHealthStatus should return BROKEN when difference is less than
      * critical threshold but the block gap is more than critical block gap
      * @dependencies
@@ -69,6 +96,24 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       the block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam['difference'] = 20;
       scannerHealthCheckParam['lastBlockTime'] = Date.now() - 3_000_000;
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.BROKEN);
+    });
+
+    /**
+     * @target getHealthStatus should return BROKEN when difference is more than
+     * critical threshold
+     * @dependencies
+     * @scenario
+     * - mock difference to less than critical threshold
+     * - mock lastBlockTime so that block gap is less than warn gap
+     * - get health status
+     * @expected
+     * - The status should be BROKEN
+     */
+    it('should return BROKEN when difference is more than critical threshold', async () => {
+      scannerHealthCheckParam['difference'] = 200;
+      scannerHealthCheckParam['lastBlockTime'] = Date.now();
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
@@ -103,51 +148,6 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 10000;
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
-    });
-  });
-
-  describe('updateStatus', () => {
-    beforeEach(() => {
-      vi.useFakeTimers({ now: 1723451468275 });
-    });
-    afterEach(() => {
-      vi.useRealTimers();
-    });
-
-    /**
-     * @target updateStatus should set the disconnectionTime for the first time
-     * @dependencies
-     * @scenario
-     * - mock `getLastAvailableBlock`
-     * - create new instance of CardanoOgmiosScannerHealthCheck
-     * - update the parameter
-     * @expected
-     * - to set disconnectionTime to current time when it is undefined
-     */
-    it('should set the disconnectionTime for the first time', async () => {
-      scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
-      scannerHealthCheckParam['disconnectionTime'] = undefined;
-      await scannerHealthCheckParam.updateStatus();
-      expect(scannerHealthCheckParam['disconnectionTime']).toEqual(Date.now());
-    });
-
-    /**
-     * @target updateStatus should not change disconnectionTime when client is still disconnected
-     * @dependencies
-     * @scenario
-     * - mock `getLastAvailableBlock`
-     * - create new instance of CardanoOgmiosScannerHealthCheck
-     * - update the parameter
-     * @expected
-     * - not to change disconnectionTime when still is disconnected
-     */
-    it('should not change disconnectionTime when client is still disconnected', async () => {
-      scannerHealthCheckParam['connected'] = vi.fn().mockReturnValue(false);
-      scannerHealthCheckParam['disconnectionTime'] = Date.now() - 1000;
-      await scannerHealthCheckParam.updateStatus();
-      expect(scannerHealthCheckParam['disconnectionTime']).toEqual(
-        Date.now() - 1000,
-      );
     });
   });
 });
