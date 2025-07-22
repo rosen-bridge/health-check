@@ -1,12 +1,13 @@
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { ScannerSyncHealthCheckParam } from '../scannerSyncHealthCheckParam';
+import { LastSavedBlock } from '../config';
 
 export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam {
   private disconnectionTime: number | undefined;
 
   constructor(
-    getLastSavedBlock: () => Promise<{ height: number; timestamp: number }>,
+    getLastSavedBlock: () => Promise<LastSavedBlock>,
     private connected: () => boolean,
     warnDifference: number,
     criticalDifference: number,

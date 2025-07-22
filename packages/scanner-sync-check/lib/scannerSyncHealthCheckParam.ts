@@ -4,6 +4,7 @@ import {
 } from '@rosen-bridge/health-check';
 import { formatDistance } from 'date-fns';
 import { upperFirst } from 'lodash-es';
+import { LastSavedBlock } from './config';
 
 class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected chain: string;
@@ -15,10 +16,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
 
   constructor(
     chain: string,
-    protected getLastSavedBlock: () => Promise<{
-      height: number;
-      timestamp: number;
-    }>,
+    protected getLastSavedBlock: () => Promise<LastSavedBlock>,
     protected warnDifference: number,
     protected criticalDifference: number,
     warnBlockGap: number,
@@ -62,7 +60,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = () => {
-    const baseMessage = 'Checks if the scanner has saved any recent block. ';
+    const baseMessage = 'Checks if the scanner is in sync with the network.';
     if (
       this.lastBlockHeight !== undefined &&
       this.lastBlockTime !== undefined
@@ -78,11 +76,13 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns
    */
   protected rawDetails = (): string | undefined => {
+    if (!this.lastBlockTime) {
+      return 'Last block time is not defined.';
+    }
+
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
-    const time = this.lastBlockTime
-      ? formatDistance(Date.now(), this.lastBlockTime)
-      : 'unknown time';
-    const message = `Last block (height: ${this.lastBlockHeight}) saved ${time} ago.`;
+    const time = formatDistance(Date.now(), this.lastBlockTime);
+    const message = `Last block at height (height: ${this.lastBlockHeight}) is stored ${time} ago.`;
 
     if (blockGap >= this.criticalBlockTimeGap)
       return `Service has stopped working. ` + message;
