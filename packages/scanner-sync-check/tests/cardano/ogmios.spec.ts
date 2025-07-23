@@ -16,8 +16,9 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       () => true,
       10,
       100,
-      123,
-      5000,
+      300,
+      100,
+      200,
     );
   });
 
@@ -54,8 +55,10 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      */
     it(`should return UNSTABLE when difference is less than warning threshold
       but the block gap is more than warn block gap`, async () => {
-      scannerHealthCheckParam['difference'] = 2;
-      scannerHealthCheckParam['lastBlockTime'] = Date.now() - 300_000;
+      const now = 1_000_000_000;
+      vitest.spyOn(Date, 'now').mockReturnValue(now);
+      scannerHealthCheckParam['lastBlockTime'] = now - 3000;
+      scannerHealthCheckParam['difference'] = 1;
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
@@ -128,8 +131,11 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      * - The status should be UNSTABLE
      */
     it('should return UNSTABLE when the ogmios client is not connected', async () => {
+      const now = 1_000_000_000_000;
+      vitest.spyOn(Date, 'now').mockReturnValue(now);
       scannerHealthCheckParam['difference'] = 20;
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 100;
+      scannerHealthCheckParam['lastBlockTime'] = Math.floor(now);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });

@@ -82,7 +82,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
 
     const blockGap = (Date.now() - this.lastBlockTime) / 1000;
     const time = formatDistance(Date.now(), this.lastBlockTime);
-    const message = `Last block at height (height: ${this.lastBlockHeight}) is stored ${time} ago.`;
+    const message = `Last block at height (height: ${this.lastBlockHeight} is stored ${time} ago.`;
 
     if (blockGap >= this.criticalBlockTimeGap)
       return `Service has stopped working. ` + message;
@@ -124,9 +124,14 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   protected rawUpdate = async () => {
     const { height, timestamp } = await this.getLastSavedBlock();
+    if (this.lastBlockHeight !== undefined) {
+      this.difference = height - this.lastBlockHeight;
+    } else {
+      this.difference = 0;
+    }
     if (height !== this.lastBlockHeight) {
       this.lastBlockHeight = height;
-      this.lastBlockTime = timestamp * 1000;
+      this.lastBlockTime = timestamp;
     }
   };
 

@@ -9,9 +9,11 @@ describe('AbstractScannerHealthCheckParam', () => {
    */
   let scannerHealthCheckParam: TestScannerHealthCheckParam;
   beforeAll(async () => {
+    const currentTime = 1621411200000; // milliseconds!
+    vitest.spyOn(Date, 'now').mockReturnValue(currentTime);
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
       'test-chain',
-      () => Promise.resolve({ height: 555, timestamp: 289497 }),
+      () => Promise.resolve({ height: 1111, timestamp: Date.now() }),
       10,
       100,
       10,
@@ -159,11 +161,14 @@ describe('AbstractScannerHealthCheckParam', () => {
      * - The last block height should be updated to last stored block
      */
     it('should update the height difference correctly', async () => {
-      const currentTime = 1621411200000; // May 19, 2021 12:00:00 AM UTC
+      const currentTime = 1621411200; // May 19, 2021 12:00:00 AM UTC
       vitest.spyOn(Date, 'now').mockReturnValue(currentTime);
+
+      scannerHealthCheckParam.setLastBlockHeight(1107);
+      scannerHealthCheckParam.setLastBlockTime(currentTime - 100000);
       await scannerHealthCheckParam.update();
       expect(scannerHealthCheckParam.getDifference()).toEqual(4);
-      expect(scannerHealthCheckParam['lastBlockTime']).toEqual(Date.now());
+      expect(scannerHealthCheckParam['lastBlockTime']).toEqual(currentTime);
       expect(scannerHealthCheckParam['lastBlockHeight']).toEqual(1111);
     });
 
