@@ -77,17 +77,17 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   protected rawDetails = (): string | undefined => {
     if (!this.lastBlockTime) {
-      return 'Last block time is not defined.';
+      return;
     }
 
-    const blockGap = (Date.now() - this.lastBlockTime) / 1000;
+    const blockGap = Date.now() - this.lastBlockTime;
     const time = formatDistance(Date.now(), this.lastBlockTime);
-    const message = `Last block at height (height: ${this.lastBlockHeight} is stored ${time} ago.`;
+    const message = `Last block at height  ${this.lastBlockHeight} is stored ${time} ago.`;
 
     if (blockGap >= this.criticalBlockTimeGap)
-      return `Service has stopped working. ` + message;
+      return `Service has stopped working. ${message}`;
     else if (blockGap >= this.warnBlockTimeGap)
-      return `Service may stop working soon. ` + message;
+      return `Service may stop working soon. ${message}`;
 
     return undefined;
   };
