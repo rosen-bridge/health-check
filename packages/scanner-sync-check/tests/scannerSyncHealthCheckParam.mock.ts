@@ -37,14 +37,6 @@ class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
   };
 
   /**
-   * set mocked difference
-   * @param difference mocked difference
-   */
-  setDifference = (difference: number) => {
-    this.difference = difference;
-  };
-
-  /**
    * set mocked last block time
    * @param difference mocked difference
    */
@@ -58,13 +50,6 @@ class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
    */
   setLastBlockHeight = (height: number) => {
     this.lastBlockHeight = height;
-  };
-
-  /**
-   * @returns protected height difference
-   */
-  getDifference = () => {
-    return this.difference;
   };
 }
 

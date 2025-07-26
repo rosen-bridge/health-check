@@ -53,7 +53,7 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
    * @returns scanner sync health status
    */
   getHealthStatus = (): HealthStatusLevel => {
-    if (this.lastBlockTime === undefined || this.difference === undefined) {
+    if (this.lastBlockTime === undefined) {
       return HealthStatusLevel.BROKEN;
     }
 
@@ -64,17 +64,12 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
     if (
       (this.disconnectionTime &&
         this.disconnectionTime + this.unstableTimeWindow < Date.now()) ||
-      blockDelay >= this.criticalBlockTimeGap ||
-      this.difference >= this.criticalDifference
+      blockDelay >= this.criticalBlockTimeGap
     ) {
       return HealthStatusLevel.BROKEN;
     }
 
-    if (
-      this.disconnectionTime ||
-      blockDelay >= this.warnBlockTimeGap ||
-      this.difference >= this.warnDifference
-    ) {
+    if (this.disconnectionTime || blockDelay >= this.warnBlockTimeGap) {
       return HealthStatusLevel.UNSTABLE;
     }
 

@@ -16,74 +16,65 @@ describe('AbstractScannerHealthCheckParam', () => {
       () => Promise.resolve({ height: 1111, timestamp: Date.now() }),
       10,
       100,
-      10,
-      100,
-      3,
+      30,
+      120,
+      1000,
     );
   });
 
   describe('getHealthStatus', () => {
     /**
-     * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * HEALTHY when difference is less than warning threshold and the block
-     * gap is less than warning block time gap
+     * @target AbstractScannerHealthCheckParam.getHealthStatus should return HEALTHY
+     * when block gap is less than warn threshold
      * @dependencies
      * @scenario
-     * - mock difference is less than warning threshold
      * - mock lastBlockHeight and lastBlockTime to be now
      * - get health status
      * @expected
      * - The status should be HEALTHY
      */
-    it(`should return HEALTHY when difference is less than warning threshold and
-      the block gap is less than warning block time gap`, async () => {
-      scannerHealthCheckParam.setDifference(2);
-      scannerHealthCheckParam.setLastBlockTime(Date.now());
-      scannerHealthCheckParam.setLastBlockHeight(100);
+    it(`should return HEALTHY when block gap is less than warn threshold`, async () => {
+      const recentTime = Date.now() - 20 * 1000;
+      scannerHealthCheckParam.setLastBlockTime(recentTime);
+      scannerHealthCheckParam.setLastBlockHeight(1111);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
 
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * UNSTABLE when difference is less than warning threshold and block gap
-     * is more than warn block gap and less than critical block gap
+     * UNSTABLE when block gap is more than warn block gap
+     * and less than critical block gap
      * @dependencies
      * @scenario
-     * - mock difference to less than warning threshold
      * - mock lastBlockHeight and lastBlockTime so that block gap be more than
      * warn block gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
      */
-    it(`should return UNSTABLE when difference is less than warning threshold 
-      but block gap is more than warn block gap and less than critical block
-      gap`, async () => {
-      scannerHealthCheckParam.setDifference(20);
-      scannerHealthCheckParam.setLastBlockHeight(100);
-      scannerHealthCheckParam.setLastBlockTime(Date.now() - 40 * 1000);
+    it(`should return UNSTABLE when block gap is more than warn block gap 
+      and less than critical block gap`, async () => {
+      const unstableTime = Date.now() - 60 * 1000;
+      scannerHealthCheckParam.setLastBlockTime(unstableTime);
+      scannerHealthCheckParam.setLastBlockHeight(1111);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
 
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * UNSTABLE when difference is more than warning threshold and less than
-     * critical threshold and last block gap is less than critical block gap
+     * UNSTABLE when last block gap is less than critical block gap
      * @dependencies
      * @scenario
-     * - mock difference to more than warning threshold
      * - mock lastBlockHeight and lastBlockTime so that block gap be less than
      * critical block gap
      * - get health status
      * @expected
      * - The status should be UNSTABLE
      */
-    it(`should return UNSTABLE when difference is more than warning threshold 
-      and less than critical threshold and block gap is less than critical
+    it(`should return UNSTABLE when block gap is less than critical
       block gap`, async () => {
-      scannerHealthCheckParam.setDifference(20);
       scannerHealthCheckParam.setLastBlockHeight(100);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 40 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -92,20 +83,16 @@ describe('AbstractScannerHealthCheckParam', () => {
 
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * BROKEN when difference is less than critical threshold but block gap is
-     * more than critical block gap
+     * BROKEN when block gap is more than critical block gap
      * @dependencies
      * @scenario
-     * - mock difference to more than warning threshold
      * - mock lastBlockHeight and lastBlockTime so that block gap be more than
      * critical block gap
      * - get health status
      * @expected
      * - The status should be BROKEN
      */
-    it(`should return BROKEN when difference is less than critical threshold but
-      block gap is more than critical block gap`, async () => {
-      scannerHealthCheckParam.setDifference(2);
+    it(`should return BROKEN when block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam.setLastBlockHeight(100);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 400 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
@@ -114,18 +101,19 @@ describe('AbstractScannerHealthCheckParam', () => {
 
     /**
      * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * BROKEN when difference is more than critical threshold
+     * BROKEN when block gap is more than critical threshold
      * @dependencies
      * @scenario
-     * - mock difference to less than critical threshold
+     * - mock lastBlockTime
      * - mock lastBlockHeight
      * - get health status
      * @expected
      * - The status should be BROKEN
      */
-    it('should return BROKEN when difference is more than critical threshold', async () => {
-      scannerHealthCheckParam.setDifference(200);
-      scannerHealthCheckParam.setLastBlockHeight(100);
+    it('should return BROKEN when block gap is more than critical threshold', async () => {
+      const brokenTime = Date.now() - 300 * 1000; // 5min ago
+      scannerHealthCheckParam.setLastBlockTime(brokenTime);
+      scannerHealthCheckParam.setLastBlockHeight(1111);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
@@ -141,7 +129,6 @@ describe('AbstractScannerHealthCheckParam', () => {
      * - The status should be BROKEN
      */
     it('should return BROKEN when last block height is undefined', async () => {
-      scannerHealthCheckParam.setDifference(0);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
@@ -149,25 +136,22 @@ describe('AbstractScannerHealthCheckParam', () => {
 
   describe('update', () => {
     /**
-     * @target AbstractScannerHealthCheckParam.update should update the height
-     * difference and last block time and height correctly
+     * @target AbstractScannerHealthCheckParam.update should update last block time and height correctly
      * @dependencies
      * @scenario
      * - mock current time (Date.now())
      * - run test (call `update`)
      * @expected
-     * - The difference should set correctly
      * - The last block time should be updated to now
      * - The last block height should be updated to last stored block
      */
-    it('should update the height difference correctly', async () => {
+    it('should update the height and time correctly', async () => {
       const currentTime = 1621411200; // May 19, 2021 12:00:00 AM UTC
       vitest.spyOn(Date, 'now').mockReturnValue(currentTime);
 
       scannerHealthCheckParam.setLastBlockHeight(1107);
       scannerHealthCheckParam.setLastBlockTime(currentTime - 100000);
       await scannerHealthCheckParam.update();
-      expect(scannerHealthCheckParam.getDifference()).toEqual(4);
       expect(scannerHealthCheckParam['lastBlockTime']).toEqual(currentTime);
       expect(scannerHealthCheckParam['lastBlockHeight']).toEqual(1111);
     });
@@ -183,7 +167,7 @@ describe('AbstractScannerHealthCheckParam', () => {
      * @expected
      * - Not to change last block time
      */
-    it('should update the height difference correctly', async () => {
+    it(' should not change last block time when the last block height is not changed', async () => {
       const currentTime = 1621411200000; // May 19, 2021 12:00:00 AM UTC
       vitest.spyOn(Date, 'now').mockReturnValue(currentTime);
       const lastBlockTime = 1621411200000 - 100000;

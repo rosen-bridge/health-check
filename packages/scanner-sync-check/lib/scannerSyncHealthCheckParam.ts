@@ -8,7 +8,6 @@ import { LastSavedBlock } from './config';
 
 class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected chain: string;
-  protected difference: number;
   protected lastBlockHeight: number;
   protected lastBlockTime: number;
   protected warnBlockTimeGap: number;
@@ -107,7 +106,8 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns scanner sync health status
    */
   getHealthStatus = (): HealthStatusLevel => {
-    const blockGap = (Date.now() - this.lastBlockTime) / 1000;
+    const blockGap = Date.now() - this.lastBlockTime;
+    console.log(blockGap, this.lastBlockHeight, this.lastBlockTime);
     if (
       this.lastBlockHeight == undefined ||
       this.lastBlockTime == undefined ||
@@ -124,11 +124,6 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   protected rawUpdate = async () => {
     const { height, timestamp } = await this.getLastSavedBlock();
-    if (this.lastBlockHeight !== undefined) {
-      this.difference = height - this.lastBlockHeight;
-    } else {
-      this.difference = 0;
-    }
     if (height !== this.lastBlockHeight) {
       this.lastBlockHeight = height;
       this.lastBlockTime = timestamp;
