@@ -11,6 +11,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected lastBlockHeight: number;
   protected lastBlockTime: number;
   protected warnBlockTimeGap: number;
+  protected lastBlockGap: number | undefined;
   protected criticalBlockTimeGap: number;
 
   constructor(
@@ -79,13 +80,13 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       return;
     }
 
-    const blockGap = Date.now() - this.lastBlockTime;
+    this.lastBlockGap = Date.now() - this.lastBlockTime;
     const time = formatDistance(Date.now(), this.lastBlockTime);
     const message = `Last block at height  ${this.lastBlockHeight} is stored ${time} ago.`;
 
-    if (blockGap >= this.criticalBlockTimeGap)
+    if (this.lastBlockGap >= this.criticalBlockTimeGap)
       return `Service has stopped working. ${message}`;
-    else if (blockGap >= this.warnBlockTimeGap)
+    else if (this.lastBlockGap >= this.warnBlockTimeGap)
       return `Service may stop working soon. ${message}`;
 
     return undefined;
@@ -107,7 +108,6 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   getHealthStatus = (): HealthStatusLevel => {
     const blockGap = Date.now() - this.lastBlockTime;
-    console.log(blockGap, this.lastBlockHeight, this.lastBlockTime);
     if (
       this.lastBlockHeight == undefined ||
       this.lastBlockTime == undefined ||
@@ -126,7 +126,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     const { height, timestamp } = await this.getLastSavedBlock();
     if (height !== this.lastBlockHeight) {
       this.lastBlockHeight = height;
-      this.lastBlockTime = timestamp;
+      this.lastBlockTime = timestamp * 1000;
     }
   };
 

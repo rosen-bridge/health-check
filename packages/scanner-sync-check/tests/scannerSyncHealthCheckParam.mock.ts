@@ -26,7 +26,7 @@ class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
    * mocked update method
    */
   getLastSavedBlock = async () => {
-    return { height: 1111, timestamp: Date.now() };
+    return { height: 1111, timestamp: Date.now() / 1000 };
   };
 
   /**
@@ -34,6 +34,13 @@ class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
    */
   getLastSavedBlockMessage = () => {
     return 'message';
+  };
+
+  /**
+   * set mocked last block gap
+   */
+  setLastBlockGap = (gap: number) => {
+    this['lastBlockGap'] = gap;
   };
 
   /**

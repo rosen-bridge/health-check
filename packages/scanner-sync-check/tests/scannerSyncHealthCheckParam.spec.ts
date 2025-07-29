@@ -151,6 +151,7 @@ describe('AbstractScannerHealthCheckParam', () => {
 
       scannerHealthCheckParam.setLastBlockHeight(1107);
       scannerHealthCheckParam.setLastBlockTime(currentTime - 100000);
+      scannerHealthCheckParam.setLastBlockGap(20 * 1000);
       await scannerHealthCheckParam.update();
       expect(scannerHealthCheckParam['lastBlockTime']).toEqual(currentTime);
       expect(scannerHealthCheckParam['lastBlockHeight']).toEqual(1111);
@@ -173,6 +174,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       const lastBlockTime = 1621411200000 - 100000;
       scannerHealthCheckParam.setLastBlockHeight(1111);
       scannerHealthCheckParam.setLastBlockTime(lastBlockTime);
+      scannerHealthCheckParam.setLastBlockGap(20 * 1000);
       await scannerHealthCheckParam.update();
       expect(scannerHealthCheckParam['lastBlockTime']).toEqual(lastBlockTime);
     });
