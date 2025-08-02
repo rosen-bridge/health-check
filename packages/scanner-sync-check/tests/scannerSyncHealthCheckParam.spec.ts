@@ -37,6 +37,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       const recentTime = Date.now() - 20 * 1000;
       scannerHealthCheckParam.setLastBlockTime(recentTime);
       scannerHealthCheckParam.setLastBlockHeight(1111);
+      scannerHealthCheckParam.setLastBlockGap(20 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
@@ -58,6 +59,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       const unstableTime = Date.now() - 60 * 1000;
       scannerHealthCheckParam.setLastBlockTime(unstableTime);
       scannerHealthCheckParam.setLastBlockHeight(1111);
+      scannerHealthCheckParam.setLastBlockGap(60 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
@@ -77,6 +79,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       block gap`, async () => {
       scannerHealthCheckParam.setLastBlockHeight(100);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 40 * 1000);
+      scannerHealthCheckParam.setLastBlockGap(40 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
@@ -95,6 +98,7 @@ describe('AbstractScannerHealthCheckParam', () => {
     it(`should return BROKEN when block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam.setLastBlockHeight(100);
       scannerHealthCheckParam.setLastBlockTime(Date.now() - 400 * 1000);
+      scannerHealthCheckParam.setLastBlockGap(400 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
@@ -114,6 +118,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       const brokenTime = Date.now() - 300 * 1000; // 5min ago
       scannerHealthCheckParam.setLastBlockTime(brokenTime);
       scannerHealthCheckParam.setLastBlockHeight(1111);
+      scannerHealthCheckParam.setLastBlockGap(300 * 1000);
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
@@ -174,7 +179,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       const lastBlockTime = 1621411200000 - 100000;
       scannerHealthCheckParam.setLastBlockHeight(1111);
       scannerHealthCheckParam.setLastBlockTime(lastBlockTime);
-      scannerHealthCheckParam.setLastBlockGap(20 * 1000);
+      scannerHealthCheckParam.setLastBlockGap(100000);
       await scannerHealthCheckParam.update();
       expect(scannerHealthCheckParam['lastBlockTime']).toEqual(lastBlockTime);
     });
