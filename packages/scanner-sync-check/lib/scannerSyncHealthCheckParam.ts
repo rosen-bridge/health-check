@@ -49,9 +49,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns a message showing the last stored block by the scanner
    */
   getLastSavedBlockMessage: () => string = () => {
-    const formattedTime = this.lastBlockTime
-      ? formatDistance(Date.now(), this.lastBlockTime)
-      : 'an unknown time';
+    const formattedTime = this.lastBlockGap;
     return `The last block saved by the ${upperFirst(this.chain)} scanner is ${this.lastBlockHeight}, saved ${formattedTime} ago.`;
   };
 
@@ -76,11 +74,9 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns
    */
   protected rawDetails = (): string | undefined => {
-    if (!this.lastBlockTime) {
+    if (!this.lastBlockTime || !this.lastBlockGap) {
       return;
     }
-
-    this.lastBlockGap = Date.now() - this.lastBlockTime;
     const time = formatDistance(Date.now(), this.lastBlockTime);
     const message = `Last block at height  ${this.lastBlockHeight} is stored ${time} ago.`;
 
@@ -107,14 +103,14 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns scanner sync health status
    */
   getHealthStatus = (): HealthStatusLevel => {
-    const blockGap = Date.now() - this.lastBlockTime;
     if (
       this.lastBlockHeight == undefined ||
       this.lastBlockTime == undefined ||
-      blockGap >= this.criticalBlockTimeGap
+      this.lastBlockGap == undefined ||
+      this.lastBlockGap >= this.criticalBlockTimeGap
     )
       return HealthStatusLevel.BROKEN;
-    else if (blockGap >= this.warnBlockTimeGap)
+    else if (this.lastBlockGap >= this.warnBlockTimeGap)
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
   };
@@ -127,6 +123,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     if (height !== this.lastBlockHeight) {
       this.lastBlockHeight = height;
       this.lastBlockTime = timestamp * 1000;
+      this.lastBlockGap = Date.now() - this.lastBlockTime;
     }
   };
 
