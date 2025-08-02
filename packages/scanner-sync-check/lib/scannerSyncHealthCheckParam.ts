@@ -123,7 +123,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     if (height !== this.lastBlockHeight) {
       this.lastBlockHeight = height;
       this.lastBlockTime = timestamp * 1000;
-      this.lastBlockGap = Date.now() - timestamp;
+      this.lastBlockGap = Date.now() - this.lastBlockTime;
     }
   };
 
