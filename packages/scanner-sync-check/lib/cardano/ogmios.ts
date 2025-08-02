@@ -79,7 +79,6 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
     if (this.connected()) {
       this.disconnectionTime = undefined;
       await this.rawUpdate();
-      this.lastBlockGap = Date.now() - this.lastBlockTime;
     } else if (!this.disconnectionTime) {
       this.disconnectionTime = Date.now();
     }
