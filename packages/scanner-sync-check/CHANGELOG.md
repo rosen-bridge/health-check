@@ -1,5 +1,11 @@
 # @rosen-bridge/scanner-sync-check
 
+## 6.0.0
+
+### Major Changes
+
+- United all scanner-sync-check Health Check classes except ogmios
+
 ## 5.0.0
 
 ### Major Changes
