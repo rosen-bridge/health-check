@@ -14,11 +14,11 @@ describe('AbstractScannerHealthCheckParam', () => {
     scannerHealthCheckParam = new TestScannerHealthCheckParam(
       'test-chain',
       () => Promise.resolve({ height: 1111, timestamp: Date.now() }),
-      10,
-      100,
-      30,
-      120,
       1000,
+      3000,
+      30,
+      // 120,
+      // 1000,
     );
   });
 

@@ -14,12 +14,10 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     scannerHealthCheckParam = new CardanoOgmiosScannerHealthCheck(
       async () => Promise.resolve({ height: 1111, timestamp: 289497 }),
       () => true,
-      10,
-      100,
+      600,
+      10000,
       20_000,
       15,
-      60,
-      1000,
     );
   });
 

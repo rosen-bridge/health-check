@@ -11,6 +11,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected lastBlockHeight: number;
   protected lastBlockTime: number;
   protected warnBlockTimeGap: number;
+  protected formattedTime: string;
   protected lastBlockGap: number | undefined;
   protected criticalBlockTimeGap: number;
 
@@ -19,14 +20,12 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     protected getLastSavedBlock: () => Promise<LastSavedBlock>,
     protected warnDifference: number,
     protected criticalDifference: number,
-    warnBlockGap: number,
-    criticalBlockGap: number,
     blockTime: number,
   ) {
     super();
     this.chain = chain;
-    this.criticalBlockTimeGap = criticalBlockGap * blockTime;
-    this.warnBlockTimeGap = warnBlockGap * blockTime;
+    this.criticalBlockTimeGap = criticalDifference * blockTime;
+    this.warnBlockTimeGap = warnDifference * blockTime;
   }
 
   /**
@@ -49,8 +48,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns a message showing the last stored block by the scanner
    */
   getLastSavedBlockMessage: () => string = () => {
-    const formattedTime = this.lastBlockGap;
-    return `The last block saved by the ${upperFirst(this.chain)} scanner is ${this.lastBlockHeight}, saved ${formattedTime} ago.`;
+    return `The last block saved by the ${upperFirst(this.chain)} scanner is ${this.lastBlockHeight}, saved ${this.formattedTime} ago.`;
   };
 
   /**
@@ -77,8 +75,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     if (!this.lastBlockTime || !this.lastBlockGap) {
       return;
     }
-    const time = formatDistance(Date.now(), this.lastBlockTime);
-    const message = `Last block at height  ${this.lastBlockHeight} is stored ${time} ago.`;
+    const message = `Last block at height ${this.lastBlockHeight} is stored ${this.formattedTime} ago.`;
 
     if (this.lastBlockGap >= this.criticalBlockTimeGap)
       return `Service has stopped working. ${message}`;
@@ -124,6 +121,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       this.lastBlockHeight = height;
       this.lastBlockTime = timestamp * 1000;
       this.lastBlockGap = Date.now() - this.lastBlockTime;
+      this.formattedTime = formatDistance(Date.now(), this.lastBlockTime);
     }
   };
 
