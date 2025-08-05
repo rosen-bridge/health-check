@@ -44,14 +44,6 @@ class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
   };
 
   /**
-   * set mocked last block time
-   * @param difference mocked difference
-   */
-  setLastBlockTime = (time: number) => {
-    this.lastBlockTime = time;
-  };
-
-  /**
    * set mocked last block height
    * @param difference mocked difference
    */

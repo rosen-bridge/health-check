@@ -9,7 +9,6 @@ import { LastSavedBlock } from './config';
 class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected chain: string;
   protected lastBlockHeight: number;
-  protected lastBlockTime: number;
   protected warnBlockTimeGap: number;
   protected formattedTime: string;
   protected lastBlockGap: number | undefined;
@@ -57,10 +56,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   getDescription = () => {
     const baseMessage = 'Checks if the scanner is in sync with the network.';
-    if (
-      this.lastBlockHeight !== undefined &&
-      this.lastBlockTime !== undefined
-    ) {
+    if (this.lastBlockHeight !== undefined) {
       return baseMessage + this.getLastSavedBlockMessage();
     } else {
       return baseMessage + `There is no available block in the database.`;
@@ -72,7 +68,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns
    */
   protected rawDetails = (): string | undefined => {
-    if (!this.lastBlockTime || !this.lastBlockGap) {
+    if (!this.lastBlockGap) {
       return;
     }
     const message = `Last block at height ${this.lastBlockHeight} is stored ${this.formattedTime} ago.`;
@@ -102,7 +98,6 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   getHealthStatus = (): HealthStatusLevel => {
     if (
       this.lastBlockHeight == undefined ||
-      this.lastBlockTime == undefined ||
       this.lastBlockGap == undefined ||
       this.lastBlockGap >= this.criticalBlockTimeGap
     )
@@ -119,9 +114,8 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     const { height, timestamp } = await this.getLastSavedBlock();
     if (height !== this.lastBlockHeight) {
       this.lastBlockHeight = height;
-      this.lastBlockTime = timestamp * 1000;
-      this.lastBlockGap = Date.now() - this.lastBlockTime;
-      this.formattedTime = formatDistance(Date.now(), this.lastBlockTime);
+      this.lastBlockGap = Date.now() - timestamp * 1000;
+      this.formattedTime = formatDistance(Date.now(), timestamp * 1000);
     }
   };
 
