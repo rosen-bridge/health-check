@@ -1,5 +1,11 @@
 # @rosen-bridge/scanner-sync-check
 
+## 7.0.0
+
+### Major Changes
+
+- Add timestamp check to scanner-sync
+
 ## 6.0.0
 
 ### Major Changes
