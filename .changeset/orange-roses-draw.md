@@ -2,4 +2,4 @@
 '@rosen-bridge/scanner-sync-check': major
 ---
 
-Add to scanner-sync timestamp check
+Add timestamp check to scanner-sync
