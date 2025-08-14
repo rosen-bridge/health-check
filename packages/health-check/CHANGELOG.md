@@ -1,5 +1,11 @@
 # @rosen-bridge/health-check
 
+## 7.0.1
+
+### Patch Changes
+
+- Update package license to MIT
+
 ## 7.0.0
 
 ### Major Changes

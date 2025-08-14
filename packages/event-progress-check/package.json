@@ -1,9 +1,9 @@
 {
   "name": "@rosen-bridge/event-progress-check",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rosen bridge event-progress health-check parameter",
   "repository": "https://github.com/rosen-bridge/health-check",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "author": "Rosen Team",
   "type": "module",
   "main": "dist/index.js",
@@ -34,7 +34,7 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@rosen-bridge/health-check": "^7.0.0",
+    "@rosen-bridge/health-check": "^7.0.1",
     "lodash-es": "^4.17.21"
   }
 }

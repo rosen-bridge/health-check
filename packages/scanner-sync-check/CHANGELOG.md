@@ -1,5 +1,13 @@
 # @rosen-bridge/scanner-sync-check
 
+## 7.0.1
+
+### Patch Changes
+
+- Update package license to MIT
+- Update dependencies
+  - @rosen-bridge/health-check@7.0.1
+
 ## 7.0.0
 
 ### Major Changes

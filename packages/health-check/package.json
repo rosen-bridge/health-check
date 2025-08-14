@@ -1,8 +1,8 @@
 {
   "name": "@rosen-bridge/health-check",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Rosen bridge health-check package",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "author": "Rosen Team",
   "type": "module",
   "main": "dist/index.js",

@@ -1,5 +1,13 @@
 # @rosen-bridge/event-progress-check
 
+## 1.0.1
+
+### Patch Changes
+
+- Update package license to MIT
+- Update dependencies
+  - @rosen-bridge/health-check@7.0.1
+
 ## 1.0.0
 
 ### Major Changes

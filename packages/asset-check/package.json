@@ -1,8 +1,8 @@
 {
   "name": "@rosen-bridge/asset-check",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Rosen bridge health check service",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "author": "Rosen Team",
   "type": "module",
   "main": "dist/index.js",
@@ -35,7 +35,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.11",
     "@blockfrost/blockfrost-js": "^6.0.0",
-    "@rosen-bridge/health-check": "^7.0.0",
+    "@rosen-bridge/health-check": "^7.0.1",
     "@rosen-bridge/rate-limited-axios": "^0.2.1",
     "@rosen-clients/cardano-koios": "^2.1.2",
     "@rosen-clients/ergo-explorer": "^1.1.5",

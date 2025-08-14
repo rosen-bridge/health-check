@@ -1,8 +1,8 @@
 {
   "name": "@rosen-bridge/scanner-sync-check",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "Rosen bridge scanner-sync health-check parameter",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "author": "Rosen Team",
   "type": "module",
   "main": "dist/index.js",
@@ -34,7 +34,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.11",
     "@cardano-ogmios/client": "^6.3.0",
-    "@rosen-bridge/health-check": "^7.0.0",
+    "@rosen-bridge/health-check": "^7.0.1",
     "date-fns": "^4.1.0"
   }
 }

@@ -1,8 +1,8 @@
 {
   "name": "@rosen-bridge/node-sync-check",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Rosen bridge node-sync health-check parameter",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "author": "Rosen Team",
   "type": "module",
   "main": "dist/index.js",
@@ -32,7 +32,7 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@rosen-bridge/health-check": "^7.0.0",
+    "@rosen-bridge/health-check": "^7.0.1",
     "@rosen-clients/ergo-node": "^1.2.3"
   }
 }
