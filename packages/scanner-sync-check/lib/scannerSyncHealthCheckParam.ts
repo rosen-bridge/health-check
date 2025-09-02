@@ -13,6 +13,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected formattedTime: string;
   protected lastBlockGap: number | undefined;
   protected criticalBlockTimeGap: number;
+  protected updateInterval: number;
 
   constructor(
     chain: string,
@@ -20,11 +21,13 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     protected warnDifference: number,
     protected criticalDifference: number,
     blockTime: number,
+    updateInterval: number,
   ) {
     super();
     this.chain = chain;
     this.criticalBlockTimeGap = criticalDifference * blockTime;
     this.warnBlockTimeGap = warnDifference * blockTime;
+    this.updateInterval = updateInterval;
   }
 
   /**
@@ -73,9 +76,15 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     }
     const message = `Last block at height ${this.lastBlockHeight} is stored ${this.formattedTime} ago.`;
 
-    if (this.lastBlockGap >= this.criticalBlockTimeGap)
+    if (
+      this.lastBlockGap >=
+      Math.max(this.criticalBlockTimeGap, this.updateInterval * 2)
+    )
       return `Service has stopped working. ${message}`;
-    else if (this.lastBlockGap >= this.warnBlockTimeGap)
+    else if (
+      this.lastBlockGap >=
+      Math.max(this.warnBlockTimeGap, this.updateInterval * 2)
+    )
       return `Service may stop working soon. ${message}`;
 
     return undefined;
@@ -99,10 +108,14 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     if (
       this.lastBlockHeight == undefined ||
       this.lastBlockGap == undefined ||
-      this.lastBlockGap >= this.criticalBlockTimeGap
+      this.lastBlockGap >=
+        Math.max(this.criticalBlockTimeGap, this.updateInterval * 2)
     )
       return HealthStatusLevel.BROKEN;
-    else if (this.lastBlockGap >= this.warnBlockTimeGap)
+    else if (
+      this.lastBlockGap >=
+      Math.max(this.warnBlockTimeGap, this.updateInterval * 2)
+    )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
   };

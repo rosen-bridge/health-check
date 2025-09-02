@@ -43,6 +43,10 @@ class TestScannerHealthCheckParam extends ScannerSyncHealthCheckParam {
     this['lastBlockGap'] = gap;
   };
 
+  setInterval = (interval: number) => {
+    this['updateInterval'] = interval;
+  };
+
   /**
    * set mocked last block height
    * @param difference mocked difference

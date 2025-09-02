@@ -18,6 +18,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       10000,
       20_000,
       15,
+      1_000,
     );
   });
 

@@ -17,6 +17,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       1000,
       3000,
       30,
+      3000,
       // 120,
       // 1000,
     );
@@ -128,6 +129,24 @@ describe('AbstractScannerHealthCheckParam', () => {
     it('should return BROKEN when last block height is undefined', async () => {
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
+    });
+
+    /**
+     * @target AbstractScannerHealthCheckParam.getHealthStatus should return
+     * UNSTABLE when last block height is less than critical block height
+     * @dependencies
+     * @scenario
+     * - mock difference to less than critical threshold and more than max(warnBlockTimeGap, 2 * updateInterval)
+     * - get health status
+     * @expected
+     * - The status should be UNSTABLE
+     */
+    it('should return UNSTABLE when last block height is less than critical block height', async () => {
+      scannerHealthCheckParam.setLastBlockHeight(1111);
+      scannerHealthCheckParam.setLastBlockGap(80_000);
+      scannerHealthCheckParam.setInterval(30_000);
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
   });
 
