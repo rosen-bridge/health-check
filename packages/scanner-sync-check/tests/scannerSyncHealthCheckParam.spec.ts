@@ -18,8 +18,6 @@ describe('AbstractScannerHealthCheckParam', () => {
       3000,
       30,
       3000,
-      // 120,
-      // 1000,
     );
   });
 
