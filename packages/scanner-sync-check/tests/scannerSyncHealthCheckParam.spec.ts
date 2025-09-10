@@ -130,16 +130,17 @@ describe('AbstractScannerHealthCheckParam', () => {
     });
 
     /**
-     * @target AbstractScannerHealthCheckParam.getHealthStatus should return
-     * UNSTABLE when last block height is less than critical block height
+     * @target getHealthStatus should return
+     * UNSTABLE when block gap is greater than max(warnBlockTimeGap, 2 * updateInterval)
      * @dependencies
+     * - ScannerHealthCheckParam instance
      * @scenario
-     * - mock difference to less than critical threshold and more than max(warnBlockTimeGap, 2 * updateInterval)
-     * - get health status
+     * - set lastBlockGap to a value larger than both warnBlockTimeGap and 2 * updateInterval
+     * - call getHealthStatus
      * @expected
      * - The status should be UNSTABLE
      */
-    it('should return UNSTABLE when last block height is less than critical block height', async () => {
+    it('should return UNSTABLE when block gap is greater than max(warnBlockTimeGap, 2 * updateInterval)', async () => {
       scannerHealthCheckParam.setLastBlockHeight(1111);
       scannerHealthCheckParam.setLastBlockGap(80_000);
       scannerHealthCheckParam.setInterval(30_000);
