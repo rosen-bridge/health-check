@@ -131,21 +131,21 @@ describe('AbstractScannerHealthCheckParam', () => {
 
     /**
      * @target getHealthStatus should return
-     * UNSTABLE when block gap is greater than max(warnBlockTimeGap, 2 * updateInterval)
+     * HEALTHY when block gap is greater than max warnBlockTimeGap and less then 2 * updateInterval
      * @dependencies
      * - ScannerHealthCheckParam instance
      * @scenario
-     * - set lastBlockGap to a value larger than both warnBlockTimeGap and 2 * updateInterval
+     * - set lastBlockGap to a value larger than warnBlockTimeGap and smaller then 2 * updateInterval
      * - call getHealthStatus
      * @expected
-     * - The status should be UNSTABLE
+     * - The status should be HEALTHY
      */
-    it('should return UNSTABLE when block gap is greater than max(warnBlockTimeGap, 2 * updateInterval)', async () => {
+    it('should return HEALTHY when block gap is greater than max warnBlockTimeGap and less then 2 * updateInterval', async () => {
       scannerHealthCheckParam.setLastBlockHeight(1111);
       scannerHealthCheckParam.setLastBlockGap(80_000);
-      scannerHealthCheckParam.setInterval(30_000);
+      scannerHealthCheckParam.setInterval(44_000);
       const status = await scannerHealthCheckParam.getHealthStatus();
-      expect(status).toEqual(HealthStatusLevel.UNSTABLE);
+      expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
   });
 
