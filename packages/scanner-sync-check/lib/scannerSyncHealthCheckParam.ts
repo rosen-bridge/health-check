@@ -13,7 +13,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected formattedTime: string;
   protected lastBlockGap: number | undefined;
   protected criticalBlockTimeGap: number;
-  protected updateInterval: number;
+  protected scannerUpdateInterval: number;
 
   constructor(
     chain: string,
@@ -21,13 +21,13 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     protected warnDifference: number,
     protected criticalDifference: number,
     blockTime: number,
-    updateInterval: number,
+    scannerUpdateInterval: number,
   ) {
     super();
     this.chain = chain;
     this.criticalBlockTimeGap = criticalDifference * blockTime;
     this.warnBlockTimeGap = warnDifference * blockTime;
-    this.updateInterval = updateInterval;
+    this.scannerUpdateInterval = scannerUpdateInterval;
   }
 
   /**
@@ -58,11 +58,11 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    * @returns parameter description
    */
   getDescription = () => {
-    const baseMessage = 'Checks if the scanner is in sync with the network.';
+    const baseMessage = 'Checks if the scanner is in sync with the network. ';
     if (this.lastBlockHeight !== undefined) {
       return baseMessage + this.getLastSavedBlockMessage();
     } else {
-      return baseMessage + `There is no available block in the database.`;
+      return baseMessage + 'There is no available block in the database.';
     }
   };
 
@@ -78,12 +78,12 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
 
     if (
       this.lastBlockGap >=
-      Math.max(this.criticalBlockTimeGap, this.updateInterval * 2)
+      Math.max(this.criticalBlockTimeGap, this.scannerUpdateInterval * 2)
     )
       return `Service has stopped working. ${message}`;
     else if (
       this.lastBlockGap >=
-      Math.max(this.warnBlockTimeGap, this.updateInterval * 2)
+      Math.max(this.warnBlockTimeGap, this.scannerUpdateInterval * 2)
     )
       return `Service may stop working soon. ${message}`;
 
@@ -109,12 +109,12 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       this.lastBlockHeight == undefined ||
       this.lastBlockGap == undefined ||
       this.lastBlockGap >=
-        Math.max(this.criticalBlockTimeGap, this.updateInterval * 2)
+        Math.max(this.criticalBlockTimeGap, this.scannerUpdateInterval * 2)
     )
       return HealthStatusLevel.BROKEN;
     else if (
       this.lastBlockGap >=
-      Math.max(this.warnBlockTimeGap, this.updateInterval * 2)
+      Math.max(this.warnBlockTimeGap, this.scannerUpdateInterval * 2)
     )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;

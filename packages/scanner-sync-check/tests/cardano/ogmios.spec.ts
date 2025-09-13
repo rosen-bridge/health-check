@@ -40,18 +40,18 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
 
     /**
      * @target getHealthStatus should return
-     * HEALTHY when block gap is greater than warnBlockTimeGap and less then 2 * updateInterval
+     * HEALTHY when block gap is greater than warnBlockTimeGap and less then 2 * scannerUpdateInterval
      * @dependencies
      * - ScannerHealthCheckParam instance
      * @scenario
-     * - set lastBlockGap to a value larger than  warnBlockTimeGap and less then 2 * updateInterval
+     * - set lastBlockGap to a value larger than  warnBlockTimeGap and less then 2 * scannerUpdateInterval
      * - call getHealthStatus
      * @expected
      * - The status should be HEALTHY
      */
-    it(`HEALTHY when block gap is greater than warnBlockTimeGap and less then 2 * updateInterval`, async () => {
+    it(`HEALTHY when block gap is greater than warnBlockTimeGap and less then 2 * scannerUpdateInterval`, async () => {
       scannerHealthCheckParam['lastBlockGap'] = 170_000;
-      scannerHealthCheckParam['updateInterval'] = 110_000;
+      scannerHealthCheckParam['scannerUpdateInterval'] = 110_000;
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.HEALTHY);
     });

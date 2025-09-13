@@ -13,7 +13,7 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
     criticalDifference: number,
     private unstableTimeWindow: number,
     blockTime = 20,
-    updateInterval: number,
+    scannerUpdateInterval = 1000,
   ) {
     super(
       'cardano',
@@ -21,7 +21,7 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
       warnDifference,
       criticalDifference,
       blockTime,
-      updateInterval,
+      scannerUpdateInterval,
     );
   }
 
@@ -59,7 +59,7 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
       (this.disconnectionTime &&
         this.disconnectionTime + this.unstableTimeWindow < Date.now()) ||
       this.lastBlockGap >=
-        Math.max(this.criticalBlockTimeGap, this.updateInterval * 2)
+        Math.max(this.criticalBlockTimeGap, this.scannerUpdateInterval * 2)
     ) {
       return HealthStatusLevel.BROKEN;
     }
@@ -67,7 +67,7 @@ export class CardanoOgmiosScannerHealthCheck extends ScannerSyncHealthCheckParam
     if (
       this.disconnectionTime ||
       this.lastBlockGap >=
-        Math.max(this.warnBlockTimeGap, this.updateInterval * 2)
+        Math.max(this.warnBlockTimeGap, this.scannerUpdateInterval * 2)
     ) {
       return HealthStatusLevel.UNSTABLE;
     }
