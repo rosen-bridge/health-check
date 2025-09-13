@@ -2,4 +2,4 @@
 '@rosen-bridge/scanner-sync-check': minor
 ---
 
-Consider time_interval when updating status
+Consider scanner update interval when updating status
