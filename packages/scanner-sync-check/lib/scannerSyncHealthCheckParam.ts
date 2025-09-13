@@ -5,6 +5,7 @@ import {
 import { formatDistance } from 'date-fns';
 import { upperFirst } from 'lodash-es';
 import { LastSavedBlock } from './config';
+import { SCANNER_INTERVAL_MULTIPLIER } from './constant';
 
 class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected chain: string;
@@ -21,7 +22,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     protected warnDifference: number,
     protected criticalDifference: number,
     blockTime: number,
-    scannerUpdateInterval: number,
+    scannerUpdateInterval: number = 0,
   ) {
     super();
     this.chain = chain;
@@ -78,12 +79,18 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
 
     if (
       this.lastBlockGap >=
-      Math.max(this.criticalBlockTimeGap, this.scannerUpdateInterval * 2)
+      Math.max(
+        this.criticalBlockTimeGap,
+        this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+      )
     )
       return `Service has stopped working. ${message}`;
     else if (
       this.lastBlockGap >=
-      Math.max(this.warnBlockTimeGap, this.scannerUpdateInterval * 2)
+      Math.max(
+        this.warnBlockTimeGap,
+        this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+      )
     )
       return `Service may stop working soon. ${message}`;
 
@@ -109,12 +116,18 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       this.lastBlockHeight == undefined ||
       this.lastBlockGap == undefined ||
       this.lastBlockGap >=
-        Math.max(this.criticalBlockTimeGap, this.scannerUpdateInterval * 2)
+        Math.max(
+          this.criticalBlockTimeGap,
+          this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+        )
     )
       return HealthStatusLevel.BROKEN;
     else if (
       this.lastBlockGap >=
-      Math.max(this.warnBlockTimeGap, this.scannerUpdateInterval * 2)
+      Math.max(
+        this.warnBlockTimeGap,
+        this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+      )
     )
       return HealthStatusLevel.UNSTABLE;
     return HealthStatusLevel.HEALTHY;
