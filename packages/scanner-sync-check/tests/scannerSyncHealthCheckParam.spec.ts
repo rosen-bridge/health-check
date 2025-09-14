@@ -17,8 +17,7 @@ describe('AbstractScannerHealthCheckParam', () => {
       1000,
       3000,
       30,
-      // 120,
-      // 1000,
+      3000,
     );
   });
 
@@ -128,6 +127,25 @@ describe('AbstractScannerHealthCheckParam', () => {
     it('should return BROKEN when last block height is undefined', async () => {
       const status = await scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
+    });
+
+    /**
+     * @target getHealthStatus should return
+     * HEALTHY when block gap is greater than max warnBlockTimeGap and less then 2 * scannerUpdateInterval
+     * @dependencies
+     * - ScannerHealthCheckParam instance
+     * @scenario
+     * - set lastBlockGap to a value larger than warnBlockTimeGap and smaller then 2 * scannerUpdateInterval
+     * - call getHealthStatus
+     * @expected
+     * - The status should be HEALTHY
+     */
+    it('should return HEALTHY when block gap is greater than max warnBlockTimeGap and less then 2 * scannerUpdateInterval', async () => {
+      scannerHealthCheckParam.setLastBlockHeight(1111);
+      scannerHealthCheckParam.setLastBlockGap(80_000);
+      scannerHealthCheckParam.setScannerUpdateInterval(44_000);
+      const status = await scannerHealthCheckParam.getHealthStatus();
+      expect(status).toEqual(HealthStatusLevel.HEALTHY);
     });
   });
 
