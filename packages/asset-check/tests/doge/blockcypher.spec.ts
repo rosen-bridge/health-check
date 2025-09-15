@@ -1,4 +1,4 @@
-import { Axios } from '@rosen-bridge/rate-limited-axios';
+import { Axios } from '@rosen-clients/rate-limited-axios';
 import { describe, expect, it, vitest } from 'vitest';
 
 import { DOGE_NATIVE_ASSET } from '../../lib/constants';
