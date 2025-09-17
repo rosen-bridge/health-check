@@ -1,4 +1,4 @@
-import axios, { Axios } from '@rosen-bridge/rate-limited-axios';
+import axios, { Axios } from '@rosen-clients/rate-limited-axios';
 import { DOGE_NATIVE_ASSET } from '../constants';
 import { AbstractAssetHealthCheckParam } from '../abstract';
 import { BlockCypherAddress } from './types';
