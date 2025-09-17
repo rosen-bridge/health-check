@@ -34,6 +34,6 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@rosen-bridge/abstract-notification": "^0.2.1"
+    "@rosen-bridge/abstract-notification": "^0.3.0"
   }
 }
