@@ -60,7 +60,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   getDescription = () => {
     const baseMessage = 'Checks if the scanner is in sync with the network. ';
-    if (this.lastBlockHeight !== undefined) {
+    if (this.lastBlockGap !== undefined) {
       return baseMessage + this.getLastSavedBlockMessage();
     } else {
       return baseMessage + 'There is no available block in the database.';
@@ -113,7 +113,6 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   getHealthStatus = (): HealthStatusLevel => {
     if (
-      this.lastBlockHeight == undefined ||
       this.lastBlockGap == undefined ||
       this.lastBlockGap >=
         Math.max(
