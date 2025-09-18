@@ -128,24 +128,5 @@ describe('AbstractScannerHealthCheckParam', () => {
       expect(scannerHealthCheckParam['lastBlockHeight']).toEqual(1111);
       expect(scannerHealthCheckParam['lastBlockGap']).toEqual(20);
     });
-
-    /**
-     * @target AbstractScannerHealthCheckParam.update should not change last
-     * block time when the last block height is not changed
-     * @dependencies
-     * @scenario
-     * - mock current time (Date.now())
-     * - set last block height and time
-     * - run test (call `update`)
-     * @expected
-     * - Not to change last block gap and height
-     */
-    it(' should not change last block time when the last block height is not changed', async () => {
-      scannerHealthCheckParam.setLastBlockHeight(1111);
-      scannerHealthCheckParam.setLastBlockGap(100);
-      await scannerHealthCheckParam.update();
-      expect(scannerHealthCheckParam['lastBlockGap']).toEqual(100);
-      expect(scannerHealthCheckParam['lastBlockHeight']).toEqual(1111);
-    });
   });
 });

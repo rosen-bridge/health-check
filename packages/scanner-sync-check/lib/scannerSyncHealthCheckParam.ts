@@ -137,11 +137,9 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
    */
   protected rawUpdate = async () => {
     const { height, timestamp } = await this.getLastSavedBlock();
-    if (height !== this.lastBlockHeight) {
-      this.lastBlockHeight = height;
-      this.lastBlockGap = Date.now() / 1000 - timestamp;
-      this.formattedTime = formatDistance(Date.now(), timestamp * 1000);
-    }
+    this.lastBlockHeight = height;
+    this.lastBlockGap = Date.now() / 1000 - timestamp;
+    this.formattedTime = formatDistance(Date.now(), timestamp * 1000);
   };
 
   /**
