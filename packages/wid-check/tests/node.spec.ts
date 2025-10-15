@@ -1,8 +1,9 @@
-import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { TestNodeWidHealthCheck } from './testNode';
+import ergoNodeClientFactory from '@rosen-clients/ergo-node';
+
 import { mockedBalanceWithWid, mockedCollateralBox } from './node.mock';
+import { TestNodeWidHealthCheck } from './testNode';
 
 vitest.mock('@rosen-clients/ergo-node');
 

@@ -1,5 +1,6 @@
-import cardanoKoiosClientFactory from '@rosen-clients/cardano-koios';
 import { describe, expect, it, vitest } from 'vitest';
+
+import cardanoKoiosClientFactory from '@rosen-clients/cardano-koios';
 
 import { CARDANO_NATIVE_ASSET } from '../../lib/constants';
 import { TestCardanoKoiosAssetHealthCheck } from './testCardano';

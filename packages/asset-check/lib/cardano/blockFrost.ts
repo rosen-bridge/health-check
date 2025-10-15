@@ -1,7 +1,7 @@
 import { BlockFrostAPI } from '@blockfrost/blockfrost-js';
 
-import { CARDANO_NATIVE_ASSET, MAINNET } from '../constants';
 import { AbstractAssetHealthCheckParam } from '../abstract';
+import { CARDANO_NATIVE_ASSET, MAINNET } from '../constants';
 
 export class CardanoBlockFrostAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   private blockFrost;

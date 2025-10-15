@@ -1,8 +1,9 @@
-import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { TestExplorerWidHealthCheck } from './testExplorer';
+import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
+
 import { mockedBalanceWithWid, mockedCollateralBox } from './explorer.mock';
+import { TestExplorerWidHealthCheck } from './testExplorer';
 
 vitest.mock('@rosen-clients/ergo-explorer');
 

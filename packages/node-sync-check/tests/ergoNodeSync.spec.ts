@@ -1,6 +1,7 @@
+import { beforeAll, describe, expect, it, vitest } from 'vitest';
+
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 import ergoNodeClientFactory from '@rosen-clients/ergo-node';
-import { beforeAll, describe, expect, it, vitest } from 'vitest';
 
 import { TestErgoNodeSyncHealthCheckParam } from './testErgoNodeSync';
 

@@ -1,5 +1,4 @@
 import { DAY } from '../constants';
-
 import {
   HealthHistoryUpdateHandler,
   History,

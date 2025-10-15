@@ -1,10 +1,11 @@
+import { upperFirst } from 'lodash-es';
+
+import { AbstractLogger } from '@rosen-bridge/abstract-logger';
+import { CallbackLoggerFactory } from '@rosen-bridge/callback-logger';
 import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
-import { AbstractLogger } from '@rosen-bridge/abstract-logger';
-import { upperFirst } from 'lodash-es';
-import { CallbackLoggerFactory } from '@rosen-bridge/callback-logger';
 
 type LogLevel = keyof AbstractLogger;
 

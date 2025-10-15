@@ -1,8 +1,9 @@
+import { maxBy } from 'lodash-es';
+
 import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
-import { maxBy } from 'lodash-es';
 
 import { TxInfo } from './interfaces';
 

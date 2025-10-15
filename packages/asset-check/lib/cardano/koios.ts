@@ -1,7 +1,7 @@
 import cardanoKoiosClientFactory from '@rosen-clients/cardano-koios';
 
-import { CARDANO_NATIVE_ASSET } from '../constants';
 import { AbstractAssetHealthCheckParam } from '../abstract';
+import { CARDANO_NATIVE_ASSET } from '../constants';
 
 export class CardanoKoiosAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   private koiosApi;

@@ -2,39 +2,43 @@
   "name": "@rosen-bridge/permit-check",
   "version": "2.0.1",
   "description": "Rosen bridge permit health-check parameter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rosen-bridge/health-check.git"
+  },
   "license": "MIT",
   "author": "Rosen Team",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
-    "coverage": "npm run test -- --coverage",
+    "clean": "rimraf dist && rimraf tsconfig.build.tsbuildinfo",
+    "coverage": "npm run test -- --run --coverage",
     "lint": "eslint --fix . && npm run prettify",
-    "prettify": "prettier --write . --ignore-path ./.gitignore",
-    "release": "npm run test -- --run && npm run build && npm publish --access public",
-    "test": "NODE_OPTIONS=--loader=extensionless vitest",
+    "lint:check": "eslint . && npm run prettify:check",
+    "prettify": "prettier --write . --ignore-path ../../.gitignore",
+    "prettify:check": "prettier --check . --ignore-path ../../.gitignore",
+    "release": "npm run test -- --run && npm run clean && npm run build && npm publish --access public",
+    "test": "NODE_OPTIONS='--import tsx' vitest",
     "type-check": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.9",
-    "@typescript-eslint/eslint-plugin": "^6.19.1",
-    "@typescript-eslint/parser": "^6.19.1",
-    "@vitest/coverage-istanbul": "^1.2.2",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "extensionless": "^1.9.6",
-    "prettier": "^3.2.4",
-    "typescript": "^5.3.3",
-    "vitest": "^1.2.2"
-  },
-  "engines": {
-    "node": ">=20.11.0"
   },
   "dependencies": {
     "@rosen-bridge/health-check": "^7.0.1",
-    "@rosen-clients/ergo-explorer": "^2.0.0",
-    "@rosen-clients/ergo-node": "^3.0.0",
+    "@rosen-clients/ergo-explorer": "^2.1.0",
+    "@rosen-clients/ergo-node": "^3.1.0",
     "ergo-lib-wasm-nodejs": "^0.24.1"
+  },
+  "devDependencies": {
+    "@vitest/coverage-istanbul": "^3.1.4",
+    "tsx": "^4.20.6",
+    "vitest": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=22.18.0"
   }
 }

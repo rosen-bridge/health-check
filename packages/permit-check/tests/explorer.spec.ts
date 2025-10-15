@@ -1,8 +1,9 @@
-import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { TestExplorerPermitHealthCheck } from './testExplorer';
+import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
+
 import { explorerUnspentBoxesByAddress } from './testData';
+import { TestExplorerPermitHealthCheck } from './testExplorer';
 
 vitest.mock('@rosen-clients/ergo-explorer');
 

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import createHasBeenUnstableForAWhile from '../../../lib/notification/checks/hasBeenUnstableForAWhile';
-
 import {
   brokenHistory,
   combineHistories,

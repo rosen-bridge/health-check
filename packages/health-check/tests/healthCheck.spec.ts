@@ -1,9 +1,9 @@
-import { HealthStatusLevel } from '../lib';
-import { TestHealthCheckParam } from './testHealthCheckParam';
-import { TestHealthCheck } from './testHealthCheck';
 import { describe, expect, it, vi } from 'vitest';
 
+import { HealthStatusLevel } from '../lib';
 import { DEFAULT_HISTORY_CLEANUP_THRESHOLD } from '../lib/history/healthHistory';
+import { TestHealthCheck } from './testHealthCheck';
+import { TestHealthCheckParam } from './testHealthCheckParam';
 
 describe('HealthCheck', () => {
   describe('register', () => {
