@@ -1,8 +1,9 @@
+import { minBy } from 'lodash-es';
+
 import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
-import { minBy } from 'lodash-es';
 
 import { EventInfo } from './interfaces';
 

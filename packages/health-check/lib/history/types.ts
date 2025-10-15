@@ -10,7 +10,7 @@ export interface ParamHistoryItemTag {
   data?: unknown;
 }
 export interface ParamHistoryItem {
-  timestamp: EpochTimeStamp;
+  timestamp: number;
   result: ErrorProneHealthStatusLevel;
   tag?: ParamHistoryItemTag;
 }

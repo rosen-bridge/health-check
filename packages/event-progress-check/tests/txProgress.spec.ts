@@ -7,6 +7,7 @@ import {
   it,
   vi,
 } from 'vitest';
+
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { EventProgressHealthCheckParam } from '../lib/eventProgress';
@@ -50,7 +51,7 @@ describe('EventProgressHealthCheckParam', () => {
      */
     it('should return HEALTHY when there is no stuck event', async () => {
       eventProgressHealthCheckParam['eventWithMaxTry'] = undefined;
-      const status = await eventProgressHealthCheckParam.getHealthStatus();
+      const status = eventProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.HEALTHY);
     });
 
@@ -64,9 +65,9 @@ describe('EventProgressHealthCheckParam', () => {
      * @expected
      * - The status should be UNSTABLE
      */
-    it(`should return UNSTABLE when event stuck duration is more than warn threshold `, async () => {
+    it(`should return UNSTABLE when event stuck duration is more than warn threshold`, async () => {
       eventProgressHealthCheckParam['eventWithMaxTry'] = stuckEvents[0];
-      const status = await eventProgressHealthCheckParam.getHealthStatus();
+      const status = eventProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.UNSTABLE);
     });
 
@@ -80,9 +81,9 @@ describe('EventProgressHealthCheckParam', () => {
      * @expected
      * - The status should be BROKEN
      */
-    it(`should return BROKEN when event stuck duration is more than critical threshold `, async () => {
+    it(`should return BROKEN when event stuck duration is more than critical threshold`, async () => {
       eventProgressHealthCheckParam['eventWithMaxTry'] = stuckEvents[3];
-      const status = await eventProgressHealthCheckParam.getHealthStatus();
+      const status = eventProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.BROKEN);
     });
   });

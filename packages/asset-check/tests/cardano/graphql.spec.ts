@@ -1,9 +1,9 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client/core';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { TestCardanoGraphQLAssetHealthCheck } from './testCardano';
-import { addressAssetsResult } from './graphglTestData';
 import { CARDANO_NATIVE_ASSET } from '../../lib/constants';
+import { addressAssetsResult } from './graphglTestData';
+import { TestCardanoGraphQLAssetHealthCheck } from './testCardano';
 
 describe('CardanoGraphQLAssetHealthCheckParam', () => {
   const mockQueryResult = (

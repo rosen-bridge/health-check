@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import isStabilized from '../../../lib/notification/checks/isStabilized';
-
 import {
   alreadyStabilizedHistory,
   brokenHistory,

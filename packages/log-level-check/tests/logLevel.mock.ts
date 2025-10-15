@@ -3,6 +3,7 @@ import {
   AbstractLoggerFactory,
   DummyLogger,
 } from '@rosen-bridge/abstract-logger';
+
 import { LogLevelHealthCheck } from '../lib';
 
 export class TestLoggerFactory extends AbstractLoggerFactory {

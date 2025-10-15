@@ -1,12 +1,11 @@
 import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
-
+import { ParamHistory, ParamId } from '../history/types';
 import {
   HealthNotificationManagerNotifiedHandler,
   NotificationCheck,
 } from './types';
-import { ParamHistory, ParamId } from '../history/types';
 
 /**
  * Wrap a function for sending notifications based on a history. Whenever the

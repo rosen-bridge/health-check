@@ -1,8 +1,9 @@
-import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 import { describe, expect, it, vitest } from 'vitest';
 
-import { TestNodePermitHealthCheck } from './testNode';
+import ergoNodeClientFactory from '@rosen-clients/ergo-node';
+
 import { nodeUnspentBoxesByAddress } from './testData';
+import { TestNodePermitHealthCheck } from './testNode';
 
 vitest.mock('@rosen-clients/ergo-node');
 

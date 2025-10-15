@@ -1,8 +1,8 @@
-import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
+import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 
 class ErgoNodeSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected maxHeightDifference: number; // maximum difference between header height and full height

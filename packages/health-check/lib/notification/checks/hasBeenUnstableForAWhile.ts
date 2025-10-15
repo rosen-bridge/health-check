@@ -1,9 +1,7 @@
-import { rejectUnknowns } from './utils';
-
 import { MINUTE, HistoryItemTag } from '../../constants';
-
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
+import { rejectUnknowns } from './utils';
 
 const DEFAULT_WINDOW_DURATION = 15 * MINUTE;
 

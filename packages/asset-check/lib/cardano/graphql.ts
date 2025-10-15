@@ -2,8 +2,8 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from '@apollo/client/link/http';
 import fetch from 'cross-fetch';
 
-import { CARDANO_NATIVE_ASSET } from '../constants';
 import { AbstractAssetHealthCheckParam } from '../abstract';
+import { CARDANO_NATIVE_ASSET } from '../constants';
 import {
   AddressAssetsQuery,
   addressAssetsQuery,

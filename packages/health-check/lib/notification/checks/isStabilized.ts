@@ -1,9 +1,7 @@
-import { rejectUnknowns } from './utils';
-
 import { HistoryItemTag } from '../../constants';
-
 import { HealthStatusLevel } from '../../interfaces';
 import { NotificationCheck } from '../types';
+import { rejectUnknowns } from './utils';
 
 /**
  * check if a param that was unstable or broken is now healthy

@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
+
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { TxProgressHealthCheckParam } from '../lib/txProgress';
@@ -42,7 +43,7 @@ describe('TxProgressHealthCheckParam', () => {
      * - The status should be UNSTABLE
      */
     it(`should return UNSTABLE when transaction signing failure attempts is more
-    than warn threshold `, async () => {
+    than warn threshold`, async () => {
       txProgressHealthCheckParam['txWithMaxSigningFailure'] = signFailedTxs[0];
       const status = await txProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.UNSTABLE);
@@ -59,7 +60,7 @@ describe('TxProgressHealthCheckParam', () => {
      * - The status should be BROKEN
      */
     it(`should return BROKEN when transaction signing failure attempts is more
-    than critical threshold `, async () => {
+    than critical threshold`, async () => {
       txProgressHealthCheckParam['txWithMaxSigningFailure'] = signFailedTxs[6];
       const status = await txProgressHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.BROKEN);

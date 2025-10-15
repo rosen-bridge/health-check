@@ -1,9 +1,11 @@
+import { formatDistance } from 'date-fns';
+import { upperFirst } from 'lodash-es';
+
 import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
-import { formatDistance } from 'date-fns';
-import { upperFirst } from 'lodash-es';
+
 import { LastSavedBlock } from './config';
 import { SCANNER_INTERVAL_MULTIPLIER } from './constant';
 

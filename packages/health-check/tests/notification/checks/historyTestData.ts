@@ -1,7 +1,5 @@
 import { AbstractHealthCheckParam, HealthStatusLevel } from '../../../lib';
-
 import { HistoryItemTag } from '../../../lib/constants';
-
 import {
   ErrorProneHealthStatusLevel,
   ParamHistory,

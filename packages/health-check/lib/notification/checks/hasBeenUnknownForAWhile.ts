@@ -1,5 +1,4 @@
 import { MINUTE, HistoryItemTag } from '../../constants';
-
 import { NotificationCheck } from '../types';
 
 const DEFAULT_WINDOW_DURATION = 15 * MINUTE;

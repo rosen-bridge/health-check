@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
+
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { TestAssetHealthCheckParam } from './testAbstract';
@@ -133,7 +134,7 @@ describe('AbstractAssetHealthCheckParam', () => {
      * @expected
      * - should trim leading zeros and decimal point
      */
-    it('should trim leading zeros after decimal point', () => {
+    it('should trim leading zeros and decimal point when decimal is zero', () => {
       assetHealthCheckParam.setTokenDecimal(3);
       expect(assetHealthCheckParam.getTokenDecimalStr(909000n)).toEqual('909');
     });

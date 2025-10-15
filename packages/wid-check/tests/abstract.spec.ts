@@ -1,5 +1,6 @@
-import { HealthStatusLevel } from '@rosen-bridge/health-check';
 import { describe, expect, it, beforeAll } from 'vitest';
+
+import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { TestWidHealthCheckParam } from './testAbstract';
 

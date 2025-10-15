@@ -1,5 +1,6 @@
-import { Axios } from '@rosen-clients/rate-limited-axios';
 import { describe, expect, it, vitest } from 'vitest';
+
+import { Axios } from '@rosen-clients/rate-limited-axios';
 
 import { BITCOIN_NATIVE_ASSET, DOGE_NATIVE_ASSET } from '../../lib/constants';
 import { TestBitcoinEsploraAssetHealthCheck } from './testBitcoin';

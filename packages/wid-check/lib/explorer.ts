@@ -1,6 +1,7 @@
-import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
 import * as wasm from 'ergo-lib-wasm-nodejs';
 import { intersection } from 'lodash-es';
+
+import ergoExplorerClientFactory from '@rosen-clients/ergo-explorer';
 
 import { AbstractWidHealthCheckParam } from './abstract';
 

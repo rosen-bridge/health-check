@@ -1,8 +1,9 @@
-import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
 
-import { TestErgoNodeAssetHealthCheck } from './testErgo';
+import ergoNodeClientFactory from '@rosen-clients/ergo-node';
+
 import { ERGO_NATIVE_ASSET } from '../../lib/constants';
+import { TestErgoNodeAssetHealthCheck } from './testErgo';
 
 vitest.mock('@rosen-clients/ergo-node');
 

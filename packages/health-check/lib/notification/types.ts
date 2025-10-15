@@ -3,8 +3,8 @@ import {
   NotifyWithSeverity,
 } from '@rosen-bridge/abstract-notification';
 
-import { ParamHistory, ParamId } from '../history/types';
 import { AbstractHealthCheckParam } from '../abstractHealthCheckParam';
+import { ParamHistory, ParamId } from '../history/types';
 
 export interface NotificationCheck {
   (

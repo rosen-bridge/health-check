@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import createHasBeenUnknownForAWhile from '../../../lib/notification/checks/hasBeenUnknownForAWhile';
-
 import {
   brokenHistory,
   dummyParam,

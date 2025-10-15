@@ -1,5 +1,6 @@
-import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 import * as wasm from 'ergo-lib-wasm-nodejs';
+
+import ergoNodeClientFactory from '@rosen-clients/ergo-node';
 
 import { AbstractPermitHealthCheckParam } from './abstract';
 

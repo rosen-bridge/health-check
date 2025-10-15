@@ -1,7 +1,8 @@
 import { describe, expect, it, vitest, beforeEach } from 'vitest';
 
-import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
+
+import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 
 vitest.mock('@cardano-ogmios/client');
 

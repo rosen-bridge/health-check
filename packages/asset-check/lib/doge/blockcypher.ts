@@ -1,6 +1,7 @@
 import axios, { Axios } from '@rosen-clients/rate-limited-axios';
-import { DOGE_NATIVE_ASSET } from '../constants';
+
 import { AbstractAssetHealthCheckParam } from '../abstract';
+import { DOGE_NATIVE_ASSET } from '../constants';
 import { BlockCypherAddress } from './types';
 
 export class DogeBlockCypherAssetHealthCheckParam extends AbstractAssetHealthCheckParam {

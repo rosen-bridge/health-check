@@ -1,5 +1,6 @@
-import { HealthStatusLevel } from '@rosen-bridge/health-check';
 import { describe, expect, it, vitest } from 'vitest';
+
+import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { P2PNetworkHealthCheck, P2PNetworkHealthCheckOptions } from '../lib';
 

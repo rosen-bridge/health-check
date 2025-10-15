@@ -1,22 +1,19 @@
 import { NotifyWithSeverity } from '@rosen-bridge/abstract-notification';
 
 import { AbstractHealthCheckParam } from './abstractHealthCheckParam';
-import HealthHistory from './history/healthHistory';
-import NotificationManager from './notification/notificationManager';
-
-import createHasBeenUnknownForAWhile from './notification/checks/hasBeenUnknownForAWhile';
-import createHasBeenUnstableForAWhile from './notification/checks/hasBeenUnstableForAWhile';
-import isBroken from './notification/checks/isBroken';
-import isStabilized from './notification/checks/isStabilized';
-
 import { HistoryItemTag } from './constants';
-
+import HealthHistory from './history/healthHistory';
 import { ParamId } from './history/types';
 import {
   HealthStatus,
   HealthStatusLevel,
   HealthCheckConfig,
 } from './interfaces';
+import createHasBeenUnknownForAWhile from './notification/checks/hasBeenUnknownForAWhile';
+import createHasBeenUnstableForAWhile from './notification/checks/hasBeenUnstableForAWhile';
+import isBroken from './notification/checks/isBroken';
+import isStabilized from './notification/checks/isStabilized';
+import NotificationManager from './notification/notificationManager';
 
 export class HealthCheck {
   protected params: Array<AbstractHealthCheckParam> = [];

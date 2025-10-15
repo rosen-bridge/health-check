@@ -1,9 +1,10 @@
-import { AbstractLogger } from '@rosen-bridge/abstract-logger';
-import { HealthStatusLevel } from '@rosen-bridge/health-check';
 import { beforeEach, describe, expect, it, vitest } from 'vitest';
 
-import { TestLogLevelHealthCheck, TestLoggerFactory } from './LogLevel.mock';
+import { AbstractLogger } from '@rosen-bridge/abstract-logger';
 import { CallbackLoggerFactory } from '@rosen-bridge/callback-logger';
+import { HealthStatusLevel } from '@rosen-bridge/health-check';
+
+import { TestLogLevelHealthCheck, TestLoggerFactory } from './logLevel.mock';
 
 describe('LogLevelHealthCheck', () => {
   let logger: AbstractLogger;
@@ -31,7 +32,7 @@ describe('LogLevelHealthCheck', () => {
      * @expected
      * - should add error level callback to the logger
      */
-    it('should add time for expected logging level', () => {
+    it('should add callback for expected logging level', () => {
       expect(
         CallbackLoggerFactory.getInstance()['callbacks'].get('error')?.length,
       ).toEqual(1);
