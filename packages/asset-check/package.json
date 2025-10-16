@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/asset-check",
-  "version": "5.0.2",
+  "version": "6.0.0",
   "description": "Rosen bridge health check service",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.11",
     "@blockfrost/blockfrost-js": "^6.0.0",
-    "@rosen-bridge/health-check": "^7.0.1",
+    "@rosen-bridge/health-check": "^8.0.0",
     "@rosen-clients/cardano-koios": "^3.1.0",
     "@rosen-clients/ergo-explorer": "^2.1.0",
     "@rosen-clients/ergo-node": "^3.1.0",

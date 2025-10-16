@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/scanner-sync-check",
-  "version": "7.0.1",
+  "version": "8.0.0",
   "description": "Rosen bridge scanner-sync health-check parameter",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.11",
     "@cardano-ogmios/client": "^6.3.0",
-    "@rosen-bridge/health-check": "^7.0.1",
+    "@rosen-bridge/health-check": "^8.0.0",
     "date-fns": "^4.1.0"
   },
   "devDependencies": {
