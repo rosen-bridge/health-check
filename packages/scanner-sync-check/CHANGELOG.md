@@ -1,5 +1,11 @@
 # @rosen-bridge/scanner-sync-check
 
+## 8.1.0
+
+### Minor Changes
+
+- Add LastSavedBlock to the scanner-sync-check package's exports.
+
 ## 8.0.0
 
 ### Major Changes
