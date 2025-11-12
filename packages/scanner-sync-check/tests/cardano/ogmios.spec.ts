@@ -4,8 +4,6 @@ import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
 import { CardanoOgmiosScannerHealthCheck } from '../../lib';
 
-vitest.mock('@cardano-ogmios/client');
-
 describe('CardanoOgmiosScannerHealthCheck', () => {
   /**
    * Creating a new instance of for all tests
@@ -34,7 +32,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      */
     it(`should return HEALTHY block gap is less than warn block gap`, async () => {
       scannerHealthCheckParam['lastBlockGap'] = 5_000;
-      const status = await scannerHealthCheckParam.getHealthStatus();
+      const status = scannerHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.HEALTHY);
     });
 
@@ -49,7 +47,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      */
     it(`should return UNSTABLE when the block gap is more than warn block gap`, async () => {
       scannerHealthCheckParam['lastBlockGap'] = 30_000;
-      const status = await scannerHealthCheckParam.getHealthStatus();
+      const status = scannerHealthCheckParam.getHealthStatus();
       expect(status).toBe(HealthStatusLevel.UNSTABLE);
     });
 
@@ -67,7 +65,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     it(`should return UNSTABLE when block gap is less than critical
       block gap`, async () => {
       scannerHealthCheckParam['lastBlockGap'] = 50_000;
-      const status = await scannerHealthCheckParam.getHealthStatus();
+      const status = scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
 
@@ -82,7 +80,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      */
     it(`should return BROKEN when the block gap is more than critical block gap`, async () => {
       scannerHealthCheckParam['lastBlockGap'] = 3_000_000;
-      const status = await scannerHealthCheckParam.getHealthStatus();
+      const status = scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
 
@@ -98,7 +96,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
      */
     it('should return BROKEN when block gap is more than critical threshold', async () => {
       scannerHealthCheckParam['lastBlockGap'] = 5 * 60 * 1000;
-      const status = await scannerHealthCheckParam.getHealthStatus();
+      const status = scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
 
@@ -115,7 +113,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
       vitest.spyOn(Date, 'now').mockReturnValue(now);
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 100;
       scannerHealthCheckParam['lastBlockGap'] = 0;
-      const status = await scannerHealthCheckParam.getHealthStatus();
+      const status = scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.UNSTABLE);
     });
 
@@ -130,7 +128,7 @@ describe('CardanoOgmiosScannerHealthCheck', () => {
     it('should return BROKEN when the ogmios client is not connected and the retrial time is passed', async () => {
       scannerHealthCheckParam['disconnectionTime'] = Date.now() - 30000;
       scannerHealthCheckParam['lastBlockGap'] = 10_000;
-      const status = await scannerHealthCheckParam.getHealthStatus();
+      const status = scannerHealthCheckParam.getHealthStatus();
       expect(status).toEqual(HealthStatusLevel.BROKEN);
     });
   });
