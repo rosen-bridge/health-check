@@ -1,13 +1,11 @@
 import { upperFirst } from 'lodash-es';
 
-import { AbstractLogger } from '@rosen-bridge/abstract-logger';
-import { CallbackLoggerFactory } from '@rosen-bridge/callback-logger';
+import { LogLevel } from '@rosen-bridge/abstract-logger';
+import CallbackLogger from '@rosen-bridge/callback-logger';
 import {
   AbstractHealthCheckParam,
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
-
-type LogLevel = keyof AbstractLogger;
 
 class LogLevelHealthCheck extends AbstractHealthCheckParam {
   // list of occurrence of logs
@@ -41,7 +39,6 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
   };
 
   constructor(
-    loggerFactory: CallbackLoggerFactory,
     unhealthyStatus: HealthStatusLevel,
     maxAllowedLog: number,
     durationSeconds: number,
@@ -53,7 +50,7 @@ class LogLevelHealthCheck extends AbstractHealthCheckParam {
     this.unhealthyStatus = unhealthyStatus;
     this.maxAllowedCount = maxAllowedLog;
     this.timeWindow = durationSeconds * 1000;
-    loggerFactory.registerCallback(level, this.callbackGenerator(level));
+    CallbackLogger.registerCallback(level, this.callbackGenerator(level));
   }
 
   /**
