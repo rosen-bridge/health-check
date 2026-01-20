@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/permit-check",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Rosen bridge permit health-check parameter",
   "repository": {
     "type": "git",
