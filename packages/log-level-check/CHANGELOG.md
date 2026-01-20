@@ -1,5 +1,16 @@
 # @rosen-bridge/log-level-check
 
+## 4.0.0
+
+### Major Changes
+
+- Use static property of `CallBackLogger` to register callbacks
+
+### Patch Changes
+
+- Update dependencies
+  - @rosen-bridge/abstract-logger@4.0.0
+
 ## 3.0.0
 
 ### Major Changes

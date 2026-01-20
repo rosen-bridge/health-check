@@ -1,5 +1,12 @@
 # @rosen-bridge/asset-check
 
+## 6.0.1
+
+### Patch Changes
+
+- Update dependencies
+  - @rosen-bridge/abstract-logger@4.0.0
+
 ## 6.0.0
 
 ### Major Changes

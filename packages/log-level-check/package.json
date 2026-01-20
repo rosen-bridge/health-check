@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/log-level-check",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Rosen bridge log-level health-check parameter",
   "repository": {
     "type": "git",

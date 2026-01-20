@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/node-sync-check",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Rosen bridge node-sync health-check parameter",
   "repository": {
     "type": "git",
