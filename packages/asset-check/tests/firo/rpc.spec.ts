@@ -1,13 +1,40 @@
-import { describe, expect, it, vitest } from 'vitest';
-
-import { Axios } from '@rosen-clients/rate-limited-axios';
+import { describe, expect, it, vi } from 'vitest';
 
 import { FIRO_NATIVE_ASSET } from '../../lib/constants';
 import { TestFiroRpcAssetHealthCheck } from './testFiro';
 
+const mockClient = {
+  post: vi.fn(),
+};
+
+/**
+ * Mock the module BEFORE the class under test is instantiated.
+ * This prevents RateLimitedAxios internals from loading.
+ */
+vi.mock('@rosen-clients/rate-limited-axios', () => ({
+  default: {
+    create: () => mockClient,
+  },
+}));
+
 describe('FiroRpcAssetHealthCheck', () => {
-  const mockPost = (client: Axios, result: unknown) => {
-    vitest.spyOn(client, 'post').mockResolvedValue({ data: result });
+  const mockPost = (balance: string) => {
+    mockClient.post.mockImplementationOnce(
+      async (_url: string, body?: unknown) => {
+        const { id } = body as { id: string };
+
+        return {
+          data: {
+            jsonrpc: '2.0',
+            id,
+            result: {
+              balance,
+              received: balance,
+            },
+          },
+        };
+      },
+    );
   };
 
   describe('update', () => {
@@ -33,14 +60,7 @@ describe('FiroRpcAssetHealthCheck', () => {
         'firopwd',
       );
 
-      mockPost(assetHealthCheckParam.getClient(), {
-        jsonrpc: '2.0',
-        id: 'test',
-        result: {
-          balance: '1575000000',
-          received: '2000000000',
-        },
-      });
+      mockPost('1575000000');
 
       await assetHealthCheckParam.update();
 
@@ -69,14 +89,7 @@ describe('FiroRpcAssetHealthCheck', () => {
         'firopwd',
       );
 
-      mockPost(assetHealthCheckParam.getClient(), {
-        jsonrpc: '2.0',
-        id: 'test',
-        result: {
-          balance: '0',
-          received: '0',
-        },
-      });
+      mockPost('0');
 
       await assetHealthCheckParam.update();
 

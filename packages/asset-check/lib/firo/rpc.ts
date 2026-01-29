@@ -68,35 +68,36 @@ export class FiroRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam 
   }
 
   /**
-   * Execute an RPC call to the Firo node
-   * @param method RPC method name
-   * @param params RPC method parameters
-   * @returns RPC response
+   * update health status
    */
-  private async callRpc<T>(method: string, params: unknown[] = []): Promise<T> {
-    const response = await this.client.post<FiroRpcResponse<T>>('/', {
+  updateStatus = async () => {
+    const id = randomBytes(32).toString('hex');
+
+    const response = await this.client.post<
+      FiroRpcResponse<FiroAddressBalance>
+    >('/', {
       jsonrpc: '2.0',
-      id: randomBytes(32).toString('hex'),
-      method,
-      params,
+      id,
+      method: 'getaddressbalance',
+      params: [
+        {
+          addresses: [this.address],
+        },
+      ],
     });
+
+    // validate RPC id
+    if (response.data.id !== id) {
+      throw new Error(
+        `Invalid RPC response id. Expected ${id}, got ${response.data.id}`,
+      );
+    }
 
     if (response.data.error) {
       throw new Error(`RPC Error: ${response.data.error.message}`);
     }
 
-    return response.data.result;
-  }
-
-  /**
-   * update health status for this param
-   */
-  updateStatus = async () => {
-    const result = await this.callRpc<FiroAddressBalance>('getaddressbalance', [
-      { addresses: [this.address] },
-    ]);
-
-    // balance is returned in satoshis as a string
-    this.tokenAmount = BigInt(result.balance);
+    // balance is returned in satoshis as string
+    this.tokenAmount = BigInt(response.data.result.balance);
   };
 }
