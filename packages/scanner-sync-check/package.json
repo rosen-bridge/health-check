@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/scanner-sync-check",
-  "version": "7.0.1",
+  "version": "8.1.1",
   "description": "Rosen bridge scanner-sync health-check parameter",
   "repository": {
     "type": "git",
@@ -28,10 +28,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@apollo/client": "^3.9.11",
-    "@cardano-ogmios/client": "^6.3.0",
-    "@rosen-bridge/health-check": "^7.0.1",
-    "date-fns": "^4.1.0"
+    "@rosen-bridge/health-check": "^8.0.0",
+    "date-fns": "^4.1.0",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "@vitest/coverage-istanbul": "^3.1.4",
@@ -39,6 +38,7 @@
     "vitest": "^3.1.4"
   },
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=22.18.0",
+    "npm": "11.6.2"
   }
 }

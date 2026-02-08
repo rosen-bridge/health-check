@@ -6,8 +6,8 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 
-import { LastSavedBlock } from './config';
 import { SCANNER_INTERVAL_MULTIPLIER } from './constant';
+import { LastSavedBlock } from './types';
 
 class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected chain: string;

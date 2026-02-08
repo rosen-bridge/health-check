@@ -1,5 +1,43 @@
 # @rosen-bridge/scanner-sync-check
 
+## 8.1.1
+
+### Patch Changes
+
+- Add dependency lodash-es@4.17.21
+- Remove dependency @apollo/client@3.9.11
+- Remove dependency @cardano-ogmios/client@6.3.0
+
+## 8.1.0
+
+### Minor Changes
+
+- Add LastSavedBlock to the scanner-sync-check package's exports.
+
+## 8.0.0
+
+### Major Changes
+
+- Update node js to 22.18.0
+
+### Minor Changes
+
+- Consider scanner update interval when updating status
+
+### Patch Changes
+
+- Fix last block gap calculations
+- Fix package-lock.json
+- Update dependencies
+  - @rosen-clients/cardano-koios@^3.1.0
+  - @rosen-clients/rate-limited-axios@^1.1.0
+  - @rosen-bridge/abstract-notification@^1.0.0
+  - @rosen-bridge/abstract-logger@^3.0.1
+  - @rosen-bridge/callback-logger@^1.0.1
+  - @rosen-clients/ergo-explorer@^2.1.0
+  - @rosen-clients/ergo-node@^3.1.0
+  - @rosen-bridge/health-check@8.0.0
+
 ## 7.0.1
 
 ### Patch Changes

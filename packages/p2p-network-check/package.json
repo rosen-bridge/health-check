@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/p2p-network-check",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Rosen bridge p2p-network health-check parameter",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@rosen-bridge/health-check": "^7.0.1"
+    "@rosen-bridge/health-check": "^8.0.0"
   },
   "devDependencies": {
     "@vitest/coverage-istanbul": "^3.1.4",
@@ -36,6 +36,7 @@
     "vitest": "^3.1.4"
   },
   "engines": {
-    "node": ">=22.18.0"
+    "node": ">=22.18.0",
+    "npm": "11.6.2"
   }
 }

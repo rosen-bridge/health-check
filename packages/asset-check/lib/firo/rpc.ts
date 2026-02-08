@@ -1,0 +1,103 @@
+import { randomBytes } from 'crypto';
+
+import axios, { Axios } from '@rosen-clients/rate-limited-axios';
+
+import { AbstractAssetHealthCheckParam } from '../abstract';
+import { FIRO_NATIVE_ASSET } from '../constants';
+import { FiroAddressBalance, FiroRpcResponse } from './types';
+
+export class FiroRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
+  protected client: Axios;
+
+  /**
+   * Creates a Firo RPC asset health check parameter
+   * @param assetName Name of the asset (e.g., 'FIRO')
+   * @param address Firo address to monitor
+   * @param warnThreshold Warning threshold in satoshis
+   * @param criticalThreshold Critical threshold in satoshis
+   * @param rpcUrl Firo node RPC URL (e.g., 'http://localhost:8888')
+   * @param rpcUsername RPC username (optional)
+   * @param rpcPassword RPC password (optional)
+   * @param assetDecimal Number of decimal places (default 8 for FIRO)
+   *
+   * @note REQUIRES Firo node to be configured with addressindex=1 in firo.conf
+   * This enables the getaddressbalance RPC method. Without it, you'll get:
+   * "No information available for address" error.
+   *
+   * To enable addressindex:
+   * 1. Add 'addressindex=1' to firo.conf
+   * 2. Restart firo daemon with -reindex flag (only needed once)
+   */
+  constructor(
+    assetName: string,
+    address: string,
+    warnThreshold: bigint,
+    criticalThreshold: bigint,
+    rpcUrl: string,
+    rpcUsername?: string,
+    rpcPassword?: string,
+    assetDecimal = 8,
+  ) {
+    super(
+      'Firo',
+      FIRO_NATIVE_ASSET,
+      assetName.toUpperCase(),
+      address,
+      warnThreshold,
+      criticalThreshold,
+      assetDecimal,
+    );
+
+    const authConfig =
+      rpcUsername || rpcPassword
+        ? {
+            auth: {
+              username: rpcUsername || '',
+              password: rpcPassword || '',
+            },
+          }
+        : {};
+
+    this.client = axios.create({
+      baseURL: rpcUrl,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...authConfig,
+    });
+  }
+
+  /**
+   * update health status
+   */
+  updateStatus = async () => {
+    const id = randomBytes(32).toString('hex');
+
+    const response = await this.client.post<
+      FiroRpcResponse<FiroAddressBalance>
+    >('/', {
+      jsonrpc: '2.0',
+      id,
+      method: 'getaddressbalance',
+      params: [
+        {
+          addresses: [this.address],
+        },
+      ],
+    });
+
+    // validate RPC id
+    if (response.data.id !== id) {
+      throw new Error(
+        `Invalid RPC response id. Expected ${id}, got ${response.data.id}`,
+      );
+    }
+
+    if (response.data.error) {
+      throw new Error(`RPC Error: ${response.data.error.message}`);
+    }
+
+    // balance is returned in satoshis as string
+    this.tokenAmount = BigInt(response.data.result.balance);
+  };
+}
