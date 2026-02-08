@@ -1,13 +1,14 @@
 import axios, { Axios } from '@rosen-clients/rate-limited-axios';
 
 import { AbstractAssetHealthCheckParam } from '../abstract';
-import { HANDSHAKE_NATIVE_ASSET } from '../constants';
 import { HandshakeCoinsResponse } from './types';
 
 export class HandshakeRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   protected client: Axios;
 
   constructor(
+    chain: string,
+    assetId: string,
     assetName: string,
     address: string,
     warnThreshold: bigint,
@@ -16,8 +17,8 @@ export class HandshakeRpcAssetHealthCheckParam extends AbstractAssetHealthCheckP
     assetDecimal = 0,
   ) {
     super(
-      'Handshake',
-      HANDSHAKE_NATIVE_ASSET,
+      chain,
+      assetId,
       assetName.toUpperCase(),
       address,
       warnThreshold,
