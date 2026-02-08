@@ -6,7 +6,7 @@ import {
   HealthStatusLevel,
 } from '@rosen-bridge/health-check';
 
-import { SCANNER_INTERVAL_MULTIPLIER } from './constant';
+import { DEFAULT_SCANNER_INTERVAL_MULTIPLIER } from './constant';
 import { LastSavedBlock } from './types';
 
 class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
@@ -17,6 +17,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
   protected lastBlockGap: number | undefined;
   protected criticalBlockTimeGap: number;
   protected scannerUpdateInterval: number;
+  protected scannerIntervalMultiplier: number;
 
   constructor(
     chain: string,
@@ -25,12 +26,14 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
     protected criticalDifference: number,
     blockTime: number,
     scannerUpdateInterval: number = 0,
+    scannerIntervalMultiplier: number = DEFAULT_SCANNER_INTERVAL_MULTIPLIER,
   ) {
     super();
     this.chain = chain;
     this.criticalBlockTimeGap = criticalDifference * blockTime;
     this.warnBlockTimeGap = warnDifference * blockTime;
     this.scannerUpdateInterval = scannerUpdateInterval;
+    this.scannerIntervalMultiplier = scannerIntervalMultiplier;
   }
 
   /**
@@ -83,7 +86,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       this.lastBlockGap >=
       Math.max(
         this.criticalBlockTimeGap,
-        this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+        this.scannerUpdateInterval * this.scannerIntervalMultiplier,
       )
     )
       return `Service has stopped working. ${message}`;
@@ -91,7 +94,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       this.lastBlockGap >=
       Math.max(
         this.warnBlockTimeGap,
-        this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+        this.scannerUpdateInterval * this.scannerIntervalMultiplier,
       )
     )
       return `Service may stop working soon. ${message}`;
@@ -119,7 +122,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       this.lastBlockGap >=
         Math.max(
           this.criticalBlockTimeGap,
-          this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+          this.scannerUpdateInterval * this.scannerIntervalMultiplier,
         )
     )
       return HealthStatusLevel.BROKEN;
@@ -127,7 +130,7 @@ class ScannerSyncHealthCheckParam extends AbstractHealthCheckParam {
       this.lastBlockGap >=
       Math.max(
         this.warnBlockTimeGap,
-        this.scannerUpdateInterval * SCANNER_INTERVAL_MULTIPLIER,
+        this.scannerUpdateInterval * this.scannerIntervalMultiplier,
       )
     )
       return HealthStatusLevel.UNSTABLE;
