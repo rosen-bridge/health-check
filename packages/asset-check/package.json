@@ -36,7 +36,7 @@
     "@rosen-clients/ergo-node": "^3.1.1",
     "@rosen-clients/rate-limited-axios": "^1.1.1",
     "cross-fetch": "^4.0.0",
-    "ethers": "6.13.2"
+    "ethers": "6.16.0"
   },
   "devDependencies": {
     "@vitest/coverage-istanbul": "^3.1.4",
