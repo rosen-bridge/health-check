@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/scanner-sync-check",
-  "version": "8.1.1",
+  "version": "8.2.0",
   "description": "Rosen bridge scanner-sync health-check parameter",
   "repository": {
     "type": "git",
