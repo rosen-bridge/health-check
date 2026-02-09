@@ -1,5 +1,17 @@
 # @rosen-bridge/asset-check
 
+## 6.1.0
+
+### Minor Changes
+
+- Add Firo asset check health parameter
+
+### Patch Changes
+
+- Update dependencies
+
+  - ethers@6.16.0
+
 ## 6.0.1
 
 ### Patch Changes

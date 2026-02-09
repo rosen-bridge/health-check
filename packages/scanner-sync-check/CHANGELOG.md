@@ -1,5 +1,11 @@
 # @rosen-bridge/scanner-sync-check
 
+## 8.2.0
+
+### Minor Changes
+
+- Add `scannerIntervalMultiplier` parameter in constructor of `ScannerSyncHealthCheckParam`.
+
 ## 8.1.1
 
 ### Patch Changes
