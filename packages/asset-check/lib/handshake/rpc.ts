@@ -1,32 +1,43 @@
 import axios, { Axios } from '@rosen-clients/rate-limited-axios';
 
 import { AbstractAssetHealthCheckParam } from '../abstract';
+import { HANDSHAKE_NATIVE_ASSET } from '../constants';
 import { HandshakeCoinsResponse } from './types';
 
 export class HandshakeRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
   protected client: Axios;
 
   constructor(
-    chain: string,
-    assetId: string,
     assetName: string,
     address: string,
     warnThreshold: bigint,
     criticalThreshold: bigint,
     rpcUrl: string,
+    rpcApiKey?: string,
     assetDecimal = 0,
   ) {
     super(
-      chain,
-      assetId,
+      'Handshake',
+      HANDSHAKE_NATIVE_ASSET,
       assetName.toUpperCase(),
       address,
       warnThreshold,
       criticalThreshold,
       assetDecimal,
     );
+
+    const authConfig = rpcApiKey
+      ? {
+          auth: {
+            username: 'x', // Dummy username, not used for authentication
+            password: rpcApiKey,
+          },
+        }
+      : {};
+
     this.client = axios.create({
       baseURL: rpcUrl,
+      ...authConfig,
     });
   }
 
