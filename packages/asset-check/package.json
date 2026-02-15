@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/asset-check",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Rosen bridge health check service",
   "repository": {
     "type": "git",
