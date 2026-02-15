@@ -1,5 +1,11 @@
 # @rosen-bridge/asset-check
 
+## 6.2.0
+
+### Minor Changes
+
+- Add Handshake asset check health parameter
+
 ## 6.1.0
 
 ### Minor Changes
