@@ -1,5 +1,11 @@
 # @rosen-bridge/permit-check
 
+## 3.0.2
+
+### Patch Changes
+
+- Fix warn message problem
+
 ## 3.0.1
 
 ### Patch Changes

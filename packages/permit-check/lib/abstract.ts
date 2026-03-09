@@ -67,7 +67,7 @@ abstract class AbstractPermitHealthCheckParam extends AbstractHealthCheckParam {
     else if (this.reportsCount <= this.warnThreshold)
       return (
         `Service may stop working soon. Available report permits ${this.reportsCount} is less than ` +
-        `the recommended reports ${this.warnThreshold}. Please lock more RSN to get more report permits.`
+        `the recommended reports ${this.warnThreshold + 1n}. Please lock more RSN to get more report permits.`
       );
     return undefined;
   };
