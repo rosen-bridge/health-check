@@ -1,5 +1,12 @@
 # @rosen-bridge/asset-check
 
+## 6.2.1
+
+### Patch Changes
+
+- Update dependencies
+  - @rosen-clients/rate-limited-axios@2.0.0
+
 ## 6.2.0
 
 ### Minor Changes
