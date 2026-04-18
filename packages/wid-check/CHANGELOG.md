@@ -1,5 +1,13 @@
 # @rosen-bridge/wid-check
 
+## 3.0.2
+
+### Patch Changes
+
+- Update dependencies
+  - @rosen-clients/ergo-explorer@2.1.2
+  - @rosen-clients/ergo-node@3.1.2
+
 ## 3.0.1
 
 ### Patch Changes
