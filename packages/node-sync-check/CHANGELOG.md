@@ -5,7 +5,7 @@
 ### Patch Changes
 
 - Update dependencies
-  - @rosen-clients/rate-limited-axios@2.0.0
+  - @rosen-clients/ergo-node@3.1.2
 
 ## 3.0.1
 

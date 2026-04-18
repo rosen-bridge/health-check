@@ -5,6 +5,9 @@
 ### Patch Changes
 
 - Update dependencies
+  - @rosen-clients/cardano-koios@3.1.2
+  - @rosen-clients/ergo-explorer@2.1.2
+  - @rosen-clients/ergo-node@3.1.2
   - @rosen-clients/rate-limited-axios@2.0.0
 
 ## 6.2.0
