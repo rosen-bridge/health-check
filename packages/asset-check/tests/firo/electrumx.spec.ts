@@ -191,6 +191,22 @@ describe('FiroElectrumXAssetHealthCheck', () => {
     });
 
     /**
+     * @target addressToScripthash should produce correct scripthash for P2SH
+     * @scenario
+     * - compute scripthash for a valid Firo testnet P2SH address
+     * @expected
+     * - it should use P2SH script format before hashing
+     */
+    it('should produce correct scripthash for P2SH address', () => {
+      const scripthash = addressToScripthash(
+        '2EdAinnuw3zCy8arpSKRwQYQK2MBC5VMXu9',
+      );
+      expect(scripthash).toBe(
+        '7914236249d96d4931978817b2fe3c9071e8b4daf4decd3087dbba955fd7f66f',
+      );
+    });
+
+    /**
      * @target addressToScripthash should reject invalid characters
      * @scenario
      * - pass an address with characters not in the base58 alphabet
@@ -199,6 +215,19 @@ describe('FiroElectrumXAssetHealthCheck', () => {
      */
     it('should throw for invalid base58 characters', () => {
       expect(() => addressToScripthash('invalid-address')).toThrow();
+    });
+
+    /**
+     * @target addressToScripthash should reject invalid checksum
+     * @scenario
+     * - pass an address with valid base58 characters but modified checksum
+     * @expected
+     * - it should throw
+     */
+    it('should throw for invalid checksum', () => {
+      expect(() =>
+        addressToScripthash('THzVvKwY5dAD6gM5z4Mz3jG9RbqhkS8h7W'),
+      ).toThrow('checksum');
     });
   });
 });
