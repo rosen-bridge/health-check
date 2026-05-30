@@ -1,5 +1,7 @@
 import * as net from 'net';
 
+import { HealthStatusLevel } from '@rosen-bridge/health-check';
+
 import { ScannerSyncHealthCheckParam } from '../scannerSyncHealthCheckParam';
 import { LastSavedBlock } from '../types';
 
@@ -139,6 +141,42 @@ export class FiroElectrumXScannerHealthCheck extends ScannerSyncHealthCheckParam
       }
     }
     return baseDetails;
+  };
+
+  /**
+   * @returns scanner sync health status including ElectrumX network height checks
+   */
+  getHealthStatus = (): HealthStatusLevel => {
+    if (this.lastBlockGap === undefined || this.networkHeightError) {
+      return HealthStatusLevel.BROKEN;
+    }
+
+    const criticalBlockGap = Math.max(
+      this.criticalBlockTimeGap,
+      this.scannerUpdateInterval * this.scannerIntervalMultiplier,
+    );
+    const warnBlockGap = Math.max(
+      this.warnBlockTimeGap,
+      this.scannerUpdateInterval * this.scannerIntervalMultiplier,
+    );
+
+    if (
+      this.lastBlockGap >= criticalBlockGap ||
+      (this.heightDifference !== undefined &&
+        this.heightDifference > this.criticalDifference)
+    ) {
+      return HealthStatusLevel.BROKEN;
+    }
+
+    if (
+      this.lastBlockGap >= warnBlockGap ||
+      (this.heightDifference !== undefined &&
+        this.heightDifference > this.warnDifference)
+    ) {
+      return HealthStatusLevel.UNSTABLE;
+    }
+
+    return HealthStatusLevel.HEALTHY;
   };
 
   /**
