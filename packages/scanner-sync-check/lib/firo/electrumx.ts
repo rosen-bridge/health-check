@@ -1,4 +1,4 @@
-import * as net from 'net';
+import * as tls from 'tls';
 
 import { HealthStatusLevel } from '@rosen-bridge/health-check';
 
@@ -37,14 +37,18 @@ export class FiroElectrumXScannerHealthCheck extends ScannerSyncHealthCheckParam
   }
 
   /**
-   * Send a JSON-RPC request to ElectrumX over TCP and return the result.
+   * Send a JSON-RPC request to ElectrumX over TLS and return the result.
    */
   private sendRequest = (
     method: string,
     params: unknown[],
   ): Promise<unknown> => {
     return new Promise((resolve, reject) => {
-      const socket = net.createConnection(this.port, this.host);
+      const socket = tls.connect({
+        host: this.host,
+        port: this.port,
+        servername: this.host,
+      });
       let buffer = '';
       let id = 1;
 
@@ -81,7 +85,7 @@ export class FiroElectrumXScannerHealthCheck extends ScannerSyncHealthCheckParam
         reject(err);
       });
 
-      socket.once('connect', () => {
+      socket.once('secureConnect', () => {
         // Send server.version first
         socket.write(
           JSON.stringify({

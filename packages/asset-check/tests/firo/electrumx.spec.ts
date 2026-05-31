@@ -94,12 +94,12 @@ function createMockSocket(responses: Array<Record<string, unknown>>) {
   return socket;
 }
 
-vi.mock('net', () => {
+vi.mock('tls', () => {
   let socket: ReturnType<typeof createMockSocket>;
   return {
-    createConnection: vi.fn(() => {
+    connect: vi.fn(() => {
       socket = createMockSocket(socketResponses);
-      setTimeout(() => socket.emit('connect'), 0);
+      setTimeout(() => socket.emit('secureConnect'), 0);
       return socket;
     }),
   };
@@ -112,7 +112,7 @@ describe('FiroElectrumXAssetHealthCheck', () => {
     /**
      * @target FiroElectrumXAssetHealthCheck.update Should update FIRO amount using ElectrumX
      * @dependencies
-     * - net (TCP)
+     * - tls
      * @scenario
      * - mock ElectrumX blockchain.scripthash.get_balance response
      * - create new instance of TestFiroElectrumXAssetHealthCheck
@@ -140,7 +140,7 @@ describe('FiroElectrumXAssetHealthCheck', () => {
     /**
      * @target FiroElectrumXAssetHealthCheck.update Should handle zero balance
      * @dependencies
-     * - net (TCP)
+     * - tls
      * @scenario
      * - mock ElectrumX response with zero balance
      * - create new instance of TestFiroElectrumXAssetHealthCheck

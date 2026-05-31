@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import * as net from 'net';
+import * as tls from 'tls';
 
 import { AbstractAssetHealthCheckParam } from '../abstract';
 import { FIRO_NATIVE_ASSET } from '../constants';
@@ -120,14 +120,18 @@ export class FiroElectrumXAssetHealthCheckParam extends AbstractAssetHealthCheck
   }
 
   /**
-   * Send a JSON-RPC request to ElectrumX over TCP and return the result.
+   * Send a JSON-RPC request to ElectrumX over TLS and return the result.
    */
   private sendRequest = (
     method: string,
     params: unknown[],
   ): Promise<unknown> => {
     return new Promise((resolve, reject) => {
-      const socket = net.createConnection(this.port, this.host);
+      const socket = tls.connect({
+        host: this.host,
+        port: this.port,
+        servername: this.host,
+      });
       let buffer = '';
       let id = 1;
 
@@ -164,7 +168,7 @@ export class FiroElectrumXAssetHealthCheckParam extends AbstractAssetHealthCheck
         reject(err);
       });
 
-      socket.once('connect', () => {
+      socket.once('secureConnect', () => {
         // Send server.version first
         socket.write(
           JSON.stringify({
