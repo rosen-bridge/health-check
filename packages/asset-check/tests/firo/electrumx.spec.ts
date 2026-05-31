@@ -5,6 +5,14 @@ import { FIRO_NATIVE_ASSET } from '../../lib/constants';
 import { addressToScripthash } from '../../lib/firo/electrumx';
 import { TestFiroElectrumXAssetHealthCheck } from './testFiro';
 
+const VALID_FIRO_ADDRESS = 'a3io3zMLfg9nchA3KSoSEvPz1tztnKDuaT';
+const INVALID_FIRO_ADDRESS = 'a3io3zMLfg9nchA3KSoSEvPz1tztnKDUZZ';
+const VALID_FIRO_SCRIPTHASH =
+  'c97f9d23117ebb9abf6e1f36d7e7362a8f3961a2052c43db3d77598229fb6348';
+const VALID_FIRO_P2SH_ADDRESS = '2EdAinnuw3zCy8arpSKRwQYQK2MBC5VMXu9';
+const VALID_FIRO_P2SH_SCRIPTHASH =
+  '7914236249d96d4931978817b2fe3c9071e8b4daf4decd3087dbba955fd7f66f';
+
 function createMockSocket(responses: Array<Record<string, unknown>>) {
   const socket = new EventEmitter() as EventEmitter & {
     written: string[];
@@ -117,7 +125,7 @@ describe('FiroElectrumXAssetHealthCheck', () => {
 
       const assetHealthCheckParam = new TestFiroElectrumXAssetHealthCheck(
         FIRO_NATIVE_ASSET,
-        'THzVvKwY5dAD6gM5z4Mz3jG9RbqhkS8h7V',
+        VALID_FIRO_ADDRESS,
         100n,
         10n,
         '127.0.0.1',
@@ -145,7 +153,7 @@ describe('FiroElectrumXAssetHealthCheck', () => {
 
       const assetHealthCheckParam = new TestFiroElectrumXAssetHealthCheck(
         FIRO_NATIVE_ASSET,
-        'THzVvKwY5dAD6gM5z4Mz3jG9RbqhkS8h7V',
+        VALID_FIRO_ADDRESS,
         100n,
         10n,
         '127.0.0.1',
@@ -160,19 +168,15 @@ describe('FiroElectrumXAssetHealthCheck', () => {
 
   describe('addressToScripthash', () => {
     /**
-     * @target addressToScripthash should produce correct scripthash for a known Firo testnet address
+     * @target addressToScripthash should produce correct scripthash for a known Firo address
      * @scenario
-     * - compute scripthash for THzVvKwY5dAD6gM5z4Mz3jG9RbqhkS8h7V
+     * - compute scripthash for a valid Firo P2PKH address
      * @expected
      * - it should return the expected scripthash (pre-computed with verified decoder)
      */
     it('should produce correct scripthash for known address', () => {
-      const scripthash = addressToScripthash(
-        'THzVvKwY5dAD6gM5z4Mz3jG9RbqhkS8h7V',
-      );
-      expect(scripthash).toBe(
-        'bda11a7ebadc6be57979a01ce5d7af7945dcf078bb2611755cd3801219430694',
-      );
+      const scripthash = addressToScripthash(VALID_FIRO_ADDRESS);
+      expect(scripthash).toBe(VALID_FIRO_SCRIPTHASH);
     });
 
     /**
@@ -183,8 +187,8 @@ describe('FiroElectrumXAssetHealthCheck', () => {
      * - scripthashes are 64-char hex strings, non-equal
      */
     it('should produce distinct non-empty scripthashes', () => {
-      const a = addressToScripthash('THzVvKwY5dAD6gM5z4Mz3jG9RbqhkS8h7V');
-      const b = addressToScripthash('TNDZ5BPRmD2nMbk2HoiopjCqFVLNn8UwR2');
+      const a = addressToScripthash(VALID_FIRO_ADDRESS);
+      const b = addressToScripthash(VALID_FIRO_P2SH_ADDRESS);
       expect(a).toHaveLength(64);
       expect(b).toHaveLength(64);
       expect(a).not.toBe(b);
@@ -198,12 +202,8 @@ describe('FiroElectrumXAssetHealthCheck', () => {
      * - it should use P2SH script format before hashing
      */
     it('should produce correct scripthash for P2SH address', () => {
-      const scripthash = addressToScripthash(
-        '2EdAinnuw3zCy8arpSKRwQYQK2MBC5VMXu9',
-      );
-      expect(scripthash).toBe(
-        '7914236249d96d4931978817b2fe3c9071e8b4daf4decd3087dbba955fd7f66f',
-      );
+      const scripthash = addressToScripthash(VALID_FIRO_P2SH_ADDRESS);
+      expect(scripthash).toBe(VALID_FIRO_P2SH_SCRIPTHASH);
     });
 
     /**
@@ -225,9 +225,9 @@ describe('FiroElectrumXAssetHealthCheck', () => {
      * - it should throw
      */
     it('should throw for invalid checksum', () => {
-      expect(() =>
-        addressToScripthash('THzVvKwY5dAD6gM5z4Mz3jG9RbqhkS8h7W'),
-      ).toThrow('checksum');
+      expect(() => addressToScripthash(INVALID_FIRO_ADDRESS)).toThrow(
+        'checksum',
+      );
     });
   });
 });
