@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/wid-check",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Rosen bridge wid health-check parameter",
   "repository": {
     "type": "git",
