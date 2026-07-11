@@ -1,5 +1,12 @@
 # @rosen-bridge/node-sync-check
 
+## 3.0.3
+
+### Patch Changes
+
+- Update dependencies
+  - @rosen-clients/ergo-node@3.1.3
+
 ## 3.0.2
 
 ### Patch Changes

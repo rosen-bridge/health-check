@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/node-sync-check",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Rosen bridge node-sync health-check parameter",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@rosen-bridge/health-check": "^8.0.0",
-    "@rosen-clients/ergo-node": "^3.1.2"
+    "@rosen-clients/ergo-node": "^3.1.3"
   },
   "engines": {
     "node": ">=22.18.0",

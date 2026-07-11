@@ -1,6 +1,6 @@
 {
   "name": "@rosen-bridge/wid-check",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Rosen bridge wid health-check parameter",
   "repository": {
     "type": "git",
@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "@rosen-bridge/health-check": "^8.0.0",
-    "@rosen-clients/ergo-explorer": "^2.1.2",
-    "@rosen-clients/ergo-node": "^3.1.2",
+    "@rosen-clients/ergo-explorer": "^2.1.3",
+    "@rosen-clients/ergo-node": "^3.1.3",
     "ergo-lib-wasm-nodejs": "^0.24.1",
     "lodash-es": "^4.17.21"
   },
