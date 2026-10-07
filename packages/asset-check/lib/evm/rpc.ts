@@ -1,4 +1,4 @@
-import { ethers, JsonRpcProvider } from 'ethers';
+import { ethers, FetchRequest, JsonRpcProvider } from 'ethers';
 
 import { AbstractAssetHealthCheckParam } from '../abstract';
 import { PartialERC20ABI } from './types';
@@ -30,12 +30,20 @@ export class EvmRpcAssetHealthCheckParam extends AbstractAssetHealthCheckParam {
       assetDecimal,
     );
     this.nativeTokenId = nativeTokenId;
-    this.provider = authToken
-      ? new JsonRpcProvider(`${url}/${authToken}`)
-      : new JsonRpcProvider(`${url}`);
+    // Build the connection request first and hand it to the provider:
+    // in ethers v6 `_getConnection()` returns a fresh clone of the
+    // provider's request on every call, so assigning `timeout` to its
+    // result is discarded and the timeout never takes effect. Setting
+    // it on the request the provider is constructed with persists,
+    // because every clone copies it. The timeout is in milliseconds,
+    // as ethers expects.
+    const connection = new FetchRequest(
+      authToken ? `${url}/${authToken}` : `${url}`,
+    );
     if (timeout) {
-      this.provider._getConnection().timeout = timeout;
+      connection.timeout = timeout;
     }
+    this.provider = new JsonRpcProvider(connection);
   }
 
   /**
